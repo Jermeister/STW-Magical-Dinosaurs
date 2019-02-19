@@ -45,8 +45,12 @@ public class UIController : MonoBehaviour
 
     public Text iptext;
 
-	/// Liudo
-	public MultiplayerController multiplayerControllerScr;
+    public bool myTurn;
+    public GameObject notMyTurnText;
+    public GameObject myTurnButton;
+
+    /// Liudo
+    public MultiplayerController multiplayerControllerScr;
 
     #endregion
 
@@ -97,11 +101,30 @@ public class UIController : MonoBehaviour
         GameObject.FindObjectOfType<FreeMovement>().inGame = true;
     }
 
+    
     public void Clicked_NextTurn()
     {
+        if (myTurn)
+        {
+            NextTurn();
+        }
+
+    }
+
+    public void StartTurn()
+    {
+        notMyTurnText.SetActive(false);
+        myTurnButton.SetActive(true);
+    }
+
+    public void NextTurn()
+    {
+        notMyTurnText.SetActive(true);
+        myTurnButton.SetActive(false);
+
         #region Mana
         int manaLeftover = manaLeft;
-        if(manaLeft > manaSavingMax)
+        if (manaLeft > manaSavingMax)
         {
             manaLeft = manaLeft + manaSavingMax;
         }
@@ -109,8 +132,8 @@ public class UIController : MonoBehaviour
         {
             manaLeft += manaPerTurn;
         }
-        
-        if(manaLeft > maxMana)
+
+        if (manaLeft > maxMana)
         {
             manaLeft = maxMana;
         }
@@ -123,7 +146,6 @@ public class UIController : MonoBehaviour
                 mana[i].sprite = mana_empty;
         }
         #endregion
-
     }
 
     public void ManaCostBarUpdate()

@@ -121,32 +121,6 @@ public class GridManager : MonoBehaviour
 		}
 	}
 
-    void SelectObjectNear(Vector3 clickPoint)
-    {
-        var finalPosition = GetNearestPointOnGrid(clickPoint);
-
-        int xCount = Mathf.RoundToInt(finalPosition.x / 1);
-        int zCount = Mathf.RoundToInt(finalPosition.z / 1);
-
-        Quaternion rot;
-        if (playerId == 1)
-            rot = Quaternion.Euler(0, 90, 0);
-        else
-            rot = Quaternion.Euler(0, -90, 0);
-
-        for (int i = 0; i < SpawnedObjects.Count; i++)
-        {
-            //if(SpawnedObjects[i].)
-        }
-        if (TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
-        {
-            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
-            Destroy(selectionInstance);
-            TileTypeMap[xCount, zCount] = monsterId;
-            TilePlayerMap[xCount, zCount] = playerId;
-        }
-    }
-
 
     /// <summary>
     /// Spawning selection item so that player sees where he can spawn a dinosaur
@@ -232,7 +206,7 @@ public class GridManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hitInfo))
             {
-                SelectObjectNear(hitInfo.point);
+               // SelectObjectNear(hitInfo.point);
 
             }
         }

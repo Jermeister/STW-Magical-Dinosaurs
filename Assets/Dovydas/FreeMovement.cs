@@ -60,7 +60,6 @@ public class FreeMovement : MonoBehaviour
                 transform.localRotation = Quaternion.AngleAxis(rotationX * rotSpeed, Vector3.up);
                 transform.localRotation *= Quaternion.AngleAxis(rotationY * rotSpeed, Vector3.left);
 
-                rb.velocity = Vector3.zero;
                 transform.Translate(new Vector3(Vector3.forward.x, 0f, Vector3.forward.z) * Input.GetAxis("Vertical") * Time.deltaTime * speed);
                 transform.Translate(new Vector3(Vector3.right.x, 0f, Vector3.right.z) * Input.GetAxis("Horizontal") * Time.deltaTime * speed);
 
