@@ -14,7 +14,6 @@ public class MultiplayerController : MonoBehaviour
 	[HideInInspector] public GameObject server;
 
 	public GameObject consoleTextObject;
-	public GameObject createJoinButtonsParent;
 
 	private void Start()
 	{
@@ -106,11 +105,9 @@ public class MultiplayerController : MonoBehaviour
 
 	public void DisableCreateJoinMenus()
 	{
-		createJoinButtonsParent.SetActive(false);
 	}
 	public void EnableCreateJoinMenus()
 	{
-		createJoinButtonsParent.SetActive(true);
 	}
 
 	private void OnApplicationQuit()

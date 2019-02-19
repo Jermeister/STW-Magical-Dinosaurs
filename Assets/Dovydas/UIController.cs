@@ -77,6 +77,7 @@ public class UIController : MonoBehaviour
     {
         unitIsSelected = true;
         unitSelected = id;
+        GameObject.Find("Grid").GetComponent<GridManager>().SpawnDinoButton(id + 1);
         // use infoText_Text[id].text = "your text";
     }
 
@@ -207,7 +208,7 @@ public class UIController : MonoBehaviour
 
 		multiplayerControllerScr.CreateGame();
 
-		//ToSetup();
+		ToSetup();
 
     }
 
