@@ -7020,6 +7020,8 @@ MonoBehaviour:
   isBuildingMode: 1
   dinosaurPrefabs: []
   inGame: 0
+  inSetup: 0
+  selectedUnit: 0
 --- !u!4 &624735773
 Transform:
   m_ObjectHideFlags: 0
@@ -13016,6 +13018,8 @@ MonoBehaviour:
   - {fileID: 434171864, guid: ad8b6ad4eda42f44c8ea2c39e3bebb98, type: 3}
   - {fileID: 1704046029756010, guid: 75c48b9dcc60b0647baf3c2c9a0aeb0e, type: 3}
   inGame: 0
+  inSetup: 0
+  selectedUnit: 0
 --- !u!4 &1081916397
 Transform:
   m_ObjectHideFlags: 0
@@ -18294,7 +18298,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1451779619
 RectTransform:
   m_ObjectHideFlags: 0

@@ -88,7 +88,12 @@ public class Server : MonoBehaviour
 				//ConsoleScript.Print("Server", "connection Id from got message: " + id);
 				break;
 
+			/// TODO: receive SetupButtonPressed message
+			/// Check if both players are ready
+			/// If they are, send message that they are ready
 
+			/// Player 1 (host) ended his turn
+			/// Inform Player 2 that host ended his turn 
 
 			case "asd": break;
 

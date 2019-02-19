@@ -199,8 +199,13 @@ public class UIController : MonoBehaviour
         screen_inWaitingForPlayer.SetActive(false);
         needActionAndInfoZone = true;
         InitializeGame();
-    }
-    public void ToSetup()
+
+		multiplayerControllerScr.SetupButtonPressed();
+
+		/// TODO: disable SetupButton, enable text ui
+		/// TODO: this client is ready, send to server
+	}
+	public void ToSetup()
     {
         unitIsSelected = false;
         screen_localMultiplayer.SetActive(false);
