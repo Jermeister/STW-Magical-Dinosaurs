@@ -8,7 +8,8 @@ public class Server : MonoBehaviour
 {
 #pragma warning disable CS0618 // Type or member is obsolete
 
-
+	private MultiplayerController multiplayerControllerScr;
+	private Client clientScr;
 
 	private const int MAX_USERS = 2;
 	private const int PORT = 26090;
@@ -53,29 +54,41 @@ public class Server : MonoBehaviour
 				string msg = Encoding.Unicode.GetString(recBuffer, 0, dataSize);
 				ConsoleScript.Print("ServerGotMsg", msg);
 
-				string[] splitData = msg.Split('|');
-
-
-				switch (splitData[0])
-				{
-					// Client just connected to the network
-					case "BP":
-						ButtonPress(connectionId);
-						ConsoleScript.Print("Server", "connection Id from got message: " + connectionId);
-						break;
-
-					default: ConsoleScript.Print("Server", "Unknown message: " + splitData[0]); break;
-				}
+				DecryptMessage(connectionId, msg);
 
 				break;
 
 			case NetworkEventType.ConnectEvent:
 				ConsoleScript.Print("Server", "Client " + connectionId + " has connected.");
+				//Send("NC", )
+				Send("asd", reliableChannel, 0);
 				Send("asd", reliableChannel, 1);
+				Send("asd", reliableChannel, 2);
+				//Send("asd", reliableChannel, 3);
 				break;
 			case NetworkEventType.DisconnectEvent:
 				ConsoleScript.Print("Server", "Client " + connectionId + " has disconnected.");
 				break;
+		}
+	}
+
+	public void DecryptMessage(int id, string msg)
+	{
+		string[] splitData = msg.Split('|');
+
+		switch (splitData[0])
+		{
+			// Client just connected to the network
+			case "BP":
+				ButtonPress(id);
+				//ConsoleScript.Print("Server", "connection Id from got message: " + id);
+				break;
+
+
+
+			case "asd": break;
+
+			default: ConsoleScript.Print("Server", "Unknown message: " + splitData[0]); break;
 		}
 	}
 
@@ -95,9 +108,18 @@ public class Server : MonoBehaviour
 	private void Send(string message, int channelId, int cnnId)
 	{
 		// Send a message for one client
-		byte[] msg = Encoding.Unicode.GetBytes(message);
-		Debug.Log(string.Format("Host:{0}    cnnId:{1}", hostId, cnnId));
-		NetworkTransport.Send(hostId, cnnId, channelId, msg, message.Length * sizeof(char), out error);
+
+		// check this, if I am sending to the same computer
+		if (cnnId == 1)
+		{
+			//ConsoleScript.Print("Server", "Sending to Client via script");
+			multiplayerControllerScr.DecryptMessage(message);
+		} else
+		{
+			//ConsoleScript.Print("Server", "Sending to Client via networking");
+			byte[] msg = Encoding.Unicode.GetBytes(message);
+			NetworkTransport.Send(hostId, cnnId, channelId, msg, message.Length * sizeof(char), out error);
+		}
 	}
 	private void SendAll(string message, int channelId)
 	{
@@ -114,8 +136,10 @@ public class Server : MonoBehaviour
 		reliableChannel = cc.AddChannel(QosType.Reliable);
 
 		HostTopology hostTopology = new HostTopology(cc, MAX_USERS);
-
 		hostId = NetworkTransport.AddHost(hostTopology, PORT, null);
+
+		multiplayerControllerScr = GameObject.Find("MultiplayerController").GetComponent<MultiplayerController>();
+		clientScr = GameObject.Find("Client(Clone)").GetComponent<Client>();
 
 		ConsoleScript.Print("Server", "Server is started.");
 		isStarted = true;

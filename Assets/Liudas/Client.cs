@@ -10,6 +10,8 @@ public class Client : MonoBehaviour
 
 	public GameObject buildingControllerPrefab; // this is spawned when the client is connected to the server
 
+	private MultiplayerController multiplayerControllerScr;
+	private Server serverScr;
 
 	private const int MAX_USERS = 2;
 	private const int PORT = 26090;
@@ -31,7 +33,20 @@ public class Client : MonoBehaviour
 	{
 		DontDestroyOnLoad(gameObject);
 
+		multiplayerControllerScr = GameObject.Find("MultiplayerController").GetComponent<MultiplayerController>();
 		ConnectToServer();
+
+		if (isHost)
+		{
+			serverScr = GameObject.Find("Server(Clone)").GetComponent<Server>();
+
+			if (serverScr == null)
+			{
+				ConsoleScript.Print("Client", "Server script was not found");
+			}
+		}
+
+
 	}
 	private void Update()
 	{
@@ -71,15 +86,7 @@ public class Client : MonoBehaviour
 				string msg = Encoding.Unicode.GetString(recBuffer, 0, dataSize);
 				ConsoleScript.Print("ClientGotMsg", msg);
 
-				string[] splitData = msg.Split('|');
-
-				switch (splitData[0])
-				{
-					// Client just connected to the network
-					case "OBP": OtherButtonPress(); break;
-
-					default: ConsoleScript.Print("Client", "Unknown message: " + splitData[0]); break;
-				}
+				multiplayerControllerScr.DecryptMessage(msg);
 
 				break;
 
@@ -91,11 +98,8 @@ public class Client : MonoBehaviour
 
 	}
 
-	private void OtherButtonPress()
-	{
-		ConsoleScript.Print("Client", "Other client pressed the button!");
-	}
-	public void ButtonPress()
+
+	public void ClientButtonPress()
 	{
 		Send("BP", reliableChannel);
 	}
@@ -103,8 +107,27 @@ public class Client : MonoBehaviour
 	public void Send(string msg, int channelId)
 	{
 		ConsoleScript.Print("ClientSendMsg", msg);
-		byte[] msgByte = Encoding.Unicode.GetBytes(msg);
-		NetworkTransport.Send(hostId, localConnectionId, channelId, msgByte, msg.Length * sizeof(char), out error);
+
+		/// TODO: ask server for LOCAL CONNECTION ID
+
+		// check this, if I am sending to the same computer
+		if (isHost)
+		{
+			//ConsoleScript.Print("Client", "Sending to server via script");
+			serverScr.DecryptMessage(1, msg);
+			//multiplayerControllerScr.DecryptMessage(msg);
+		}
+		else
+		{
+			//ConsoleScript.Print("Server", "Sending to server via networking");
+			byte[] msgByte = Encoding.Unicode.GetBytes(msg);
+			NetworkTransport.Send(hostId, localConnectionId, channelId, msgByte, msg.Length * sizeof(char), out error);
+		}
+
+
+
+		//byte[] msgByte = Encoding.Unicode.GetBytes(msg);
+		//NetworkTransport.Send(hostId, localConnectionId, channelId, msgByte, msg.Length * sizeof(char), out error);
 	}
 
 	public void ConnectToServer()

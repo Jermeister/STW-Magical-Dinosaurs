@@ -23,7 +23,7 @@ public class MultiplayerController : MonoBehaviour
 	public void ButtonPressed()
 	{
 		if (clientScr != null)
-			clientScr.ButtonPress();
+			clientScr.ClientButtonPress();
 	}
 
 	public void CreateGame()
@@ -57,6 +57,33 @@ public class MultiplayerController : MonoBehaviour
 	{
 		ConsoleScript.Print("Multiplayer", "This is not yet implemented.");
 	}
+
+	public void DecryptMessage(string message)
+	{
+		string[] splitMsg = message.Split('|');
+
+		for (int i = 0; i < splitMsg.Length; i++)
+		{
+			ConsoleScript.Print("Multiplayer", splitMsg[i]);
+		}
+
+		switch (splitMsg[0])
+		{
+			// Client just connected to the network
+			case "OBP": OtherButtonPress(); break;
+
+			case "asd": break;
+
+			default: ConsoleScript.Print("Multiplayer", "Unknown message: " + splitMsg[0]); break;
+		}
+
+	}
+
+	private void OtherButtonPress()
+	{
+		ConsoleScript.Print("Client", "Other client pressed the button!");
+	}
+
 
 	public void DisableCreateJoinMenus()
 	{
