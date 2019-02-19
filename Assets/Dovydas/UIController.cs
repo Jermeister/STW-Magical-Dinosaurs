@@ -208,7 +208,7 @@ public class UIController : MonoBehaviour
 
 		multiplayerControllerScr.CreateGame();
 
-		ToSetup();
+		//ToSetup();
 
     }
 
