@@ -15,8 +15,12 @@ public class GridManager : MonoBehaviour
 	public bool isBuildingMode = true;
 	public List<GameObject> dinosaurPrefabs;
 
-	//Private stuff
-	private GameObject[,] Tiles;
+    //Dovydo
+    public bool inGame, inSetup;
+    public int selectedUnit;
+
+    //Private stuff
+    private GameObject[,] Tiles;
 	private TileScript[,] tileScripts;
 	private int[,] TilePlayerMap;
 	private int[,] TileTypeMap;
@@ -32,7 +36,7 @@ public class GridManager : MonoBehaviour
 		// Instantiating objects
 		Tiles = new GameObject[gridSize,gridSize];
 		tileScripts = new TileScript[gridSize, gridSize];
-		TileTypeMap = new int[gridSize,gridSize];
+        TileTypeMap = new int[gridSize,gridSize];
 		TilePlayerMap = new int[gridSize, gridSize];
 		SpawnedObjects = new List<GameObject>();
 
@@ -117,12 +121,38 @@ public class GridManager : MonoBehaviour
 		}
 	}
 
+    void SelectObjectNear(Vector3 clickPoint)
+    {
+        var finalPosition = GetNearestPointOnGrid(clickPoint);
 
-	/// <summary>
-	/// Spawning selection item so that player sees where he can spawn a dinosaur
-	/// </summary>
-	/// <param name="mousePoint"></param>
-	void PlaceSelectionNear(Vector3 mousePoint)
+        int xCount = Mathf.RoundToInt(finalPosition.x / 1);
+        int zCount = Mathf.RoundToInt(finalPosition.z / 1);
+
+        Quaternion rot;
+        if (playerId == 1)
+            rot = Quaternion.Euler(0, 90, 0);
+        else
+            rot = Quaternion.Euler(0, -90, 0);
+
+        for (int i = 0; i < SpawnedObjects.Count; i++)
+        {
+            //if(SpawnedObjects[i].)
+        }
+        if (TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
+        {
+            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
+            Destroy(selectionInstance);
+            TileTypeMap[xCount, zCount] = monsterId;
+            TilePlayerMap[xCount, zCount] = playerId;
+        }
+    }
+
+
+    /// <summary>
+    /// Spawning selection item so that player sees where he can spawn a dinosaur
+    /// </summary>
+    /// <param name="mousePoint"></param>
+    void PlaceSelectionNear(Vector3 mousePoint)
 	{
 		var finalPosition = GetNearestPointOnGrid(mousePoint);
 		int xCount = Mathf.RoundToInt(finalPosition.x / 1);
@@ -167,23 +197,24 @@ public class GridManager : MonoBehaviour
 		return result;
 	}
 
-	void OnDrawGizmos()
-	{
-		Gizmos.color = Color.yellow;
-		for (float x = 0; x < gridSize; x += 1)
-		{
-			for (float z = 0; z < gridSize; z += 1)
-			{
-				var point = GetNearestPointOnGrid(new Vector3(x, 0.75f, z));
-				Gizmos.DrawSphere(point, 0.1f);
-			}
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        for (float x = 0; x < gridSize; x += 1)
+        {
+            for (float z = 0; z < gridSize; z += 1)
+            {
+                var point = GetNearestPointOnGrid(new Vector3(x, 0.75f, z));
+                Gizmos.DrawSphere(point, 0.1f);
+            }
 
-		}
-	}
+        }
 
-	void UpdateObjectSpawn()
+    }
+
+    void UpdateObjectSpawn()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0) && inGame) // Dovydas: pridejau && inGame
 		{
 			RaycastHit hitInfo;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -191,18 +222,33 @@ public class GridManager : MonoBehaviour
 			if (Physics.Raycast(ray, out hitInfo))
 			{
 				PlaceObjectNear(hitInfo.point);
+                
 			}
 		}
-	}
+        else if (Input.GetMouseButtonDown(0) && inSetup) // Dovydas: pridejau && inGame
+        {
+            RaycastHit hitInfo;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                SelectObjectNear(hitInfo.point);
+
+            }
+        }
+    }
 
 	void UpdateSelectionSquare()
 	{
-		RaycastHit hitInfo;
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (inGame) // Dovydas: pridejau inGame if'a
+        { 
+            RaycastHit hitInfo;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-		if (Physics.Raycast(ray, out hitInfo))
-		{
-			PlaceSelectionNear(hitInfo.point);
-		}
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                PlaceSelectionNear(hitInfo.point);
+            }
+        }
 	}
 }
