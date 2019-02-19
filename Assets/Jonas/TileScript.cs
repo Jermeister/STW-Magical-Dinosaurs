@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TileScript : MonoBehaviour
 {
-	[HideInInspector]
-	public char type = '0';
+	public int type = 0;
 	public int playerType = 0;
 	[SerializeField]
 	private string gridManagerObjectString = "Grid";

@@ -19,7 +19,7 @@ public class GridManager : MonoBehaviour
 	private GameObject[,] Tiles;
 	private TileScript[,] tileScripts;
 	private int[,] TilePlayerMap;
-	private char[,] TileTypeMap;
+	private int[,] TileTypeMap;
 	private Transform parent;
 	private GameObject selectionInstance;
 	private List<GameObject> SpawnedObjects;
@@ -32,7 +32,7 @@ public class GridManager : MonoBehaviour
 		// Instantiating objects
 		Tiles = new GameObject[gridSize,gridSize];
 		tileScripts = new TileScript[gridSize, gridSize];
-		TileTypeMap = new char[gridSize,gridSize];
+		TileTypeMap = new int[gridSize,gridSize];
 		TilePlayerMap = new int[gridSize, gridSize];
 		SpawnedObjects = new List<GameObject>();
 
@@ -46,7 +46,7 @@ public class GridManager : MonoBehaviour
 			{
 				Tiles[x, z] = Instantiate(tile, new Vector3(x,ySpawnValue,z),Quaternion.identity,parent);
 
-				TileTypeMap[x, z] = '0';
+				TileTypeMap[x, z] = 0;
 
 				tileScripts[x, z] = Tiles[x, z].GetComponent<TileScript>();
 				if (isBuildingMode)
@@ -92,6 +92,10 @@ public class GridManager : MonoBehaviour
 		monsterId = id;
 	}
 
+	/// <summary>
+	/// Placing dinosaur in a grid
+	/// </summary>
+	/// <param name="clickPoint"></param>
 	void PlaceObjectNear(Vector3 clickPoint)
 	{
 		var finalPosition = GetNearestPointOnGrid(clickPoint);
@@ -104,27 +108,45 @@ public class GridManager : MonoBehaviour
 			rot = Quaternion.Euler(0, 90, 0);
 		else
 			rot = Quaternion.Euler(0, -90, 0);
-
-		SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId-1], new Vector3(xCount, 0.75f, zCount), rot));
-		TileTypeMap[xCount, zCount] = (char)monsterId;
+		if (TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
+		{
+			SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
+			Destroy(selectionInstance);
+			TileTypeMap[xCount, zCount] = monsterId;
+			TilePlayerMap[xCount, zCount] = playerId;
+		}
 	}
 
+
+	/// <summary>
+	/// Spawning selection item so that player sees where he can spawn a dinosaur
+	/// </summary>
+	/// <param name="mousePoint"></param>
 	void PlaceSelectionNear(Vector3 mousePoint)
 	{
-		if (selectionInstance)
-			Destroy(selectionInstance);
 		var finalPosition = GetNearestPointOnGrid(mousePoint);
-		if (finalPosition.x < 0 || finalPosition.x > gridSize-1 || finalPosition.z < 0 || finalPosition.z > gridSize-1)
-			return;
-
 		int xCount = Mathf.RoundToInt(finalPosition.x / 1);
 		int zCount = Mathf.RoundToInt(finalPosition.z / 1);
 
-		if (TileTypeMap[xCount, zCount] == '0' && TilePlayerMap[xCount, zCount] == playerId)
-		{
+		// Checking if we are holding mouse on the same tile, so selection does not despawn and we don't have to spawn it again
+		if (selectionInstance && (int)selectionInstance.transform.position.x == xCount && (int)selectionInstance.transform.position.z == zCount)
+			return;
 
-			selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.75f, finalPosition.z), Quaternion.identity);
+		if (finalPosition.x < 0 || finalPosition.x > gridSize-1 || finalPosition.z < 0 || finalPosition.z > gridSize-1 ||
+			TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId)
+		{
+			Destroy(selectionInstance);
+			return;
 		}
+
+		if (!selectionInstance)
+		{
+			selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.75f, finalPosition.z), Quaternion.identity);
+			return;
+		}
+
+		if(selectionInstance)
+			selectionInstance.transform.position = new Vector3(finalPosition.x, 0.75f, finalPosition.z);
 	}
 
 	Vector3 GetNearestPointOnGrid(Vector3 position)
