@@ -12121,6 +12121,7 @@ MonoBehaviour:
   - {fileID: 702003915}
   mana_empty: {fileID: 21300000, guid: 79abf941131f26d4bb1cd3d249b2d6f8, type: 3}
   mana_full: {fileID: 21300000, guid: 419c11ba06537924b9da785d740f53d2, type: 3}
+  unitSelected: 0
 --- !u!1 &1927773029
 GameObject:
   m_ObjectHideFlags: 0

@@ -41,6 +41,11 @@ public class UIController : MonoBehaviour
     public Image[] mana;
     public Sprite mana_empty, mana_full;
     public int unitSelected;
+
+
+	/// Liudo
+	public MultiplayerController multiplayerControllerScr;
+
     #endregion
 
     void Update()
@@ -147,7 +152,10 @@ public class UIController : MonoBehaviour
         screen_setup.SetActive(false);
         screen_inGame.SetActive(false);
         needActionAndInfoZone = false;
-    }
+
+
+		multiplayerControllerScr.SplitScreen();
+	}
 
     public void Clicked_ToJoinServer()
     {
@@ -157,6 +165,8 @@ public class UIController : MonoBehaviour
         screen_setup.SetActive(false);
         screen_inGame.SetActive(false);
         needActionAndInfoZone = false;
+
+
     }
 
     public void Clicked_ToMainMenu()
@@ -194,19 +204,33 @@ public class UIController : MonoBehaviour
 
     public void Clicked_Setup_createdServer()
     {
-        ToSetup();
+
+		multiplayerControllerScr.CreateGame();
+
+		//ToSetup();
 
     }
 
     public void Clicked_Setup_joinedServer()
     {
-        ToSetup();
+		string ip = GameObject.Find("InJoinGame").transform.Find("IP_InputField").transform.Find("Text").GetComponent<Text>().text;
+		multiplayerControllerScr.ipAdrress = ip;
+
+		multiplayerControllerScr.JoinGame();
+
+		// ToSetup is called in Client script 
+
+		//ToSetup();
 
     }
 
     public void Clicked_Setup_localMultiplayer()
     {
-        ToSetup();
+
+		multiplayerControllerScr.SplitScreen();
+
+
+		ToSetup();
 
     }
     #endregion

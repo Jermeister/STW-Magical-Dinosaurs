@@ -10,6 +10,7 @@ public class Server : MonoBehaviour
 
 	private MultiplayerController multiplayerControllerScr;
 	private Client clientScr;
+	private UIController uiControllerScr;
 
 	private const int MAX_USERS = 2;
 	private const int PORT = 26090;
@@ -59,6 +60,9 @@ public class Server : MonoBehaviour
 				break;
 
 			case NetworkEventType.ConnectEvent:
+
+				if (connectionId == 2) uiControllerScr.ToSetup();
+
 				ConsoleScript.Print("Server", "Client " + connectionId + " has connected.");
 				//Send("NC", )
 				Send("asd", reliableChannel, 0);
@@ -140,6 +144,7 @@ public class Server : MonoBehaviour
 
 		multiplayerControllerScr = GameObject.Find("MultiplayerController").GetComponent<MultiplayerController>();
 		clientScr = GameObject.Find("Client(Clone)").GetComponent<Client>();
+		uiControllerScr = GameObject.Find("MainCanvas").GetComponent<UIController>();
 
 		ConsoleScript.Print("Server", "Server is started.");
 		isStarted = true;
@@ -147,6 +152,9 @@ public class Server : MonoBehaviour
 	public void StopServer()
 	{
 		NetworkTransport.Shutdown();
+		multiplayerControllerScr = null;
+		uiControllerScr = null;
+		clientScr = null;
 		isStarted = false;
 		ConsoleScript.Print("Server", "Server shutdown.");
 	}

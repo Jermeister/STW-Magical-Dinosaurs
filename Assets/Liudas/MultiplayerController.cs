@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MultiplayerController : MonoBehaviour
 {
+	public string ipAdrress;
+
 	public GameObject clientPrefab;
 	public GameObject serverPrefab;
 
@@ -16,8 +18,25 @@ public class MultiplayerController : MonoBehaviour
 
 	private void Start()
 	{
+		DontDestroyOnLoad(gameObject);
 		ConsoleScript.SetUp(consoleTextObject);
 		ConsoleScript.isConsoleActive = true;
+	}
+
+	public void ResetEverything()
+	{
+		ipAdrress = "";
+
+		if (client != null)
+			Destroy(client);
+
+		if (server != null)
+			Destroy(server);
+
+		client = null;
+		server = null;
+
+		clientScr = null;
 	}
 
 	public void ButtonPressed()

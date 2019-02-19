@@ -12,11 +12,12 @@ public class Client : MonoBehaviour
 
 	private MultiplayerController multiplayerControllerScr;
 	private Server serverScr;
+	private UIController uiControllerScr;
 
 	private const int MAX_USERS = 2;
 	private const int PORT = 26090;
 	private const int BYTE_SIZE = 1024;
-	public string ipAddress = "127.0.0.1";
+	//public string ipAddress = "127.0.0.1";
 
 	public int hostId;
 	private byte reliableChannel;
@@ -25,6 +26,7 @@ public class Client : MonoBehaviour
 
 
 	public bool isHost;
+	public bool isConnectionSuccessful;
 	private bool isStarted;
 
 	byte error;
@@ -34,6 +36,8 @@ public class Client : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 
 		multiplayerControllerScr = GameObject.Find("MultiplayerController").GetComponent<MultiplayerController>();
+		uiControllerScr = GameObject.Find("MainCanvas").GetComponent<UIController>();
+
 		ConnectToServer();
 
 		if (isHost)
@@ -69,8 +73,6 @@ public class Client : MonoBehaviour
 
 		byte[] recBuffer = new byte[BYTE_SIZE];
 		int dataSize;
-
-		//print("Error: " + error);
 
 		NetworkEventType type = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, BYTE_SIZE, out dataSize, out error);
 
@@ -108,14 +110,11 @@ public class Client : MonoBehaviour
 	{
 		ConsoleScript.Print("ClientSendMsg", msg);
 
-		/// TODO: ask server for LOCAL CONNECTION ID
-
 		// check this, if I am sending to the same computer
 		if (isHost)
 		{
 			//ConsoleScript.Print("Client", "Sending to server via script");
 			serverScr.DecryptMessage(1, msg);
-			//multiplayerControllerScr.DecryptMessage(msg);
 		}
 		else
 		{
@@ -141,17 +140,25 @@ public class Client : MonoBehaviour
 
 		hostId = NetworkTransport.AddHost(hostTopology, 0);
 
-		localConnectionId = NetworkTransport.Connect(hostId, ipAddress, PORT, 0, out error);
+		string IP = (isHost == true ? "127.0.0.1" : multiplayerControllerScr.ipAdrress);
+
+		localConnectionId = NetworkTransport.Connect(hostId, IP, PORT, 0, out error);
 		print("localConnectionId: " + localConnectionId);
 
-		ConsoleScript.Print("Client", "connected to " + ipAddress + " server");
+		ConsoleScript.Print("Client", "connected to " + IP + " server");
 
+		if (!isHost)
+			uiControllerScr.ToSetup();
+
+		isConnectionSuccessful = true;
 		isStarted = true;
 	}
 	public void DisconnectFromServer()
 	{
 		isStarted = false;
 		NetworkTransport.Shutdown();
+
+		multiplayerControllerScr.ResetEverything();
 	}
 
 
