@@ -90,6 +90,12 @@ public class MultiplayerController : MonoBehaviour
 			// Client just connected to the network
 			case "OBP": OtherButtonPress(); break;
 
+			/// TODO: receive message from server that both players pressed SetupButtonPressed
+			/// switch scenes, make player 1 (host) start
+			/// On player 1 (host) screen, "End Turn" button is present
+			/// If End Turn is pressed, send message to server
+
+
 			case "asd": break;
 
 			default: ConsoleScript.Print("Multiplayer", "Unknown message: " + splitMsg[0]); break;
@@ -102,6 +108,13 @@ public class MultiplayerController : MonoBehaviour
 		ConsoleScript.Print("Client", "Other client pressed the button!");
 	}
 
+	public void SetupButtonPressed()
+	{
+
+		/// TODO: send message to server 
+
+
+	}
 
 	public void DisableCreateJoinMenus()
 	{

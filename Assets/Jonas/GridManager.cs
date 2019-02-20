@@ -15,8 +15,12 @@ public class GridManager : MonoBehaviour
 	public bool isBuildingMode = true;
 	public List<GameObject> dinosaurPrefabs;
 
-	//Private stuff
-	private GameObject[,] Tiles;
+    //Dovydo
+    public bool inGame, inSetup;
+    public int selectedUnit;
+
+    //Private stuff
+    private GameObject[,] Tiles;
 	private TileScript[,] tileScripts;
 	private int[,] TilePlayerMap;
 	private int[,] TileTypeMap;
@@ -32,7 +36,7 @@ public class GridManager : MonoBehaviour
 		// Instantiating objects
 		Tiles = new GameObject[gridSize,gridSize];
 		tileScripts = new TileScript[gridSize, gridSize];
-		TileTypeMap = new int[gridSize,gridSize];
+        TileTypeMap = new int[gridSize,gridSize];
 		TilePlayerMap = new int[gridSize, gridSize];
 		SpawnedObjects = new List<GameObject>();
 
@@ -120,11 +124,11 @@ public class GridManager : MonoBehaviour
 	}
 
 
-	/// <summary>
-	/// Spawning selection item so that player sees where he can spawn a dinosaur
-	/// </summary>
-	/// <param name="mousePoint"></param>
-	void PlaceSelectionNear(Vector3 mousePoint)
+    /// <summary>
+    /// Spawning selection item so that player sees where he can spawn a dinosaur
+    /// </summary>
+    /// <param name="mousePoint"></param>
+    void PlaceSelectionNear(Vector3 mousePoint)
 	{
 		var finalPosition = GetNearestPointOnGrid(mousePoint);
 		int xCount = Mathf.RoundToInt(finalPosition.x / 1);
@@ -169,23 +173,24 @@ public class GridManager : MonoBehaviour
 		return result;
 	}
 
-	void OnDrawGizmos()
-	{
-		Gizmos.color = Color.yellow;
-		for (float x = 0; x < gridSize; x += 1)
-		{
-			for (float z = 0; z < gridSize; z += 1)
-			{
-				var point = GetNearestPointOnGrid(new Vector3(x, 0.75f, z));
-				Gizmos.DrawSphere(point, 0.1f);
-			}
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        for (float x = 0; x < gridSize; x += 1)
+        {
+            for (float z = 0; z < gridSize; z += 1)
+            {
+                var point = GetNearestPointOnGrid(new Vector3(x, 0.75f, z));
+                Gizmos.DrawSphere(point, 0.1f);
+            }
 
-		}
-	}
+        }
 
-	void UpdateObjectSpawn()
+    }
+
+    void UpdateObjectSpawn()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0) && inGame) // Dovydas: pridejau && inGame
 		{
 			RaycastHit hitInfo;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -193,18 +198,33 @@ public class GridManager : MonoBehaviour
 			if (Physics.Raycast(ray, out hitInfo))
 			{
 				PlaceObjectNear(hitInfo.point);
+                
 			}
 		}
-	}
+        else if (Input.GetMouseButtonDown(0) && inSetup) // Dovydas: pridejau && inGame
+        {
+            RaycastHit hitInfo;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+               // SelectObjectNear(hitInfo.point);
+
+            }
+        }
+    }
 
 	void UpdateSelectionSquare()
 	{
-		RaycastHit hitInfo;
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (inGame) // Dovydas: pridejau inGame if'a
+        { 
+            RaycastHit hitInfo;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-		if (Physics.Raycast(ray, out hitInfo))
-		{
-			PlaceSelectionNear(hitInfo.point);
-		}
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                PlaceSelectionNear(hitInfo.point);
+            }
+        }
 	}
 }

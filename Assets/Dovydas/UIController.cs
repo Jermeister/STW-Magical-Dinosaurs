@@ -36,15 +36,21 @@ public class UIController : MonoBehaviour
                       screen_MainMenu,
                       screen_setup,
                       screen_inGame,
-                      screen_localMultiplayer;
+                      screen_localMultiplayer,
+                      screen_inWaitingForPlayer;
 
     public Image[] mana;
     public Sprite mana_empty, mana_full;
     public int unitSelected;
 
+    public Text iptext;
 
-	/// Liudo
-	public MultiplayerController multiplayerControllerScr;
+    public bool myTurn;
+    public GameObject notMyTurnText;
+    public GameObject myTurnButton;
+
+    /// Liudo
+    public MultiplayerController multiplayerControllerScr;
 
     #endregion
 
@@ -91,13 +97,34 @@ public class UIController : MonoBehaviour
             else
                 mana[i].sprite = mana_empty;
         }
+        GameObject.FindObjectOfType<GridManager>().inGame = true;
+        GameObject.FindObjectOfType<FreeMovement>().inGame = true;
     }
 
+    
     public void Clicked_NextTurn()
     {
+        if (myTurn)
+        {
+            NextTurn();
+        }
+
+    }
+
+    public void StartTurn()
+    {
+        notMyTurnText.SetActive(false);
+        myTurnButton.SetActive(true);
+    }
+
+    public void NextTurn()
+    {
+        notMyTurnText.SetActive(true);
+        myTurnButton.SetActive(false);
+
         #region Mana
         int manaLeftover = manaLeft;
-        if(manaLeft > manaSavingMax)
+        if (manaLeft > manaSavingMax)
         {
             manaLeft = manaLeft + manaSavingMax;
         }
@@ -105,8 +132,8 @@ public class UIController : MonoBehaviour
         {
             manaLeft += manaPerTurn;
         }
-        
-        if(manaLeft > maxMana)
+
+        if (manaLeft > maxMana)
         {
             manaLeft = maxMana;
         }
@@ -119,7 +146,6 @@ public class UIController : MonoBehaviour
                 mana[i].sprite = mana_empty;
         }
         #endregion
-
     }
 
     public void ManaCostBarUpdate()
@@ -152,8 +178,9 @@ public class UIController : MonoBehaviour
         screen_MainMenu.SetActive(false);
         screen_setup.SetActive(false);
         screen_inGame.SetActive(false);
+        screen_inWaitingForPlayer.SetActive(false);
         needActionAndInfoZone = false;
-
+        Clicked_ToInGame();
 
 		multiplayerControllerScr.SplitScreen();
 	}
@@ -165,6 +192,7 @@ public class UIController : MonoBehaviour
         screen_MainMenu.SetActive(false);
         screen_setup.SetActive(false);
         screen_inGame.SetActive(false);
+        screen_inWaitingForPlayer.SetActive(false);
         needActionAndInfoZone = false;
 
 
@@ -178,6 +206,7 @@ public class UIController : MonoBehaviour
         screen_setup.SetActive(false);
         screen_inGame.SetActive(false);
         infoAndActionsZone.SetActive(false);
+        screen_inWaitingForPlayer.SetActive(false);
         needActionAndInfoZone = false;
     }
 
@@ -189,10 +218,16 @@ public class UIController : MonoBehaviour
         screen_MainMenu.SetActive(false);
         screen_setup.SetActive(false);
         screen_inGame.SetActive(true);
+        screen_inWaitingForPlayer.SetActive(false);
         needActionAndInfoZone = true;
         InitializeGame();
-    }
-    public void ToSetup()
+
+		multiplayerControllerScr.SetupButtonPressed();
+
+		/// TODO: disable SetupButton, enable text ui
+		/// TODO: this client is ready, send to server
+	}
+	public void ToSetup()
     {
         unitIsSelected = false;
         screen_localMultiplayer.SetActive(false);
@@ -200,6 +235,21 @@ public class UIController : MonoBehaviour
         screen_MainMenu.SetActive(false);
         screen_setup.SetActive(true);
         screen_inGame.SetActive(false);
+        screen_inWaitingForPlayer.SetActive(false);
+        needActionAndInfoZone = true;
+        GameObject.FindObjectOfType<GridManager>().inSetup = true;
+
+    }
+
+    public void ToWaitingForPlayer()
+    {
+        unitIsSelected = false;
+        screen_localMultiplayer.SetActive(false);
+        screen_JoinToServer.SetActive(false);
+        screen_MainMenu.SetActive(false);
+        screen_setup.SetActive(false);
+        screen_inGame.SetActive(false);
+        screen_inWaitingForPlayer.SetActive(true);
         needActionAndInfoZone = true;
     }
 
@@ -207,21 +257,23 @@ public class UIController : MonoBehaviour
     {
 
 		multiplayerControllerScr.CreateGame();
+        iptext.text = "set ip here";
 
-		//ToSetup();
+        ToWaitingForPlayer();
+        //ToSetup();
 
     }
 
     public void Clicked_Setup_joinedServer()
     {
 		string ip = GameObject.Find("InJoinGame").transform.Find("IP_InputField").transform.Find("Text").GetComponent<Text>().text;
-		multiplayerControllerScr.ipAdrress = ip;
+
+        multiplayerControllerScr.ipAdrress = ip;
 
 		multiplayerControllerScr.JoinGame();
+        // ToSetup is called in Client script 
 
-		// ToSetup is called in Client script 
-
-		//ToSetup();
+        //ToSetup();
 
     }
 
