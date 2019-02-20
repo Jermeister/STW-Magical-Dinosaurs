@@ -6,20 +6,24 @@ public class GridManager : MonoBehaviour
 {
 	[Header("Player Settings")]
 	public int playerId = 1;
+
 	[Header("Grid Settings")]
 	public int gridSize = 10;
 	public GameObject tile;
 	public float ySpawnValue = 0.3f;
 	public GameObject selectionItem;
+
 	[Header("Game Settings")]
-	public bool isBuildingMode = true;
 	public List<GameObject> dinosaurPrefabs;
 	public List<GameObject> obstaclePrefabs;
-
-	//Dovydo
-	public bool inGame, inSetup;
-    public int selectedUnit;
+	public bool inGame = false;
+	public bool inSetup = false;
+	[Range(2,14)]
+	public int maxObstaclesCount = 2;
+	public float obstaclesSpawnY = 0.55f;
+	[Header("Misc")]
 	public bool inTiles = false;
+	public int obstacleId = 10;
 
     //Private stuff
     private GameObject[,] Tiles;
@@ -29,6 +33,7 @@ public class GridManager : MonoBehaviour
 	private Transform parent;
 	private GameObject selectionInstance;
 	private List<GameObject> SpawnedObjects;
+	private List<GameObject> SpawnedObstacles;
 	private int monsterId = 1;
 
 	// Start is called before the first frame update
@@ -41,6 +46,7 @@ public class GridManager : MonoBehaviour
         TileTypeMap = new int[gridSize,gridSize];
 		TilePlayerMap = new int[gridSize, gridSize];
 		SpawnedObjects = new List<GameObject>();
+		SpawnedObstacles = new List<GameObject>();
 
 		parent = this.transform;
 		#endregion
@@ -55,7 +61,7 @@ public class GridManager : MonoBehaviour
 				TileTypeMap[x, z] = 0;
 
 				tileScripts[x, z] = Tiles[x, z].GetComponent<TileScript>();
-				if (isBuildingMode)
+				if (inSetup)
 				{
 					if (playerId == 1 && x < 3)
 					{
@@ -78,7 +84,8 @@ public class GridManager : MonoBehaviour
 		}
 		#endregion
 
-
+		if (inSetup)
+			SpawnRandomObstaclesOnGrid();
 	}
 
     // Update is called once per frame
@@ -88,16 +95,17 @@ public class GridManager : MonoBehaviour
 		UpdateSelectionSquare();
     }
 
-	void StartGame()
+	public void StartGame()
 	{
 		inSetup = false;
 		inGame = true;
 	}
 
-	void StartSetup()
+	public void StartSetup()
 	{
 		inGame = false;
 		inSetup = true;
+		SpawnRandomObstaclesOnGrid();
 	}
 
 	public void SpawnDinoButton(int id)
@@ -112,8 +120,8 @@ public class GridManager : MonoBehaviour
 	{
 		var finalPosition = GetNearestPointOnGrid(clickPoint);
 
-		int xCount = Mathf.RoundToInt(finalPosition.x / 1);
-		int zCount = Mathf.RoundToInt(finalPosition.z / 1);
+		int xCount = Mathf.RoundToInt(finalPosition.x);
+		int zCount = Mathf.RoundToInt(finalPosition.z);
 
 		Quaternion rot;
 		if (playerId == 1)
@@ -137,8 +145,8 @@ public class GridManager : MonoBehaviour
 	{
 		var finalPosition = GetNearestPointOnGrid(clickPoint);
 
-		int xCount = Mathf.RoundToInt(finalPosition.x / 1);
-		int zCount = Mathf.RoundToInt(finalPosition.z / 1);
+		int xCount = Mathf.RoundToInt(finalPosition.x);
+		int zCount = Mathf.RoundToInt(finalPosition.z);
 
 		Quaternion rot;
 		if (playerId == 1)
@@ -164,8 +172,8 @@ public class GridManager : MonoBehaviour
 	void PlaceSelectionNear(Vector3 mousePoint)
 	{
 		var finalPosition = GetNearestPointOnGrid(mousePoint);
-		int xCount = Mathf.RoundToInt(finalPosition.x / 1);
-		int zCount = Mathf.RoundToInt(finalPosition.z / 1);
+		int xCount = Mathf.RoundToInt(finalPosition.x);
+		int zCount = Mathf.RoundToInt(finalPosition.z);
 
 		// Checking if we are holding mouse on the same tile, so selection does not despawn and we don't have to spawn it again
 		if (selectionInstance && (int)selectionInstance.transform.position.x == xCount && (int)selectionInstance.transform.position.z == zCount)
@@ -196,14 +204,14 @@ public class GridManager : MonoBehaviour
 	{
 		position -= transform.position;
 
-		int xCount = Mathf.RoundToInt(position.x / 1);
-		int yCount = Mathf.RoundToInt(position.y / 1);
-		int zCount = Mathf.RoundToInt(position.z / 1);
+		int xCount = Mathf.RoundToInt(position.x);
+		int yCount = Mathf.RoundToInt(position.y);
+		int zCount = Mathf.RoundToInt(position.z);
 
 		Vector3 result = new Vector3(
-			(float)xCount * 1,
-			(float)yCount * 1,
-			(float)zCount * 1);
+			(float)xCount,
+			(float)yCount,
+			(float)zCount);
 
 		result += transform.position;
 
@@ -253,10 +261,28 @@ public class GridManager : MonoBehaviour
             }
         }
 	}
-
-	void RandomSpawnObstaclesOnGrid()
+	
+	void SpawnRandomObstaclesOnGrid()
 	{
-
+		int count = Random.Range(2, maxObstaclesCount);
+		int value = (count / 2) * 2;
+		for (int i = 0;i<=value;i+=2)
+		{
+			int x = Random.Range(0, gridSize - 1);
+			int z = Random.Range(0, gridSize - 1);
+			int x2 = gridSize - 1 - x;
+			int z2 = gridSize - 1 - z;
+			if (TileTypeMap[x,z] == 0 && TileTypeMap[x2,z2] == 0)
+			{
+				int rndObstacle = Random.Range(0, obstaclePrefabs.Count-1);
+				int rndRotation = Random.Range(0, 360);
+				int rndRotation2 = Random.Range(0, 360);
+				TileTypeMap[x, z] = obstacleId;
+				TileTypeMap[x2, z2] = obstacleId;
+				SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x, obstaclesSpawnY, z), Quaternion.Euler(new Vector3(0, rndRotation, 0))));
+				SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x2, obstaclesSpawnY, z2), Quaternion.Euler(new Vector3(0, rndRotation2, 0))));
+			}
+		}
 	}
 
 }
