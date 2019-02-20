@@ -12,6 +12,7 @@ public class GridManager : MonoBehaviour
 	public GameObject tile;
 	public float ySpawnValue = 0.3f;
 	public GameObject selectionItem;
+	public GameObject standItem; // Item that spawns when you select something
 
 	[Header("Game Settings")]
 	public List<GameObject> dinosaurPrefabs;
@@ -32,6 +33,7 @@ public class GridManager : MonoBehaviour
 	private int[,] TileTypeMap;
 	private Transform parent;
 	private GameObject selectionInstance;
+	private GameObject standInstance;
 	private List<GameObject> SpawnedObjects;
 	private List<GameObject> SpawnedObstacles;
 	private int monsterId = 1;
@@ -91,6 +93,7 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		UpdatePressObject();
 		UpdateObjectSpawn();
 		UpdateSelectionSquare();
     }
@@ -141,26 +144,42 @@ public class GridManager : MonoBehaviour
 	/// <summary>
 	/// Deleting dinosaur from a grid
 	/// </summary>
-	void DeleteObjectNear(Vector3 clickPoint)
+	void HandlePressOnObjectNear(Vector3 clickPoint)
 	{
 		var finalPosition = GetNearestPointOnGrid(clickPoint);
 
 		int xCount = Mathf.RoundToInt(finalPosition.x);
 		int zCount = Mathf.RoundToInt(finalPosition.z);
 
-		Quaternion rot;
-		if (playerId == 1)
-			rot = Quaternion.Euler(0, 90, 0);
-		else
-			rot = Quaternion.Euler(0, -90, 0);
-
-		// TODO: Check if pressing on the right tiles
-		if (inTiles && TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
+		if (inSetup && TileTypeMap[xCount, zCount] > 0 && TileTypeMap[xCount, zCount] < 10)
 		{
-			SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
-			Destroy(selectionInstance);
-			TileTypeMap[xCount, zCount] = monsterId;
-			TilePlayerMap[xCount, zCount] = playerId;
+			for(int i = 0;i<SpawnedObjects.Count;i++)
+			{
+				if ((int)SpawnedObjects[i].transform.position.x == xCount && (int)SpawnedObjects[i].transform.position.z == zCount)
+				{
+					Destroy(SpawnedObjects[i]);
+					SpawnedObjects.RemoveAt(i);
+					TileTypeMap[xCount, zCount] = 0;
+					TilePlayerMap[xCount, zCount] = 1;
+				}
+			}
+		}
+
+		// Jeigu nereiks obstacles selecto, dadeti && TileTypeMap[xCount, zCount] < 10
+		if (inGame && TileTypeMap[xCount, zCount] > 0)
+		{
+			if (!standInstance)
+			{
+				standInstance = Instantiate(standItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
+				return;
+			}
+
+			if (standInstance)
+				standInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
+		}
+		else
+		{
+			Destroy(standInstance);
 		}
 	}
 
@@ -179,8 +198,15 @@ public class GridManager : MonoBehaviour
 		if (selectionInstance && (int)selectionInstance.transform.position.x == xCount && (int)selectionInstance.transform.position.z == zCount)
 			return;
 
-		if (finalPosition.x < 0 || finalPosition.x > gridSize-1 || finalPosition.z < 0 || finalPosition.z > gridSize-1 ||
-			TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId)
+		if ((inGame || inSetup) && finalPosition.x < 0 || finalPosition.x > gridSize-1 || finalPosition.z < 0 || finalPosition.z > gridSize-1)
+		{
+			Destroy(selectionInstance);
+			inTiles = false;
+			return;
+		}
+
+
+		if (inSetup && (TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId))
 		{
 			Destroy(selectionInstance);
 			inTiles = false;
@@ -190,12 +216,12 @@ public class GridManager : MonoBehaviour
 		inTiles = true;
 		if (!selectionInstance)
 		{
-			selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.75f, finalPosition.z), Quaternion.identity);
+			selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
 			return;
 		}
 
-		if(selectionInstance)
-			selectionInstance.transform.position = new Vector3(finalPosition.x, 0.75f, finalPosition.z);
+		if (selectionInstance)
+			selectionInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
 
 		
 	}
@@ -226,7 +252,7 @@ public class GridManager : MonoBehaviour
             for (float z = 0; z < gridSize; z += 1)
             {
                 var point = GetNearestPointOnGrid(new Vector3(x, 0.75f, z));
-                Gizmos.DrawSphere(point, 0.1f);
+                Gizmos.DrawSphere(point, 0.05f);
             }
 
         }
@@ -235,7 +261,7 @@ public class GridManager : MonoBehaviour
 
     void UpdateObjectSpawn()
 	{
-		if (Input.GetMouseButtonDown(0) && inGame)
+		if (Input.GetMouseButtonDown(0) && inSetup)
 		{
 			RaycastHit hitInfo;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -250,7 +276,7 @@ public class GridManager : MonoBehaviour
 
 	void UpdateSelectionSquare()
 	{
-        if (inGame)
+        if (inGame || inSetup)
         { 
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -261,7 +287,26 @@ public class GridManager : MonoBehaviour
             }
         }
 	}
-	
+
+	void UpdatePressObject()
+	{
+		if (Input.GetMouseButtonDown(0) && (inSetup || inGame))
+		{
+			RaycastHit hitInfo;
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+			if (Physics.Raycast(ray, out hitInfo))
+			{
+				HandlePressOnObjectNear(hitInfo.point);
+
+			}
+		}
+	}
+
+	/// <summary>
+	/// TileType map'e, langelio ID su obsticles prasideda nuo 10. Dabar yra 9 obstacles, tai jų IDs bus 10-18
+	/// Jei spawninsi multiplayeryje, imk objektą iš listo pagal tiletype id atimti 10 (18-10 = 8) - spawninti 9 objektą iš listo
+	/// </summary>
 	void SpawnRandomObstaclesOnGrid()
 	{
 		int count = Random.Range(2, maxObstaclesCount);
@@ -274,11 +319,11 @@ public class GridManager : MonoBehaviour
 			int z2 = gridSize - 1 - z;
 			if (TileTypeMap[x,z] == 0 && TileTypeMap[x2,z2] == 0)
 			{
-				int rndObstacle = Random.Range(0, obstaclePrefabs.Count-1);
+				int rndObstacle = Random.Range(0, obstaclePrefabs.Count);
 				int rndRotation = Random.Range(0, 360);
 				int rndRotation2 = Random.Range(0, 360);
-				TileTypeMap[x, z] = obstacleId;
-				TileTypeMap[x2, z2] = obstacleId;
+				TileTypeMap[x, z] = obstacleId+rndObstacle;
+				TileTypeMap[x2, z2] = obstacleId+rndObstacle;
 				SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x, obstaclesSpawnY, z), Quaternion.Euler(new Vector3(0, rndRotation, 0))));
 				SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x2, obstaclesSpawnY, z2), Quaternion.Euler(new Vector3(0, rndRotation2, 0))));
 			}
