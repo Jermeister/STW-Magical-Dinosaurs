@@ -8,7 +8,7 @@ enum Action { Passive = 0, Attack = 1, SpecialMove = 2, Move = 3 };
 public class UIController : MonoBehaviour
 {
     #region Variables
-    public int manaLeft, maxMana, manaSavingMax, manaPerTurn, startingMana;
+    public int manaLeft, maxMana, minMana, manaSavingMax, manaPerTurn, startingMana;
 
     public bool unitIsSelected;
     public bool needActionAndInfoZone;
@@ -52,9 +52,19 @@ public class UIController : MonoBehaviour
     /// Liudo
     public MultiplayerController multiplayerControllerScr;
 
-    #endregion
+	/// Jono
+	private GridManager gm;
+	private FreeMovement fm;
 
-    void Update()
+	#endregion
+
+	void Start()
+	{
+		gm = FindObjectOfType<GridManager>();
+		fm = FindObjectOfType<FreeMovement>();
+	}
+
+	void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -83,7 +93,7 @@ public class UIController : MonoBehaviour
     {
         unitIsSelected = true;
         unitSelected = id;
-        GameObject.Find("Grid").GetComponent<GridManager>().SpawnDinoButton(id + 1);
+        gm.SpawnDinoButton(id + 1);
         // use infoText_Text[id].text = "your text";
     }
 
@@ -97,8 +107,9 @@ public class UIController : MonoBehaviour
             else
                 mana[i].sprite = mana_empty;
         }
-        GameObject.FindObjectOfType<GridManager>().inGame = true;
-        GameObject.FindObjectOfType<FreeMovement>().inGame = true;
+
+        gm.StartGame();
+        fm.inGame = true;
     }
 
     
@@ -150,7 +161,7 @@ public class UIController : MonoBehaviour
 
     public void ManaCostBarUpdate()
     {
-        if (manaCost > 0 && manaCost < 16)
+        if (manaCost > minMana && manaCost <= maxMana)
         {
             manaBar.gameObject.SetActive(true);
             manaBar.sizeDelta = new Vector2(manaBar.sizeDelta.x, heights[manaCost - 1]);

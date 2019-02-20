@@ -994,7 +994,6 @@ MonoBehaviour:
   ySpawnValue: 0.62
   selectionItem: {fileID: 4760066943794454665, guid: 610b2a09708a36244a95c60ca8653657,
     type: 3}
-  isBuildingMode: 1
   dinosaurPrefabs:
   - {fileID: 1511934447674080, guid: 92a957f1c495bad41940efce37a90739, type: 3}
   obstaclePrefabs:
@@ -1007,10 +1006,12 @@ MonoBehaviour:
   - {fileID: 1104298590177788, guid: 83dddaf9c2b222643a48a7d003e9c066, type: 3}
   - {fileID: 1573288122851696, guid: 9e8da7b4a612fa144aa2f94dbf0182a0, type: 3}
   - {fileID: 1601534007003116, guid: 70fb801a66be0be4082b186b234deba4, type: 3}
-  inGame: 1
-  inSetup: 0
-  selectedUnit: 0
+  inGame: 0
+  inSetup: 1
+  maxObstaclesCount: 10
+  obstaclesSpawnY: 0.55
   inTiles: 0
+  obstacleId: 10
 --- !u!4 &1736354666
 Transform:
   m_ObjectHideFlags: 0
@@ -1073,10 +1074,11 @@ MonoBehaviour:
   tile: {fileID: 4393210185738121625, guid: 5c930195606d398429e49a3e483fde2f, type: 3}
   ySpawnValue: 0.5
   selectionItem: {fileID: 0}
-  isBuildingMode: 1
   dinosaurPrefabs: []
   obstaclePrefabs: []
   inGame: 0
   inSetup: 0
-  selectedUnit: 0
+  maxObstaclesCount: 2
+  obstaclesSpawnY: 0.55
   inTiles: 0
+  obstacleId: 10
