@@ -14,10 +14,12 @@ public class GridManager : MonoBehaviour
 	[Header("Game Settings")]
 	public bool isBuildingMode = true;
 	public List<GameObject> dinosaurPrefabs;
+	public List<GameObject> obstaclePrefabs;
 
-    //Dovydo
-    public bool inGame, inSetup;
+	//Dovydo
+	public bool inGame, inSetup;
     public int selectedUnit;
+	public bool inTiles = false;
 
     //Private stuff
     private GameObject[,] Tiles;
@@ -86,9 +88,16 @@ public class GridManager : MonoBehaviour
 		UpdateSelectionSquare();
     }
 
-	void UpdateTileMap(int x, int y, char tileType, char tilePlayer)
+	void StartGame()
 	{
+		inSetup = false;
+		inGame = true;
+	}
 
+	void StartSetup()
+	{
+		inGame = false;
+		inSetup = true;
 	}
 
 	public void SpawnDinoButton(int id)
@@ -99,7 +108,6 @@ public class GridManager : MonoBehaviour
 	/// <summary>
 	/// Placing dinosaur in a grid
 	/// </summary>
-	/// <param name="clickPoint"></param>
 	void PlaceObjectNear(Vector3 clickPoint)
 	{
 		var finalPosition = GetNearestPointOnGrid(clickPoint);
@@ -113,8 +121,33 @@ public class GridManager : MonoBehaviour
 		else
 			rot = Quaternion.Euler(0, -90, 0);
 
+		if (inTiles && TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
+		{
+			SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
+			Destroy(selectionInstance);
+			TileTypeMap[xCount, zCount] = monsterId;
+			TilePlayerMap[xCount, zCount] = playerId;
+		}
+	}
+
+	/// <summary>
+	/// Deleting dinosaur from a grid
+	/// </summary>
+	void DeleteObjectNear(Vector3 clickPoint)
+	{
+		var finalPosition = GetNearestPointOnGrid(clickPoint);
+
+		int xCount = Mathf.RoundToInt(finalPosition.x / 1);
+		int zCount = Mathf.RoundToInt(finalPosition.z / 1);
+
+		Quaternion rot;
+		if (playerId == 1)
+			rot = Quaternion.Euler(0, 90, 0);
+		else
+			rot = Quaternion.Euler(0, -90, 0);
+
 		// TODO: Check if pressing on the right tiles
-		if (TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
+		if (inTiles && TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
 		{
 			SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
 			Destroy(selectionInstance);
@@ -124,11 +157,11 @@ public class GridManager : MonoBehaviour
 	}
 
 
-    /// <summary>
-    /// Spawning selection item so that player sees where he can spawn a dinosaur
-    /// </summary>
-    /// <param name="mousePoint"></param>
-    void PlaceSelectionNear(Vector3 mousePoint)
+	/// <summary>
+	/// Spawning selection item so that player sees where he can spawn a dinosaur
+	/// </summary>
+	/// <param name="mousePoint"></param>
+	void PlaceSelectionNear(Vector3 mousePoint)
 	{
 		var finalPosition = GetNearestPointOnGrid(mousePoint);
 		int xCount = Mathf.RoundToInt(finalPosition.x / 1);
@@ -142,9 +175,11 @@ public class GridManager : MonoBehaviour
 			TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId)
 		{
 			Destroy(selectionInstance);
+			inTiles = false;
 			return;
 		}
 
+		inTiles = true;
 		if (!selectionInstance)
 		{
 			selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.75f, finalPosition.z), Quaternion.identity);
@@ -153,6 +188,8 @@ public class GridManager : MonoBehaviour
 
 		if(selectionInstance)
 			selectionInstance.transform.position = new Vector3(finalPosition.x, 0.75f, finalPosition.z);
+
+		
 	}
 
 	Vector3 GetNearestPointOnGrid(Vector3 position)
@@ -190,7 +227,7 @@ public class GridManager : MonoBehaviour
 
     void UpdateObjectSpawn()
 	{
-		if (Input.GetMouseButtonDown(0) && inGame) // Dovydas: pridejau && inGame
+		if (Input.GetMouseButtonDown(0) && inGame)
 		{
 			RaycastHit hitInfo;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -201,22 +238,11 @@ public class GridManager : MonoBehaviour
                 
 			}
 		}
-        else if (Input.GetMouseButtonDown(0) && inSetup) // Dovydas: pridejau && inGame
-        {
-            RaycastHit hitInfo;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hitInfo))
-            {
-               // SelectObjectNear(hitInfo.point);
-
-            }
-        }
     }
 
 	void UpdateSelectionSquare()
 	{
-        if (inGame) // Dovydas: pridejau inGame if'a
+        if (inGame)
         { 
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -227,4 +253,10 @@ public class GridManager : MonoBehaviour
             }
         }
 	}
+
+	void RandomSpawnObstaclesOnGrid()
+	{
+
+	}
+
 }
