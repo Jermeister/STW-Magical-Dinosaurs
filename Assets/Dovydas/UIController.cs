@@ -7,6 +7,12 @@ enum Action { Passive = 0, Attack = 1, SpecialMove = 2, Move = 3 };
 
 public class UIController : MonoBehaviour
 {
+    public int[] maxAmount_Dino;
+    public int[] haveFree_Dino;
+    public DinoButton[] dinoButtons;
+    public int[] dinosAre;
+    public int money;
+
     #region Variables
     public int manaLeft, maxMana, minMana, manaSavingMax, manaPerTurn, startingMana;
 
@@ -66,6 +72,24 @@ public class UIController : MonoBehaviour
 
 	void Update()
     {
+        for (int i = 0; i < dinoButtons.Length; i++)
+        {
+            if (dinosAre[i] >= maxAmount_Dino[i])
+                dinoButtons[i].Show_MaxReached();
+            else
+                dinoButtons[i].Hide_MaxReached();
+
+            if (dinosAre[i] >= haveFree_Dino[i])
+                dinoButtons[i].Hide_HaveFree();
+            else
+                dinoButtons[i].Show_HaveFree(haveFree_Dino[i] - dinosAre[i]);
+
+            if (money <= dinoButtons[i].cost)
+                dinoButtons[i].Show_NoMoney();
+            else
+                dinoButtons[i].Hide_NoMoney();
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Clicked_ToMainMenu();
@@ -91,9 +115,14 @@ public class UIController : MonoBehaviour
 
     public void Clicked_UnitSelected(int id)
     {
+        if(unitSelected >= 0 && unitSelected <= 6)
+            dinoButtons[unitSelected].Deselect();
+
         unitIsSelected = true;
         unitSelected = id;
         gm.SpawnDinoButton(id + 1);
+        dinoButtons[id].Select();
+
         // use infoText_Text[id].text = "your text";
     }
 
