@@ -659,6 +659,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 632078106}
+  - component: {fileID: 588277591267267566}
   m_Layer: 0
   m_Name: Stegosaurus_Red
   m_TagString: Untagged
@@ -682,6 +683,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &588277591267267566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632078101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85d0fd3629815349af3b3c7d59cefaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 3
+  tileX: 0
+  tileZ: 0
+  infoText:
+  - Spike passive
+  - Spike attack
+  - Spike special
+  - Spike move
 --- !u!1 &632606347
 GameObject:
   m_ObjectHideFlags: 0

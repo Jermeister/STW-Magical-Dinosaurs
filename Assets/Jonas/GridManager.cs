@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class GridManager : MonoBehaviour
 {
 	[Header("Player Settings")]
@@ -25,6 +27,15 @@ public class GridManager : MonoBehaviour
 	[Header("Misc")]
 	public bool inTiles = false;
 	public int obstacleId = 10;
+    public int monsterId = 1;
+
+    //Dovydo
+    public int selectedIndex;
+    public Dinosaur selectedDino;
+
+    [HideInInspector]
+    public UIController uiController;
+
 
     //Private stuff
     private GameObject[,] Tiles;
@@ -36,7 +47,6 @@ public class GridManager : MonoBehaviour
 	private GameObject standInstance;
 	private List<GameObject> SpawnedObjects;
 	private List<GameObject> SpawnedObstacles;
-	private int monsterId = 1;
 
 	// Start is called before the first frame update
 	void Start()
@@ -84,7 +94,10 @@ public class GridManager : MonoBehaviour
 				}
 			}
 		}
-		#endregion
+        #endregion
+
+        //Dovydo
+        uiController = GameObject.FindObjectOfType<UIController>();
 
 		if (inSetup)
 			SpawnRandomObstaclesOnGrid();
@@ -93,6 +106,26 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            pos[] posses = new pos[12];
+            posses[0] = new pos(5, 5);
+            posses[1] = new pos(5, 6);
+            posses[2] = new pos(6, 5);
+            posses[3] = new pos(4, 5);
+            posses[4] = new pos(5, 4);
+            posses[5] = new pos(6, 6);
+            posses[6] = new pos(4, 4);
+            posses[7] = new pos(6, 4);
+            posses[8] = new pos(4, 6);
+            posses[9] = new pos(3, 5);
+            posses[10] = new pos(5, 3);
+            posses[11] = new pos(7, 5);
+
+         
+
+           //ShowPossibleMoves(posses);
+        }
 		UpdatePressObject();
 		UpdateObjectSpawn();
 		UpdateSelectionSquare();
@@ -116,10 +149,67 @@ public class GridManager : MonoBehaviour
 		monsterId = id;
 	}
 
-	/// <summary>
-	/// Placing dinosaur in a grid
-	/// </summary>
-	void PlaceObjectNear(Vector3 clickPoint)
+    public row[] canAttackObjects, canMoveObjects;
+    public List<pos> nowTargetable;
+    public void ShowPossibleMoves(pos[] positions, pos origin)
+    {
+        nowTargetable.Clear();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++)
+            {
+                canMoveObjects[i].column[j].SetActive(false);
+            }
+        }
+        for (int i = 0; i < positions.Length; i++)
+        {
+            canMoveObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+            nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+        }
+    }
+
+    public void ShowPossibleAttacks(pos[] positions, pos origin)
+    {
+        nowTargetable.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                canAttackObjects[i].column[j].SetActive(false);
+            }
+        }
+        for (int i = 0; i < positions.Length; i++)
+        {
+            canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+            nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+        }
+    }
+
+    void HidePossibleActions()
+    {
+        nowTargetable.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                canAttackObjects[i].column[j].SetActive(false);
+                canMoveObjects[i].column[j].SetActive(false);
+            }
+        }
+        
+    }
+
+    public void ConfirmSelectionAction(pos position)
+    {
+        HidePossibleActions();
+        SpawnedObjects[selectedIndex].transform.position = canMoveObjects[position.x].column[position.y].transform.position + new Vector3(0f, 0.17f, 0f);
+        SpawnedObjects[selectedIndex].GetComponent<Dinosaur>().tileX = position.x;
+        SpawnedObjects[selectedIndex].GetComponent<Dinosaur>().tileZ = position.y;
+    }
+
+    /// <summary>
+    /// Placing dinosaur in a grid
+    /// </summary>
+    void PlaceObjectNear(Vector3 clickPoint)
 	{
 		var finalPosition = GetNearestPointOnGrid(clickPoint);
 
@@ -132,14 +222,51 @@ public class GridManager : MonoBehaviour
 		else
 			rot = Quaternion.Euler(0, -90, 0);
 
-		if (inTiles && TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
+        if (inTiles && TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId && uiController.dinosAre[monsterId - 1] < uiController.maxAmount_Dino[monsterId - 1] && uiController.dinoButtons[monsterId - 1].cost <= uiController.money)
 		{
 			SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
+            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileX = xCount;
+            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileZ = zCount;
+            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().id = monsterId;
+            uiController.Bought(monsterId - 1);
+            uiController.dinosAre[monsterId - 1]++;
 			Destroy(selectionInstance);
 			TileTypeMap[xCount, zCount] = monsterId;
 			TilePlayerMap[xCount, zCount] = playerId;
 		}
 	}
+
+    void ClickOnPossibleAction(Vector3 clickPoint)
+    {
+        var finalPosition = GetNearestPointOnGrid(clickPoint);
+
+        int xCount = Mathf.RoundToInt(finalPosition.x);
+        int zCount = Mathf.RoundToInt(finalPosition.z);
+
+        Quaternion rot;
+        if (playerId == 1)
+            rot = Quaternion.Euler(0, 90, 0);
+        else
+            rot = Quaternion.Euler(0, -90, 0);
+
+        bool inThose = false;
+        for (int i = 0; i < nowTargetable.Count; i++)
+        {
+            if(nowTargetable[i].x == xCount && nowTargetable[i].y == zCount)
+            {
+                inThose = true;
+            }
+        }
+
+        if (inTiles && inThose)
+        {
+            ConfirmSelectionAction(new pos(xCount, zCount));
+            TileTypeMap[xCount, zCount] = monsterId;
+            TilePlayerMap[xCount, zCount] = playerId;
+        }
+    }
+
+    
 
 	/// <summary>
 	/// Deleting dinosaur from a grid
@@ -158,7 +285,9 @@ public class GridManager : MonoBehaviour
 				if ((int)SpawnedObjects[i].transform.position.x == xCount && (int)SpawnedObjects[i].transform.position.z == zCount)
 				{
 					Destroy(SpawnedObjects[i]);
-					SpawnedObjects.RemoveAt(i);
+                    uiController.dinosAre[SpawnedObjects[i].GetComponent<Dinosaur>().id - 1]--;
+                    uiController.Sold(SpawnedObjects[i].GetComponent<Dinosaur>().id - 1);
+                    SpawnedObjects.RemoveAt(i);
 					TileTypeMap[xCount, zCount] = 0;
 					TilePlayerMap[xCount, zCount] = 1;
 				}
@@ -171,19 +300,39 @@ public class GridManager : MonoBehaviour
 			if (!standInstance)
 			{
 				standInstance = Instantiate(standItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
-				return;
+                monsterId = TileTypeMap[xCount, zCount];
+                for (int i = 0; i < SpawnedObjects.Count; i++)
+                {
+                    if(SpawnedObjects[i].GetComponent<Dinosaur>() != null && SpawnedObjects[i].GetComponent<Dinosaur>().tileX == xCount && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == zCount)
+                    {
+                        selectedIndex = i;
+                        selectedDino = SpawnedObjects[i].GetComponent<Dinosaur>();
+                    }
+                }
+                uiController.unitIsSelected = true;
+                return;
 			}
 
-			if (standInstance)
-				standInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
+            if (standInstance)
+            {
+                standInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
+                for (int i = 0; i < SpawnedObjects.Count; i++)
+                {
+                    if (SpawnedObjects[i].GetComponent<Dinosaur>() != null && SpawnedObjects[i].GetComponent<Dinosaur>().tileX == xCount && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == zCount)
+                    {
+                        selectedIndex = i;
+                        selectedDino = SpawnedObjects[i].GetComponent<Dinosaur>();
+
+                    }
+                }
+                monsterId = TileTypeMap[xCount, zCount];
+            }
 		}
 		else
 		{
 			Destroy(standInstance);
 		}
 	}
-
-
 	/// <summary>
 	/// Spawning selection item so that player sees where he can spawn a dinosaur
 	/// </summary>
@@ -206,7 +355,8 @@ public class GridManager : MonoBehaviour
 		}
 
 
-		if (inSetup && (TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId))
+
+        if (inSetup && (TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId))
 		{
 			Destroy(selectionInstance);
 			inTiles = false;
@@ -272,6 +422,19 @@ public class GridManager : MonoBehaviour
                 
 			}
 		}
+
+        if (Input.GetMouseButtonDown(0) && inGame)
+        {
+            RaycastHit hitInfo;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                ClickOnPossibleAction(hitInfo.point);
+
+            }
+        }
+        
     }
 
 	void UpdateSelectionSquare()
