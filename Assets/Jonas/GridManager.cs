@@ -108,6 +108,8 @@ public class GridManager : MonoBehaviour
 			rot = Quaternion.Euler(0, 90, 0);
 		else
 			rot = Quaternion.Euler(0, -90, 0);
+
+		// TODO: Check if pressing on the right tiles
 		if (TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId)
 		{
 			SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
