@@ -49,8 +49,10 @@ public class GridManager : MonoBehaviour
 	private List<GameObject> SpawnedObjects;
 	private List<GameObject> SpawnedObstacles;
 
-	// Start is called before the first frame update
-	public void GirdManagerSetUp()
+    public MultiplayerController mc;
+
+    // Start is called before the first frame update
+    public void GirdManagerSetUp()
     {
         #region Instantiating objects
         // Instantiating objects
@@ -101,10 +103,10 @@ public class GridManager : MonoBehaviour
 
         //Dovydo
         uiController = GameObject.FindObjectOfType<UIController>();
-
-		//if (inSetup)
-			//SpawnRandomObstaclesOnGrid();
-	}
+        mc = GameObject.FindObjectOfType<MultiplayerController>();
+        //if (inSetup)
+        //SpawnRandomObstaclesOnGrid();
+    }
     string t = "45|645|7!";
 
     // Update is called once per frame
@@ -505,7 +507,7 @@ public class GridManager : MonoBehaviour
                 {
                     HidePossibleActions();
                     MultiplayerDinoMove(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount));
-                    //liudometodas(BuildMovementCommand);
+                    //mp.DinoMove(BuildMovementCommand);
                     break;
                 }
             }
