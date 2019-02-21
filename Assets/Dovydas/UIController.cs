@@ -90,7 +90,8 @@ public class UIController : MonoBehaviour
 
 	void Start()
 	{
-		gm = FindObjectOfType<GridManager>();
+        mc = FindObjectOfType<MultiplayerController>();
+        gm = FindObjectOfType<GridManager>();
 		fm = FindObjectOfType<FreeMovement>();
 	}
 
@@ -121,7 +122,7 @@ public class UIController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            unitIsSelected = true;
+            unitIsSelected = false;
         }
 
         if (needActionAndInfoZone && unitIsSelected)
@@ -151,10 +152,11 @@ public class UIController : MonoBehaviour
     {
         money += dinoButtons[id].cost;
     }
-
+    public MultiplayerController mc;
     public void Clicked_Activate(int id)
     {
-        Debug.Log("Selected action: " + id);
+        if (!mc.IsMyTurn())
+            return;
 
         gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
     }

@@ -130,17 +130,7 @@ public class GridManager : MonoBehaviour
            //ShowPossibleMoves(posses);
         }
 
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-
-            t = BuildDinosString();
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-
-            DecodeDinosString(t);
-        }
-
+       
 
 
 
@@ -297,18 +287,37 @@ public class GridManager : MonoBehaviour
 		}
 	}
 
-    public void MultiplayerDinoMove(int index, pos originPos, pos targetPos)
+    public void DecodeMovementCommand(string text)
     {
+        MultiplayerDinoMove((int)text[0]-48, (int)text[2] - 48, new pos((int)text[4] - 48, (int)text[6] - 48));
+    }
+
+    public string BuildMovementCommand(int tileX, int tileZ, pos targetPos)
+    { 
+        return tileX + "*" + tileZ + "*" + targetPos.x + "*" + targetPos.y;
+    }
+
+    public void MultiplayerDinoMove(int tileX, int tileZ, pos targetPos)
+    {
+        int index = 0;
+
+        for (int i = 0; i < SpawnedObjects.Count; i++)
+        {
+            if (SpawnedObjects[i].GetComponent<Dinosaur>().tileX == tileX && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == tileZ)
+            {
+                index = i;
+            }
+        }
         SpawnedObjects[index].transform.position = canMoveObjects[targetPos.x].column[targetPos.y].transform.position + new Vector3(0f, 0.17f, 0f);
         SpawnedObjects[index].GetComponent<Dinosaur>().tileX = targetPos.x;
         SpawnedObjects[index].GetComponent<Dinosaur>().tileZ = targetPos.y;
 
-        TileTypeMap[originPos.x, originPos.y] = 0;
+        TileTypeMap[tileX, tileZ] = 0;
         TileTypeMap[targetPos.x, targetPos.y] = SpawnedObjects[index].GetComponent<Dinosaur>().id;
 
-        TilePlayerMap[targetPos.x, targetPos.y] = TilePlayerMap[originPos.x, originPos.y];
-        TilePlayerMap[originPos.x, originPos.y] = 0;
-        
+        TilePlayerMap[targetPos.x, targetPos.y] = TilePlayerMap[tileX, tileZ];
+        TilePlayerMap[tileX, tileZ] = 0;
+
     }
 
 
@@ -495,7 +504,8 @@ public class GridManager : MonoBehaviour
                 if(SpawnedObjects[a].GetComponent<Dinosaur>() == selectedDino)
                 {
                     HidePossibleActions();
-                    MultiplayerDinoMove(a, new pos(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ), new pos(xCount, zCount));
+                    MultiplayerDinoMove(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount));
+                    //liudometodas(BuildMovementCommand);
                     break;
                 }
             }
@@ -520,7 +530,7 @@ public class GridManager : MonoBehaviour
 		{
 			for(int i = 0;i<SpawnedObjects.Count;i++)
 			{
-				if ((int)SpawnedObjects[i].transform.position.x == xCount && (int)SpawnedObjects[i].transform.position.z == zCount)
+				if (canBuild && (int)SpawnedObjects[i].transform.position.x == xCount && (int)SpawnedObjects[i].transform.position.z == zCount)
 				{
                     if (SpawnedObjects[i].GetComponent<Dinosaur>().id == 0 || SpawnedObjects[i].GetComponent<Dinosaur>().id == 1)
                     {
@@ -592,6 +602,8 @@ public class GridManager : MonoBehaviour
 
 		if ((inGame || inSetup) && finalPosition.x < 0 || finalPosition.x > gridSize-1 || finalPosition.z < 0 || finalPosition.z > gridSize-1)
 		{
+            HidePossibleActions();
+            uiController.unitIsSelected = false;
 			Destroy(selectionInstance);
 			inTiles = false;
 			return;
@@ -601,7 +613,9 @@ public class GridManager : MonoBehaviour
 
         if (inSetup && (TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId))
 		{
-			Destroy(selectionInstance);
+            HidePossibleActions();
+            uiController.unitIsSelected = false;
+            Destroy(selectionInstance);
 			inTiles = false;
 			return;
 		}
@@ -609,7 +623,8 @@ public class GridManager : MonoBehaviour
 		inTiles = true;
 		if (!selectionInstance)
 		{
-			selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
+            uiController.unitIsSelected = true;
+            selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
 			return;
 		}
 
