@@ -13,6 +13,8 @@ public class MultiplayerController : MonoBehaviour
 	private Client clientScr;
 	[HideInInspector] public GameObject server;
 
+	private GridManager gridManagerScr;
+	UIController uiControllerScr;
 	public GameObject consoleTextObject;
 
 	private void Start()
@@ -20,6 +22,8 @@ public class MultiplayerController : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 		ConsoleScript.SetUp(consoleTextObject);
 		ConsoleScript.isConsoleActive = true;
+		gridManagerScr = GameObject.Find("Grid").GetComponent<GridManager>();
+		uiControllerScr = GameObject.Find("MainCanvas").GetComponent<UIController>();
 	}
 
 	public void ResetEverything()
@@ -63,7 +67,6 @@ public class MultiplayerController : MonoBehaviour
 		ConsoleScript.Print("Multiplayer", "Join game button was pressed.");
 		if (client == null)
 		{
-			ConsoleScript.Print("Multiplayer", "Ask for IP.");
 			client = Instantiate(clientPrefab);
 			clientScr = client.GetComponent<Client>();
 			DisableCreateJoinMenus();
@@ -95,12 +98,19 @@ public class MultiplayerController : MonoBehaviour
 			/// On player 1 (host) screen, "End Turn" button is present
 			/// If End Turn is pressed, send message to server
 
+			case "O": // encrypted obstacles from server
+				ConsoleScript.Print("Multiplayer", "Our obstacles: " + splitMsg[1]);
+				if (!clientScr.isHost)
+					gridManagerScr.GirdManagerSetUp();
+
+				uiControllerScr.ToSetup();
+				gridManagerScr.DecodeObstaclesString(splitMsg[1]);
+				break;
 
 			case "asd": break;
 
 			default: ConsoleScript.Print("Multiplayer", "Unknown message: " + splitMsg[0]); break;
 		}
-
 	}
 
 	private void OtherButtonPress()

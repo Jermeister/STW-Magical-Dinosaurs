@@ -8,6 +8,7 @@ public class Server : MonoBehaviour
 {
 #pragma warning disable CS0618 // Type or member is obsolete
 
+	private GridManager gridManagerScr;
 	private MultiplayerController multiplayerControllerScr;
 	private Client clientScr;
 	private UIController uiControllerScr;
@@ -23,10 +24,16 @@ public class Server : MonoBehaviour
 
 	byte error;
 
+
+	public int currentTurnPlayerId = 1;
+
+	public int playersSetupReady = 0;
+
 	private void Start()
 	{
 		DontDestroyOnLoad(gameObject);
-
+		gridManagerScr = GameObject.Find("Grid").GetComponent<GridManager>();
+		
 		StartServer();
 	}
 	private void Update()
@@ -61,14 +68,26 @@ public class Server : MonoBehaviour
 
 			case NetworkEventType.ConnectEvent:
 
-				if (connectionId == 2) uiControllerScr.ToSetup();
+				if (connectionId == 2)
+				{
+					gridManagerScr.GirdManagerSetUp();
+					string generatedString = gridManagerScr.BuildObstaclesString();
+
+					/// TODO: generate encrypted obstacles string
+					/// TODO: send encrypted obstacles string to both of the clients
+					SendAll("O|" + generatedString, reliableChannel);
+
+					// Call our own client uiControllerScr.ToSetup
+					uiControllerScr.ToSetup();
+				}
+	
 
 				ConsoleScript.Print("Server", "Client " + connectionId + " has connected.");
 				//Send("NC", )
 				Send("asd", reliableChannel, 0);
 				Send("asd", reliableChannel, 1);
 				Send("asd", reliableChannel, 2);
-				//Send("asd", reliableChannel, 3);
+
 				break;
 			case NetworkEventType.DisconnectEvent:
 				ConsoleScript.Print("Server", "Client " + connectionId + " has disconnected.");
@@ -88,7 +107,18 @@ public class Server : MonoBehaviour
 				//ConsoleScript.Print("Server", "connection Id from got message: " + id);
 				break;
 
+			case "SPR": // server player ready (in setup)
+				playersSetupReady++;
+				ConsoleScript.Print("Server", "playersSetupReady: " + playersSetupReady);
 
+				if (playersSetupReady >= 2)
+				{
+					ConsoleScript.Print("Server", "Both players have done their setup");
+					/// TODO: reveal opponent dinos on the tile map
+					//SendAll()
+				}
+
+				break;
 
 			/// TODO: receive SetupButtonPressed message
 			/// Check if both players are ready

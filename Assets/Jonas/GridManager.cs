@@ -7,7 +7,7 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
 	[Header("Player Settings")]
-	public int playerId = 1;
+	public int playerId = 0;
 
 	[Header("Grid Settings")]
 	public int gridSize = 10;
@@ -49,7 +49,7 @@ public class GridManager : MonoBehaviour
 	private List<GameObject> SpawnedObstacles;
 
 	// Start is called before the first frame update
-	void Start()
+	public void GirdManagerSetUp()
     {
 		#region Instantiating objects
 		// Instantiating objects
@@ -75,6 +75,8 @@ public class GridManager : MonoBehaviour
 				tileScripts[x, z] = Tiles[x, z].GetComponent<TileScript>();
 				if (inSetup)
 				{
+					playerId = GameObject.Find("Client(Clone)").GetComponent<Client>().isHost ? 1 : 2;
+
 					if (playerId == 1 && x < 3)
 					{
 						TilePlayerMap[x, z] = playerId;
@@ -99,14 +101,15 @@ public class GridManager : MonoBehaviour
         //Dovydo
         uiController = GameObject.FindObjectOfType<UIController>();
 
-		if (inSetup)
-			SpawnRandomObstaclesOnGrid();
+		//if (inSetup)
+			//SpawnRandomObstaclesOnGrid();
 	}
     string t = "45|645|7!";
 
     // Update is called once per frame
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             pos[] posses = new pos[12];
@@ -140,7 +143,7 @@ public class GridManager : MonoBehaviour
 
 
 
-        UpdatePressObject();
+		UpdatePressObject();
 		UpdateObjectSpawn();
 		UpdateSelectionSquare();
     }
@@ -297,7 +300,7 @@ public class GridManager : MonoBehaviour
         Debug.Log("result OBSTACLES" + " " + result);
         return result;
     }
-
+	
     public void DecodeObstaclesString(string text)
     {
         for (int i = 0; i < text.Length; i++)
@@ -665,8 +668,8 @@ public class GridManager : MonoBehaviour
 	/// </summary>
 	void SpawnRandomObstaclesOnGrid()
 	{
-        string t = BuildObstaclesString();
-        DecodeObstaclesString(t);
+        //string t = BuildObstaclesString();
+        //DecodeObstaclesString(t);
         
 		
 	}

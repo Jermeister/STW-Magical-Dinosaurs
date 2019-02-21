@@ -297,8 +297,6 @@ public class UIController : MonoBehaviour
         needActionAndInfoZone = true;
         InitializeGame();
 
-		
-
 		/// TODO: (done?) disable SetupButton, enable text ui
 		IsWaitingSetupUI.SetActive(true);
 

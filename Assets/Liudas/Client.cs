@@ -156,8 +156,8 @@ public class Client : MonoBehaviour
 
 		ConsoleScript.Print("Client", "connected to " + IP + " server");
 
-		if (!isHost)
-			uiControllerScr.ToSetup();
+		//if (!isHost)
+		//	uiControllerScr.ToSetup();
 
 		isConnectionSuccessful = true;
 		isStarted = true;
