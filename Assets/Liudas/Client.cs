@@ -57,10 +57,6 @@ public class Client : MonoBehaviour
 	private void Update()
 	{
 		UpdateMessagePump();
-
-		if (Input.GetMouseButtonDown(1))
-			Send("SBP", reliableChannel);
-
 	}
 
 	private void UpdateMessagePump()
@@ -81,17 +77,12 @@ public class Client : MonoBehaviour
 		switch (type)
 		{
 			case NetworkEventType.ConnectEvent:
-				print("Host Id: " + hostId);
 				ConsoleScript.Print("Client", "I am connected.");
 				break;
 
 			case NetworkEventType.DataEvent:
-
 				string msg = Encoding.Unicode.GetString(recBuffer, 0, dataSize);
-				//ConsoleScript.Print("ClientGotMsg", msg);
-
 				multiplayerControllerScr.DecryptMessage(msg);
-
 				break;
 
 
@@ -102,12 +93,6 @@ public class Client : MonoBehaviour
 
 	}
 
-
-	public void ClientButtonPress()
-	{
-		// Test button, delete later
-		Send("SBP", reliableChannel);
-	}
 	public void SetupButtonPress()
 	{
 		// PR = player ready
@@ -118,12 +103,20 @@ public class Client : MonoBehaviour
 	}
 	public void EndTurnButtonPress()
 	{
-		/// TODO: end turn button press
 		uiControllerScr.endTurnUI.SetActive(false);
 		multiplayerControllerScr.currentTurnPlayerId = GetOtherClientId();
 		string msg = "SET";
 		Send(msg, reliableChannel);
 	}
+
+	#region DinoActions
+
+	public void DinoMove(string encodedText)
+	{
+		Send("SDM|" + encodedText, reliableChannel);
+	}
+
+	#endregion
 
 	public void GenerateEncodedDino()
 	{
@@ -198,8 +191,6 @@ public class Client : MonoBehaviour
 
 		multiplayerControllerScr.ResetEverything();
 	}
-
-
 
 
 #pragma warning restore CS0618 // Type or member is obsolete

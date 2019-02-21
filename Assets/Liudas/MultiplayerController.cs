@@ -43,12 +43,6 @@ public class MultiplayerController : MonoBehaviour
 		clientScr = null;
 	}
 
-	public void ButtonPressed()
-	{
-		if (clientScr != null)
-			clientScr.ClientButtonPress();
-	}
-
 	public void CreateGame()
 	{
 		//ConsoleScript.Print("Multiplayer", "Create game button was pressed.");
@@ -86,32 +80,16 @@ public class MultiplayerController : MonoBehaviour
 		string[] splitMsg = message.Split('|');
 		ConsoleScript.Print("ClientGotMsg", message);
 
-		for (int i = 0; i < splitMsg.Length; i++)
-		{
-			//ConsoleScript.Print("ClientSendMsg", splitMsg[i]);
-		}
-
 		switch (splitMsg[0])
 		{
-			// Client just connected to the network
-			case "BP": OtherButtonPress(); break;
-
-			/// On player 1 (host) screen, "End Turn" button is present
-			/// If End Turn is pressed, send message to server
+			#region ReceivedMessages
 
 			case "O": // encrypted obstacles from server
-
-				if (!clientScr.isHost)
-					gridManagerScr.GirdManagerSetUp();
-
-				uiControllerScr.ToSetup();
-				gridManagerScr.DecodeObstaclesString(splitMsg[1]);
-
+				ReceivedMsgDecodeObstacles(splitMsg[1]);
 				break;
 
 			case "BPR": // Both Players Ready, send server encoded dino
-				uiControllerScr.BothPlayersAreReadyScreen();
-				clientScr.GenerateEncodedDino();
+				ReceivedMsgBothPlayersReady();
 				break;
 
 			case "ED": // Encoded Dinos from the server (from other player), spawn them in
@@ -119,22 +97,47 @@ public class MultiplayerController : MonoBehaviour
 				break;
 
 			case "YT": // Your Turn, server told you that now it is your turn to do things in game
-				/// TODO: enable End Turn button
-				uiControllerScr.endTurnUI.SetActive(true);
-				currentTurnPlayerId = clientScr.GetThisClientId();
+				ReceivedMsgYourTurn();
+				break;
+
+			case "DM": // Dino Move, sync up dino movement
+				ReceivedMsgDinoMove(splitMsg[1]);
 				break;
 
 			case "asd": break;
-
 			default: ConsoleScript.Print("Multiplayer", "Unknown message: " + splitMsg[0]); break;
+
+			#endregion
 		}
 	}
 
-	private void OtherButtonPress()
+	void ReceivedMsgDecodeObstacles(string encodedObstacleMessage)
 	{
-		ConsoleScript.Print("Client", "Other client pressed the button!");
+		if (!clientScr.isHost)
+			gridManagerScr.GirdManagerSetUp();
+
+		uiControllerScr.ToSetup();
+		gridManagerScr.DecodeObstaclesString(encodedObstacleMessage);
+	}
+	void ReceivedMsgBothPlayersReady()
+	{
+		uiControllerScr.BothPlayersAreReadyScreen();
+		clientScr.GenerateEncodedDino();
+	}
+	void ReceivedMsgYourTurn()
+	{
+		uiControllerScr.endTurnUI.SetActive(true);
+		currentTurnPlayerId = clientScr.GetThisClientId();
+	}
+	void ReceivedMsgDinoMove(string encodedText)
+	{
+		gridManagerScr.DecodeMovementCommand(encodedText);
 	}
 
+	public void DinoMove(string encodedText)
+	{
+		clientScr.DinoMove(encodedText);
+	}
 	public void SetupButtonPressed()
 	{
 		clientScr.SetupButtonPress();

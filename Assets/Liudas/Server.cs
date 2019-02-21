@@ -123,12 +123,12 @@ public class Server : MonoBehaviour
 				Send("ED|" + splitData[1], reliableChannel, OtherConnectionId(id));
 				break;
 
-			case "SBP": // server Button Press, test, delete later
-				ButtonPress(id);
-				break;
-
 			case "SET": // server Ended Turn (player ended turn, give other player the rights to do things)
 				ServerEndedTurn(id);
+				break;
+
+			case "SDM": // server Dino Move, other player moved dino, sync it up
+				ServerDinoMove(id, splitData[1]);
 				break;
 
 			case "asd": break;
@@ -145,10 +145,15 @@ public class Server : MonoBehaviour
 		//SendAll("BP", reliableChannel);
 	}
 
-	private void ServerEndedTurn(int connId)
+	void ServerEndedTurn(int connId)
 	{
 		currentTurnPlayerId = currentTurnPlayerId == 1 ? 2 : 1;
 		Send("YT", reliableChannel, currentTurnPlayerId);
+	}
+	void ServerDinoMove(int connId, string encodedText)
+	{
+		string msg = "DM" + encodedText;
+		Send(msg, reliableChannel, OtherConnectionId(connId));
 	}
 
 	private int OtherConnectionId(int connId)
