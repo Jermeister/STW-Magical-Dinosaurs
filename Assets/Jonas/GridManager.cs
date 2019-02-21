@@ -196,14 +196,6 @@ public class GridManager : MonoBehaviour
         
     }
 
-    public void ConfirmSelectionAction(pos position)
-    {
-        HidePossibleActions();
-        SpawnedObjects[selectedIndex].transform.position = canMoveObjects[position.x].column[position.y].transform.position + new Vector3(0f, 0.17f, 0f);
-        SpawnedObjects[selectedIndex].GetComponent<Dinosaur>().tileX = position.x;
-        SpawnedObjects[selectedIndex].GetComponent<Dinosaur>().tileZ = position.y;
-    }
-
     /// <summary>
     /// Placing dinosaur in a grid
     /// </summary>
@@ -234,6 +226,19 @@ public class GridManager : MonoBehaviour
 		}
 	}
 
+    public void MultiplayerDinoMove(int index, pos originPos, pos targetPos)
+    {
+        SpawnedObjects[index].transform.position = canMoveObjects[targetPos.x].column[targetPos.y].transform.position + new Vector3(0f, 0.17f, 0f);
+        SpawnedObjects[index].GetComponent<Dinosaur>().tileX = targetPos.x;
+        SpawnedObjects[index].GetComponent<Dinosaur>().tileZ = targetPos.y;
+
+        TileTypeMap[originPos.x, originPos.y] = 0;
+        TileTypeMap[targetPos.x, targetPos.y] = SpawnedObjects[index].GetComponent<Dinosaur>().id;
+
+        TilePlayerMap[targetPos.x, targetPos.y] = TilePlayerMap[originPos.x, originPos.y];
+        TilePlayerMap[originPos.x, originPos.y] = 0;
+    }
+
     void ClickOnPossibleAction(Vector3 clickPoint)
     {
         var finalPosition = GetNearestPointOnGrid(clickPoint);
@@ -258,7 +263,15 @@ public class GridManager : MonoBehaviour
 
         if (inTiles && inThose)
         {
-            ConfirmSelectionAction(new pos(xCount, zCount));
+            for (int a = 0; a < SpawnedObjects.Count; a++)
+            {
+                if(SpawnedObjects[a].GetComponent<Dinosaur>() == selectedDino)
+                {
+                    HidePossibleActions();
+                    MultiplayerDinoMove(a, new pos(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ), new pos(xCount, zCount));
+                    break;
+                }
+            }
             TileTypeMap[xCount, zCount] = monsterId;
             TilePlayerMap[xCount, zCount] = playerId;
         }
