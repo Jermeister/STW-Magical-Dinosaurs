@@ -122,8 +122,6 @@ public class GridManager : MonoBehaviour
             posses[10] = new pos(5, 3);
             posses[11] = new pos(7, 5);
 
-         
-
            //ShowPossibleMoves(posses);
         }
 		UpdatePressObject();
@@ -289,7 +287,7 @@ public class GridManager : MonoBehaviour
                     uiController.Sold(SpawnedObjects[i].GetComponent<Dinosaur>().id - 1);
                     SpawnedObjects.RemoveAt(i);
 					TileTypeMap[xCount, zCount] = 0;
-					TilePlayerMap[xCount, zCount] = 1;
+					TilePlayerMap[xCount, zCount] = playerId;
 				}
 			}
 		}
