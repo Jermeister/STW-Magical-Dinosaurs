@@ -1461,7 +1461,31 @@ MonoBehaviour:
   Roar: {fileID: 8300000, guid: 13e68f30198ccdc458c10406abae6c3c, type: 3}
   Attack: {fileID: 8300000, guid: fb2435448965bc647b6b04d5c1d98ad5, type: 3}
   Death: {fileID: 8300000, guid: ff4e6d6fbe173de428bf1de461ea5015, type: 3}
-  whereCanMove: []
+  whereCanMove:
+  - x: 1
+    y: 0
+  - x: 0
+    y: 1
+  - x: 1
+    y: 1
+  - x: 0
+    y: -1
+  - x: -1
+    y: 0
+  - x: -1
+    y: -1
+  - x: -1
+    y: 1
+  - x: 1
+    y: -1
+  - x: 2
+    y: 0
+  - x: 0
+    y: 2
+  - x: -2
+    y: 0
+  - x: 0
+    y: -2
 --- !u!1 &1516268781
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33366444731370648}
   - component: {fileID: 23770828374620002}
   - component: {fileID: 64771768399188764}
+  - component: {fileID: 5679562828253441693}
   m_Layer: 0
   m_Name: eggNest_T 1
   m_TagString: Untagged
@@ -92,3 +93,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: dae38b0c0de0540bda1849750a2e4ea1, type: 3}
+--- !u!114 &5679562828253441693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643283475379700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0d2d465c0a62b459448eddb7582861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileX: 0
+  tileZ: 0
+  id: 0

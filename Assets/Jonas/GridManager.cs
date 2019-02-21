@@ -262,6 +262,97 @@ public class GridManager : MonoBehaviour
         
     }
 
+
+    public string BuildObstaclesString()
+    {
+        List<Obstacle> toBeSpawned = new List<Obstacle>();
+
+        int count = Random.Range(2, maxObstaclesCount);
+		int value = (count / 2) * 2;
+		for (int i = 0;i<=value;i+=2)
+		{
+			int x = Random.Range(0, gridSize - 1);
+			int z = Random.Range(0, gridSize - 1);
+			int x2 = gridSize - 1 - x;
+			int z2 = gridSize - 1 - z;
+			if (TileTypeMap[x,z] == 0 && TileTypeMap[x2,z2] == 0)
+			{
+				int rndObstacle = Random.Range(0, obstaclePrefabs.Count);
+				int rndRotation = Random.Range(0, 360);
+				int rndRotation2 = Random.Range(0, 360);
+				TileTypeMap[x, z] = obstacleId+rndObstacle;
+				TileTypeMap[x2, z2] = obstacleId+rndObstacle;
+                toBeSpawned.Add(new Obstacle(rndObstacle, x, z, new Vector3(x, obstaclesSpawnY, z), Quaternion.Euler(new Vector3(0, rndRotation, 0))));
+                toBeSpawned.Add(new Obstacle(rndObstacle, x2, z2, new Vector3(x2, obstaclesSpawnY, z2), Quaternion.Euler(new Vector3(0, rndRotation2, 0))));
+			}
+		}
+
+        string result = "";
+        Debug.Log("SpawnedObstacles" + " " + toBeSpawned.Count);
+        for (int i = 0; i < toBeSpawned.Count; i++)
+        {
+            result += toBeSpawned[i].tileX + "*" + toBeSpawned[i].tileZ + "*" + toBeSpawned[i].id + "!";
+
+        }
+        Debug.Log("result OBSTACLES" + " " + result);
+        return result;
+    }
+
+    public void DecodeObstaclesString(string text)
+    {
+        for (int i = 0; i < text.Length; i++)
+        {
+            int tileX = 0, tileZ = 0, identification = 0;
+            int index = i;
+            string temp = "";
+            while (text[index] != '*')
+            {
+                temp += text[index];
+                index++;
+            }
+            Debug.Log("x: " + temp);
+            for (int a = 0; a < temp.Length; a++)
+            {
+                tileX += (int)temp[a] - 48;
+            }
+            temp = "";
+            index++;
+
+            while (text[index] != '*')
+            {
+                temp += text[index];
+                index++;
+            }
+            Debug.Log("y: " + temp);
+            for (int a = 0; a < temp.Length; a++)
+            {
+                tileZ += (int)temp[a] - 48;
+            }
+            temp = "";
+            index++;
+
+            while (text[index] != '!')
+            {
+                temp += text[index];
+                index++;
+            }
+            Debug.Log("id: " + temp);
+            i = index;
+            for (int a = 0; a < temp.Length; a++)
+            {
+                identification += (int)temp[a] - 48;
+            }
+
+            Quaternion rot;
+            if (playerId == 1)
+                rot = Quaternion.Euler(0, 90, 0);
+            else
+                rot = Quaternion.Euler(0, -90, 0);
+
+            SpawnedObstacles.Add(Instantiate(obstaclePrefabs[identification], new Vector3(tileX, 0.75f, tileZ), rot));
+        }
+    }
+
     public string BuildDinosString()
     {
         string result = "";
@@ -574,25 +665,10 @@ public class GridManager : MonoBehaviour
 	/// </summary>
 	void SpawnRandomObstaclesOnGrid()
 	{
-		int count = Random.Range(2, maxObstaclesCount);
-		int value = (count / 2) * 2;
-		for (int i = 0;i<=value;i+=2)
-		{
-			int x = Random.Range(0, gridSize - 1);
-			int z = Random.Range(0, gridSize - 1);
-			int x2 = gridSize - 1 - x;
-			int z2 = gridSize - 1 - z;
-			if (TileTypeMap[x,z] == 0 && TileTypeMap[x2,z2] == 0)
-			{
-				int rndObstacle = Random.Range(0, obstaclePrefabs.Count);
-				int rndRotation = Random.Range(0, 360);
-				int rndRotation2 = Random.Range(0, 360);
-				TileTypeMap[x, z] = obstacleId+rndObstacle;
-				TileTypeMap[x2, z2] = obstacleId+rndObstacle;
-				SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x, obstaclesSpawnY, z), Quaternion.Euler(new Vector3(0, rndRotation, 0))));
-				SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x2, obstaclesSpawnY, z2), Quaternion.Euler(new Vector3(0, rndRotation2, 0))));
-			}
-		}
+        string t = BuildObstaclesString();
+        DecodeObstaclesString(t);
+        
+		
 	}
 
 }

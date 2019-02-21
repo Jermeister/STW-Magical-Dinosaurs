@@ -703,6 +703,27 @@ MonoBehaviour:
   - Spike attack
   - Spike special
   - Spike move
+  Move: {fileID: 0}
+  Roar: {fileID: 0}
+  Attack: {fileID: 0}
+  Death: {fileID: 0}
+  whereCanMove:
+  - x: 2
+    y: 0
+  - x: 0
+    y: 2
+  - x: 0
+    y: -2
+  - x: -2
+    y: 0
+  - x: 1
+    y: 1
+  - x: -1
+    y: 1
+  - x: -1
+    y: -1
+  - x: 1
+    y: -1
 --- !u!1 &632606347
 GameObject:
   m_ObjectHideFlags: 0

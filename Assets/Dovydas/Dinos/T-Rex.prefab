@@ -2014,6 +2014,43 @@ MonoBehaviour:
   - Theorode attack
   - Theorode special
   - Theorode move
+  Move: {fileID: 0}
+  Roar: {fileID: 0}
+  Attack: {fileID: 0}
+  Death: {fileID: 0}
+  whereCanMove:
+  - x: 1
+    y: 0
+  - x: 2
+    y: 0
+  - x: 3
+    y: 0
+  - x: 4
+    y: 0
+  - x: -1
+    y: 0
+  - x: -2
+    y: 0
+  - x: -3
+    y: 0
+  - x: -4
+    y: 0
+  - x: 0
+    y: 1
+  - x: 0
+    y: 2
+  - x: 0
+    y: 3
+  - x: 0
+    y: 4
+  - x: 0
+    y: -1
+  - x: 0
+    y: -2
+  - x: 0
+    y: -3
+  - x: 0
+    y: -4
 --- !u!1 &1640313019
 GameObject:
   m_ObjectHideFlags: 0
