@@ -75,8 +75,10 @@ public class UIController : MonoBehaviour
 
     /// Liudo
     public MultiplayerController multiplayerControllerScr;
-	public GameObject IsWaitingSetupUI;
-	public GameObject IsWaitingInGameUI;
+	public GameObject isWaitingSetupUI;
+	public GameObject isWaitingInGameUI;
+	public GameObject endTurnUI;
+	public GameObject buildingMenuUI;
 
 	/// Jono
 	private GridManager gm;
@@ -162,6 +164,7 @@ public class UIController : MonoBehaviour
 
     public void InitializeGame()
     {
+		// Set mana
         manaLeft = startingMana;
         for (int i = 0; i < maxMana; i++)
         {
@@ -170,6 +173,12 @@ public class UIController : MonoBehaviour
             else
                 mana[i].sprite = mana_empty;
         }
+
+		// Enable "End Turn" button once
+		if (GameObject.Find("Client(Clone)").GetComponent<Client>().isHost)
+		{
+			endTurnUI.SetActive(true);
+		}
 
         gm.StartGame();
         fm.inGame = true;
@@ -291,18 +300,36 @@ public class UIController : MonoBehaviour
         screen_localMultiplayer.SetActive(false);
         screen_JoinToServer.SetActive(false);
         screen_MainMenu.SetActive(false);
-        screen_setup.SetActive(false);
-        screen_inGame.SetActive(true);
-        screen_inWaitingForPlayer.SetActive(false);
-        needActionAndInfoZone = true;
-        InitializeGame();
+        screen_setup.SetActive(true);
+        screen_inGame.SetActive(false);
+		//screen_inGame.SetActive(true);
+		screen_inWaitingForPlayer.SetActive(false);
+        needActionAndInfoZone = false;
+		//InitializeGame();
+		buildingMenuUI.SetActive(false);
 
 		/// TODO: (done?) disable SetupButton, enable text ui
-		IsWaitingSetupUI.SetActive(true);
+		isWaitingSetupUI.SetActive(true);
 
 		/// TODO: (done?) this client is ready, send to server
 		multiplayerControllerScr.SetupButtonPressed();
 	}
+
+	public void BothPlayersAreReadyScreen()
+	{
+		isWaitingSetupUI.SetActive(false);
+
+		unitIsSelected = false;
+		screen_localMultiplayer.SetActive(false);
+		screen_JoinToServer.SetActive(false);
+		screen_MainMenu.SetActive(false);
+		screen_setup.SetActive(false);
+		screen_inGame.SetActive(true);
+		needActionAndInfoZone = true;
+
+		InitializeGame();
+	}
+
 	public void ToSetup()
     {
         unitIsSelected = false;
