@@ -69,7 +69,7 @@ public class FreeMovement : MonoBehaviour
             }
 
             if (needsLock)
-                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.lockState = CursorLockMode.None;
             else
                 Cursor.lockState = CursorLockMode.None;
 

@@ -318,6 +318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 434171869}
+  - component: {fileID: 4962856615110383237}
   m_Layer: 0
   m_Name: Triceratops
   m_TagString: Untagged
@@ -341,6 +342,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 360, z: 0}
+--- !u!114 &4962856615110383237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434171864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e430cf5a64acbc4469bd81d8f65e7b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  tileX: 0
+  tileZ: 0
+  infoText:
+  - Lorenzo passive
+  - Lorenzo attack
+  - Lorenzo special
+  - Lorenzo move
+  whereCanMove:
+  - x: 1
+    y: 0
+  - x: 0
+    y: 1
+  - x: -1
+    y: 0
+  - x: 0
+    y: -1
+  - x: 1
+    y: 1
+  - x: -1
+    y: 1
+  - x: 1
+    y: -1
+  - x: -1
+    y: -1
 --- !u!1 &440846360
 GameObject:
   m_ObjectHideFlags: 0

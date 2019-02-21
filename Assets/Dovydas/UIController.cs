@@ -5,8 +5,32 @@ using UnityEngine.UI;
 
 enum Action { Passive = 0, Attack = 1, SpecialMove = 2, Move = 3 };
 
+[System.Serializable]
+public class pos
+{
+    public pos(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+    public int x, y;
+}
+
+[System.Serializable]
+public class row
+{
+    public GameObject[] column;
+}
+
 public class UIController : MonoBehaviour
 {
+    public int[] maxAmount_Dino;
+    public int[] haveFree_Dino;
+    public DinoButton[] dinoButtons;
+    public int[] dinosAre;
+    public int money;
+    public Text moneyText;
+
     #region Variables
     public int manaLeft, maxMana, minMana, manaSavingMax, manaPerTurn, startingMana;
 
@@ -66,6 +90,25 @@ public class UIController : MonoBehaviour
 
 	void Update()
     {
+        moneyText.text = money.ToString();
+        for (int i = 0; i < dinoButtons.Length; i++)
+        {
+            if (dinosAre[i] >= maxAmount_Dino[i])
+                dinoButtons[i].Show_MaxReached();
+            else
+                dinoButtons[i].Hide_MaxReached();
+
+            if (dinosAre[i] >= haveFree_Dino[i])
+                dinoButtons[i].Hide_HaveFree();
+            else
+                dinoButtons[i].Show_HaveFree(haveFree_Dino[i] - dinosAre[i]);
+
+            if (money <= dinoButtons[i].cost)
+                dinoButtons[i].Show_NoMoney();
+            else
+                dinoButtons[i].Hide_NoMoney();
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Clicked_ToMainMenu();
@@ -83,17 +126,35 @@ public class UIController : MonoBehaviour
         ManaCostBarUpdate();
     }
 
+    public void Bought(int id)
+    {
+        money -= dinoButtons[id].cost;
+    }
+
+    public void Sold(int id)
+    {
+        money += dinoButtons[id].cost;
+    }
 
     public void Clicked_Activate(int id)
     {
         Debug.Log("Selected action: " + id);
+
+        gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
     }
+
+
 
     public void Clicked_UnitSelected(int id)
     {
+        if(unitSelected >= 0 && unitSelected <= 6)
+            dinoButtons[unitSelected].Deselect();
+
         unitIsSelected = true;
         unitSelected = id;
         gm.SpawnDinoButton(id + 1);
+        dinoButtons[id].Select();
+
         // use infoText_Text[id].text = "your text";
     }
 
@@ -170,10 +231,11 @@ public class UIController : MonoBehaviour
             manaBar.gameObject.SetActive(false);
     }
 
+
     #region Main UI functionality
     public void Clicked_Info(int id)
     {
-        infoText_Text[id].text = infoText_string[id];
+        infoText_Text[id].text = gm.dinosaurPrefabs[gm.monsterId - 1].GetComponent<Dinosaur>().infoText[id];
         infoBackground[id].SetActive(true);
     }
 
@@ -248,6 +310,7 @@ public class UIController : MonoBehaviour
         screen_inGame.SetActive(false);
         screen_inWaitingForPlayer.SetActive(false);
         needActionAndInfoZone = true;
+        dinoButtons[0].Select();
         GameObject.FindObjectOfType<GridManager>().inSetup = true;
 
     }
