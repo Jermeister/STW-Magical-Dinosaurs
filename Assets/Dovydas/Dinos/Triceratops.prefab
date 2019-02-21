@@ -362,6 +362,10 @@ MonoBehaviour:
   - Lorenzo attack
   - Lorenzo special
   - Lorenzo move
+  Move: {fileID: 8300000, guid: a0e3a824a55363f47b2e3b5074a0d54d, type: 3}
+  Roar: {fileID: 8300000, guid: 55347fc147d75f84a94cb8a7b43f2cd1, type: 3}
+  Attack: {fileID: 8300000, guid: 3b15c877f0b73e0429d8ee83c9dadbee, type: 3}
+  Death: {fileID: 8300000, guid: 0c22619861c09f8408805c08f3efc2b0, type: 3}
   whereCanMove:
   - x: 1
     y: 0
