@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c042d1fb7392b6444a8f0b2148a67a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThemeSong: {fileID: 8300000, guid: e4987058c1c876d4ca2daa7704ec647c, type: 3}
+  instance: {fileID: 0}
 --- !u!1 &1636317841
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,6 +315,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f5e86d4dd26134fa3e712bea06c193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MenuTheme: {fileID: 8300000, guid: e4987058c1c876d4ca2daa7704ec647c, type: 3}
+  AmbientTheme: {fileID: 8300000, guid: 885e7defa292e174aa49544766b6d9ec, type: 3}
+  GameTheme: {fileID: 8300000, guid: c0aacf7cadf7d9d42bb810fbd6890fed, type: 3}
+  Roar1: {fileID: 8300000, guid: 19604dd21dbe42548b0a526fda257817, type: 3}
+  Roar2: {fileID: 8300000, guid: 89df6deefc9172a4fa51f3d7d94ebe4a, type: 3}
+  Roar3: {fileID: 8300000, guid: 7cbf6b88549d39c409a250dd26124940, type: 3}
+  Roar4: {fileID: 8300000, guid: b088109b2a8a35744839173299863f6a, type: 3}
+  Roar5: {fileID: 8300000, guid: bad4fedf28437934ea287cb868efb436, type: 3}
+  Rex_roar: {fileID: 8300000, guid: 2cf83df2f4ee8d94bb5ec74e43b1a164, type: 3}
+  Bird_roar: {fileID: 8300000, guid: 88309bf82d85ba64d91ceaf3295bf27a, type: 3}
+  Raptor_roar: {fileID: 8300000, guid: 6278de052bd5fe24799770561e9e3aa1, type: 3}
+  Rocks: {fileID: 8300000, guid: feea7004bbda1694d8248c12f6657188, type: 3}
+  DinoDead: {fileID: 8300000, guid: 4e45c45d5f8d7a14a928ff3310047c4a, type: 3}
+  Fireball: {fileID: 8300000, guid: 8dfafecc5e282ef4dac186fcef884d17, type: 3}
 --- !u!1 &1756458711
 GameObject:
   m_ObjectHideFlags: 0

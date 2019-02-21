@@ -1678,6 +1678,11 @@ MonoBehaviour:
   - Brontson attack
   - Brontson special
   - Brontson move
+  Move: {fileID: 8300000, guid: e8fc31069972a634b940e9b619b49bf7, type: 3}
+  Roar: {fileID: 8300000, guid: 54f41500de865474bb2cfbc717658d8c, type: 3}
+  Attack: {fileID: 8300000, guid: 0c0543ef6ca7e2540abbc2669163860e, type: 3}
+  Death: {fileID: 8300000, guid: d5f0177e8553f144b955f3fce1b274b1, type: 3}
+  whereCanMove: []
 --- !u!1 &1847953567
 GameObject:
   m_ObjectHideFlags: 0
