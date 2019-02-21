@@ -111,10 +111,17 @@ public class Client : MonoBehaviour
 	public void SetupButtonPress()
 	{
 		// PR = player ready
-		int playerId = (isHost == true ? 1 : 2);
+		int playerId = GetThisClientId();
 		string msg = "SPR|" + playerId;
 
-		/// TODO: send message to server 
+		Send(msg, reliableChannel);
+	}
+	public void EndTurnButtonPress()
+	{
+		/// TODO: end turn button press
+		uiControllerScr.endTurnUI.SetActive(false);
+		multiplayerControllerScr.currentTurnPlayerId = GetOtherClientId();
+		string msg = "SET";
 		Send(msg, reliableChannel);
 	}
 
@@ -127,6 +134,15 @@ public class Client : MonoBehaviour
 		string msg = "SED|" + dinoEncodedString;
 		Send(msg, reliableChannel);
 
+	}
+
+	public int GetThisClientId()
+	{
+		return (isHost == true ? 1 : 2);
+	}
+	public int GetOtherClientId()
+	{
+		return (isHost == true ? 2 : 1);
 	}
 
 	public void Send(string msg, int channelId)

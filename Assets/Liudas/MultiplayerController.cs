@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MultiplayerController : MonoBehaviour
 {
+	public int currentTurnPlayerId = 1;
 	public string ipAdrress;
 
 	public GameObject clientPrefab;
@@ -95,8 +96,6 @@ public class MultiplayerController : MonoBehaviour
 			// Client just connected to the network
 			case "BP": OtherButtonPress(); break;
 
-			/// TODO: receive message from server that both players pressed SetupButtonPressed
-			/// switch scenes, make player 1 (host) start
 			/// On player 1 (host) screen, "End Turn" button is present
 			/// If End Turn is pressed, send message to server
 
@@ -117,7 +116,12 @@ public class MultiplayerController : MonoBehaviour
 
 			case "ED": // Encoded Dinos from the server (from other player), spawn them in
 				gridManagerScr.DecodeDinosString(splitMsg[1]);
-				/// TODO: Dino spawning done?? I stopped here.
+				break;
+
+			case "YT": // Your Turn, server told you that now it is your turn to do things in game
+				/// TODO: enable End Turn button
+				uiControllerScr.endTurnUI.SetActive(true);
+				currentTurnPlayerId = clientScr.GetThisClientId();
 				break;
 
 			case "asd": break;
