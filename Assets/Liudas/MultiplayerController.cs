@@ -140,11 +140,21 @@ public class MultiplayerController : MonoBehaviour
 		clientScr.SetupButtonPress();
 	}
 
+	public void EndTurnButtonPress()
+	{
+		clientScr.EndTurnButtonPress();
+	}
+
 	public void DisableCreateJoinMenus()
 	{
 	}
 	public void EnableCreateJoinMenus()
 	{
+	}
+
+	public bool IsMyTurn()
+	{
+		return currentTurnPlayerId == clientScr.GetThisClientId();
 	}
 
 	private void OnApplicationQuit()

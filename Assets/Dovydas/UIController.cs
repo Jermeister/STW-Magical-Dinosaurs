@@ -199,11 +199,12 @@ public class UIController : MonoBehaviour
     
     public void Clicked_NextTurn()
     {
+		/*
         if (myTurn)
         {
             NextTurn();
-        }
-
+        }*/
+		multiplayerControllerScr.EndTurnButtonPress();
     }
 
     public void StartTurn()
