@@ -57,7 +57,7 @@ public class Client : MonoBehaviour
 		UpdateMessagePump();
 
 		if (Input.GetMouseButtonDown(1))
-			Send("BP", reliableChannel);
+			Send("SBP", reliableChannel);
 
 	}
 
@@ -103,7 +103,16 @@ public class Client : MonoBehaviour
 
 	public void ClientButtonPress()
 	{
-		Send("BP", reliableChannel);
+		Send("SBP", reliableChannel);
+	}
+	public void SetupButtonPress()
+	{
+		// PR = player ready
+		int playerId = (isHost == true ? 1 : 2);
+		string msg = "SPR|" + playerId;
+
+		/// TODO: send message to server 
+		Send(msg, reliableChannel);
 	}
 
 	public void Send(string msg, int channelId)

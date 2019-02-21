@@ -88,7 +88,7 @@ public class MultiplayerController : MonoBehaviour
 		switch (splitMsg[0])
 		{
 			// Client just connected to the network
-			case "OBP": OtherButtonPress(); break;
+			case "BP": OtherButtonPress(); break;
 
 			/// TODO: receive message from server that both players pressed SetupButtonPressed
 			/// switch scenes, make player 1 (host) start
@@ -110,10 +110,7 @@ public class MultiplayerController : MonoBehaviour
 
 	public void SetupButtonPressed()
 	{
-
-		/// TODO: send message to server 
-
-
+		clientScr.SetupButtonPress();
 	}
 
 	public void DisableCreateJoinMenus()

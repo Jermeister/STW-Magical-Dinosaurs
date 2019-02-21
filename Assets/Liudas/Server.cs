@@ -83,10 +83,12 @@ public class Server : MonoBehaviour
 		switch (splitData[0])
 		{
 			// Client just connected to the network
-			case "BP":
+			case "SBP":
 				ButtonPress(id);
 				//ConsoleScript.Print("Server", "connection Id from got message: " + id);
 				break;
+
+
 
 			/// TODO: receive SetupButtonPressed message
 			/// Check if both players are ready
@@ -105,8 +107,8 @@ public class Server : MonoBehaviour
 	{
 		ConsoleScript.Print("Server", connId + " client press the button.");
 		ConsoleScript.Print("Server", "sending message to client: " + OtherConnectionId(connId));
-		Send("OBP", reliableChannel, OtherConnectionId(connId));
-		//SendAll("OBP", reliableChannel);
+		Send("BP", reliableChannel, OtherConnectionId(connId));
+		//SendAll("BP", reliableChannel);
 	}
 
 	private int OtherConnectionId(int connId)

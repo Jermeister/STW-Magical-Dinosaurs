@@ -75,6 +75,8 @@ public class UIController : MonoBehaviour
 
     /// Liudo
     public MultiplayerController multiplayerControllerScr;
+	public GameObject IsWaitingSetupUI;
+	public GameObject IsWaitingInGameUI;
 
 	/// Jono
 	private GridManager gm;
@@ -295,10 +297,13 @@ public class UIController : MonoBehaviour
         needActionAndInfoZone = true;
         InitializeGame();
 
-		multiplayerControllerScr.SetupButtonPressed();
+		
 
-		/// TODO: disable SetupButton, enable text ui
-		/// TODO: this client is ready, send to server
+		/// TODO: (done?) disable SetupButton, enable text ui
+		IsWaitingSetupUI.SetActive(true);
+
+		/// TODO: (done?) this client is ready, send to server
+		multiplayerControllerScr.SetupButtonPressed();
 	}
 	public void ToSetup()
     {
