@@ -1734,8 +1734,8 @@ MonoBehaviour:
   - {fileID: 6507756585382438020}
   - {fileID: 5135448096973065800}
   - {fileID: 7226911549735842649}
-  halfHeart: {fileID: 21300000, guid: 8866039ed3a9a28418a9aa9524e971c1, type: 3}
-  fullHeart: {fileID: 21300000, guid: 6d0352e0c9938e34bb412a54d0f40791, type: 3}
+  halfHeart: {fileID: 21300000, guid: 62b76fc6d1839034f89c7d6c738f6dff, type: 3}
+  fullHeart: {fileID: 21300000, guid: 4ffa3f2f7131bfe4a87e05ff7ed9a5b1, type: 3}
   halfHeart_p2: {fileID: 21300000, guid: 22bbc5dd84ca1ff44b8b1efa6daaa6d8, type: 3}
   fullHeart_p2: {fileID: 21300000, guid: 4979ccd8823b9e04299c8363aab83ab9, type: 3}
   playerID: 0
@@ -1743,6 +1743,7 @@ MonoBehaviour:
   Roar: {fileID: 8300000, guid: 54f41500de865474bb2cfbc717658d8c, type: 3}
   Attack: {fileID: 8300000, guid: 0c0543ef6ca7e2540abbc2669163860e, type: 3}
   Death: {fileID: 8300000, guid: d5f0177e8553f144b955f3fce1b274b1, type: 3}
+  BloodParticles: {fileID: 0}
   whereCanMove:
   - x: 1
     y: 0
