@@ -8,6 +8,12 @@ public class Dinosaur : MonoBehaviour
     public int tileX, tileZ;
     public string[] infoText;
 
+    [Header("Sounds")]
+    public AudioClip Move;
+    public AudioClip Roar;
+    public AudioClip Attack;
+    public AudioClip Death;
+
     public pos[] whereCanMove;
 
     void Start()
