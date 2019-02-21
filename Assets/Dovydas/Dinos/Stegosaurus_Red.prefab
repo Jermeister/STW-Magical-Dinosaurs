@@ -704,13 +704,18 @@ MonoBehaviour:
   - Spike attack
   - Spike special
   - Spike move
-  health: 0
+  health: 6
   hearts:
   - {fileID: 237688113599282848}
   - {fileID: 5435309375582119450}
   - {fileID: 281139796373508826}
   - {fileID: 7087633618924351164}
   - {fileID: 8391327848313409570}
+  halfHeart: {fileID: 21300000, guid: 62b76fc6d1839034f89c7d6c738f6dff, type: 3}
+  fullHeart: {fileID: 21300000, guid: 4ffa3f2f7131bfe4a87e05ff7ed9a5b1, type: 3}
+  halfHeart_p2: {fileID: 21300000, guid: 22bbc5dd84ca1ff44b8b1efa6daaa6d8, type: 3}
+  fullHeart_p2: {fileID: 21300000, guid: 4979ccd8823b9e04299c8363aab83ab9, type: 3}
+  playerID: 0
   Move: {fileID: 8300000, guid: a0e3a824a55363f47b2e3b5074a0d54d, type: 3}
   Roar: {fileID: 8300000, guid: 6942407c9b3181b43ae43cf92e899067, type: 3}
   Attack: {fileID: 8300000, guid: 596cc049b064bae42a036bb7a43a1b03, type: 3}

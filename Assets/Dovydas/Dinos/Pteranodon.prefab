@@ -1458,13 +1458,18 @@ MonoBehaviour:
   - Terry attack
   - Terry special
   - Terry move
-  health: 0
+  health: 3
   hearts:
   - {fileID: 5481601536218747653}
   - {fileID: 6716337690135100356}
   - {fileID: 312595430025029796}
   - {fileID: 8418225540318753840}
   - {fileID: 5405037988152106754}
+  halfHeart: {fileID: 21300000, guid: 62b76fc6d1839034f89c7d6c738f6dff, type: 3}
+  fullHeart: {fileID: 21300000, guid: 4ffa3f2f7131bfe4a87e05ff7ed9a5b1, type: 3}
+  halfHeart_p2: {fileID: 21300000, guid: 22bbc5dd84ca1ff44b8b1efa6daaa6d8, type: 3}
+  fullHeart_p2: {fileID: 21300000, guid: 4979ccd8823b9e04299c8363aab83ab9, type: 3}
+  playerID: 0
   Move: {fileID: 8300000, guid: 6a981db7dc6d2114cbd898f282ebce13, type: 3}
   Roar: {fileID: 8300000, guid: 13e68f30198ccdc458c10406abae6c3c, type: 3}
   Attack: {fileID: 8300000, guid: fb2435448965bc647b6b04d5c1d98ad5, type: 3}

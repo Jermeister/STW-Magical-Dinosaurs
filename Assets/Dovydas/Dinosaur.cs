@@ -10,7 +10,8 @@ public class Dinosaur : MonoBehaviour
 
     public int health;
     public GameObject[] hearts;
-    public Sprite halfHeart, fullHeart;
+    public Sprite halfHeart, fullHeart, halfHeart_p2, fullHeart_p2;
+    public int playerID;
 
     [Header("Sounds")]
     public AudioClip Move;
@@ -32,13 +33,22 @@ public class Dinosaur : MonoBehaviour
 
     public void UpdateHealth()
     {
+        for (int i = 0; i < 5; i++)
+        {
+            hearts[i].SetActive(false);
+        }
         for (int i = 0; i < health/2; i++)
         {
-            hearts[i].GetComponent<SpriteRenderer>().sprite = fullHeart;
+            hearts[i].SetActive(true);
+            if(playerID == 1) hearts[i].GetComponent<SpriteRenderer>().sprite = fullHeart;
+            else hearts[i].GetComponent<SpriteRenderer>().sprite = fullHeart_p2;
+
         }
         if (health % 2 == 1)
         {
-            hearts[health / 2].GetComponent<SpriteRenderer>().sprite = halfHeart;
+            hearts[(health / 2)].SetActive(true);
+            if (playerID == 1) hearts[(health / 2)].GetComponent<SpriteRenderer>().sprite = halfHeart;
+            else hearts[(health / 2)].GetComponent<SpriteRenderer>().sprite = halfHeart_p2;
         }
     }
 
