@@ -463,7 +463,7 @@ public class GridManager : MonoBehaviour
 			ConsoleScript.Print("Grid", "rot: " + rot);
 
             SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification - 1], new Vector3(tileX, 0.75f, tileZ), rot));
-            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = 1;
+            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = (playerId == 1 ? 2 : 1); 
             TileTypeMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().id;
             TilePlayerMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID;
         }
@@ -535,8 +535,7 @@ public class GridManager : MonoBehaviour
 			}
 		}
 
-		// Jeigu nereiks obstacles selecto, dadeti && TileTypeMap[xCount, zCount] < 10
-		if (inGame && TileTypeMap[xCount, zCount] > 0)
+		if (inGame && TileTypeMap[xCount, zCount] > 0 && TileTypeMap[xCount, zCount] < 10)
 		{
 			if (!standInstance)
 			{
@@ -569,8 +568,10 @@ public class GridManager : MonoBehaviour
                 monsterId = TileTypeMap[xCount, zCount];
             }
 		}
+        
 		else
 		{
+
 			Destroy(standInstance);
 		}
 	}
