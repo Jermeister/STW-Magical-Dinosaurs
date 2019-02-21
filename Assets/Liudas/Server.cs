@@ -33,13 +33,13 @@ public class Server : MonoBehaviour
 	{
 		DontDestroyOnLoad(gameObject);
 		gridManagerScr = GameObject.Find("Grid").GetComponent<GridManager>();
-		
+
 		StartServer();
 	}
 	private void Update()
 	{
 		UpdateMessagePump();
-		
+
 	}
 
 	private void UpdateMessagePump()
@@ -55,7 +55,7 @@ public class Server : MonoBehaviour
 		int dataSize;
 
 		NetworkEventType type = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, BYTE_SIZE, out dataSize, out error);
-		switch(type)
+		switch (type)
 		{
 			case NetworkEventType.DataEvent:
 
@@ -67,6 +67,16 @@ public class Server : MonoBehaviour
 				break;
 
 			case NetworkEventType.ConnectEvent:
+
+				ConsoleScript.Print("Server", "Client " + connectionId + " has connected.");
+				//Send("NC", )
+				//if (connectionId == 1)
+				{
+					SendAll("asd", reliableChannel);
+				}
+				//Send("asd", reliableChannel, 0);
+				//Send("asd", reliableChannel, 1);
+				//Send("asd", reliableChannel, 2);
 
 				if (connectionId == 2)
 				{
@@ -80,13 +90,9 @@ public class Server : MonoBehaviour
 					// Call our own client uiControllerScr.ToSetup
 					uiControllerScr.ToSetup();
 				}
-	
 
-				ConsoleScript.Print("Server", "Client " + connectionId + " has connected.");
-				//Send("NC", )
-				Send("asd", reliableChannel, 0);
-				Send("asd", reliableChannel, 1);
-				Send("asd", reliableChannel, 2);
+
+
 
 				break;
 			case NetworkEventType.DisconnectEvent:
@@ -98,14 +104,10 @@ public class Server : MonoBehaviour
 	public void DecryptMessage(int id, string msg)
 	{
 		string[] splitData = msg.Split('|');
+		//ConsoleScript.Print("ServerGotMsg", msg);
 
 		switch (splitData[0])
 		{
-			// Client just connected to the network
-			case "SBP":
-				ButtonPress(id);
-				//ConsoleScript.Print("Server", "connection Id from got message: " + id);
-				break;
 
 			case "SPR": // server player ready (in setup)
 				playersSetupReady++;
@@ -115,9 +117,15 @@ public class Server : MonoBehaviour
 				{
 					ConsoleScript.Print("Server", "Both players have done their setup");
 					/// TODO: reveal opponent dinos on the tile map
-					//SendAll()
+
+					string msg2 = "BPR";
+					SendAll(msg2, reliableChannel);
 				}
 
+				break;
+
+			case "SED": // server Encoded Dinos message from client
+				Send("ED|" + splitData[1], reliableChannel, OtherConnectionId(id));
 				break;
 
 			/// TODO: receive SetupButtonPressed message
@@ -126,6 +134,13 @@ public class Server : MonoBehaviour
 
 			/// Player 1 (host) ended his turn
 			/// Inform Player 2 that host ended his turn 
+
+
+
+			// Client just connected to the network
+			case "SBP": // server Button Press, test, delete later
+				ButtonPress(id);
+				break;
 
 			case "asd": break;
 
@@ -149,24 +164,30 @@ public class Server : MonoBehaviour
 	private void Send(string message, int channelId, int cnnId)
 	{
 		// Send a message for one client
+		ConsoleScript.Print("ServerSendMsg", message);
 
 		// check this, if I am sending to the same computer
 		if (cnnId == 1)
 		{
 			//ConsoleScript.Print("Server", "Sending to Client via script");
 			multiplayerControllerScr.DecryptMessage(message);
-		} else
+		}
+		else
 		{
 			//ConsoleScript.Print("Server", "Sending to Client via networking");
 			byte[] msg = Encoding.Unicode.GetBytes(message);
 			NetworkTransport.Send(hostId, cnnId, channelId, msg, message.Length * sizeof(char), out error);
 		}
+
+
 	}
 	private void SendAll(string message, int channelId)
 	{
-		//Send(message, channelId, 0);
-		Send(message, channelId, 1);
+		//ConsoleScript.Print("ServerSendMsg", message);
+
 		Send(message, channelId, 2);
+		Send(message, channelId, 1);
+		
 	}
 
 	public void StartServer()
@@ -200,5 +221,5 @@ public class Server : MonoBehaviour
 
 
 
-	#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // Type or member is obsolete
 }

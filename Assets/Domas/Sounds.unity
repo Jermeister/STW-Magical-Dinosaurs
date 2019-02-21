@@ -27151,6 +27151,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5299964617370022041, guid: 0dcbaa2b371985f4aa9098a3c31f4855,
+        type: 3}
+      propertyPath: BloodParticles
+      value: 
+      objectReference: {fileID: 1364278989638880305, guid: d11f7c20e594a734b9cd3085f2599aa4,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0dcbaa2b371985f4aa9098a3c31f4855, type: 3}
 --- !u!4 &1509674225 stripped
@@ -38050,7 +38056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1364278989638880305, guid: d11f7c20e594a734b9cd3085f2599aa4,
         type: 3}
-      propertyPath: NoiseModule.enabled
+      propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

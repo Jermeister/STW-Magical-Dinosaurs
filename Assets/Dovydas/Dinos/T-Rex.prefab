@@ -2015,13 +2015,18 @@ MonoBehaviour:
   - Theorode attack
   - Theorode special
   - Theorode move
-  health: 0
+  health: 9
   hearts:
   - {fileID: 7950307634354384963}
   - {fileID: 6793021440757113175}
   - {fileID: 3924291836769231065}
   - {fileID: 7215488739365925215}
   - {fileID: 8859936244198283545}
+  halfHeart: {fileID: 21300000, guid: 62b76fc6d1839034f89c7d6c738f6dff, type: 3}
+  fullHeart: {fileID: 21300000, guid: 4ffa3f2f7131bfe4a87e05ff7ed9a5b1, type: 3}
+  halfHeart_p2: {fileID: 21300000, guid: 22bbc5dd84ca1ff44b8b1efa6daaa6d8, type: 3}
+  fullHeart_p2: {fileID: 21300000, guid: 4979ccd8823b9e04299c8363aab83ab9, type: 3}
+  playerID: 0
   Move: {fileID: 8300000, guid: a0e3a824a55363f47b2e3b5074a0d54d, type: 3}
   Roar: {fileID: 8300000, guid: afd64bdc63e9f334a994756b5a95b1ef, type: 3}
   Attack: {fileID: 8300000, guid: 30ae9062155abec4991ac9d789b0cbdb, type: 3}
