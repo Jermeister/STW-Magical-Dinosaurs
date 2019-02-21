@@ -12494,6 +12494,7 @@ MonoBehaviour:
   monsterId: 1
   selectedIndex: 0
   selectedDino: {fileID: 0}
+  canBuild: 0
   uiController: {fileID: 0}
   canAttackObjects:
   - column:
@@ -17975,6 +17976,7 @@ MonoBehaviour:
   monsterId: 1
   selectedIndex: 0
   selectedDino: {fileID: 0}
+  canBuild: 0
   uiController: {fileID: 0}
   canAttackObjects: []
   canMoveObjects: []
@@ -26928,7 +26930,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1505105398
 RectTransform:
   m_ObjectHideFlags: 0

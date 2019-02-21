@@ -32,6 +32,7 @@ public class GridManager : MonoBehaviour
     //Dovydo
     public int selectedIndex;
     public Dinosaur selectedDino;
+    public bool canBuild;
 
     [HideInInspector]
     public UIController uiController;
@@ -282,6 +283,8 @@ public class GridManager : MonoBehaviour
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileX = xCount;
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileZ = zCount;
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().id = monsterId;
+            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = playerId;
+            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().UpdateHealth();
             uiController.Bought(monsterId - 1);
             uiController.dinosAre[monsterId - 1]++;
 			Destroy(selectionInstance);
@@ -466,6 +469,7 @@ public class GridManager : MonoBehaviour
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = (playerId == 1 ? 2 : 1); 
             TileTypeMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().id;
             TilePlayerMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID;
+            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().UpdateHealth();
         }
     }
 

@@ -31,6 +31,7 @@ public class UIController : MonoBehaviour
     public int money;
     public Text moneyText;
 
+
     #region Variables
     public int manaLeft, maxMana, minMana, manaSavingMax, manaPerTurn, startingMana;
 
@@ -307,10 +308,9 @@ public class UIController : MonoBehaviour
         needActionAndInfoZone = false;
 		//InitializeGame();
 		buildingMenuUI.SetActive(false);
-
 		/// TODO: (done?) disable SetupButton, enable text ui
 		isWaitingSetupUI.SetActive(true);
-
+        gm.canBuild = false;
 		/// TODO: (done?) this client is ready, send to server
 		multiplayerControllerScr.SetupButtonPressed();
 	}

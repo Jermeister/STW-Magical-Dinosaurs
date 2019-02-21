@@ -28,7 +28,7 @@ public class Dinosaur : MonoBehaviour
 
     void Start()
     {
-        UpdateHealth();
+       // UpdateHealth();
     }
 
     void Update()
