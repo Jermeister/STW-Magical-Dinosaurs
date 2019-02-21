@@ -454,10 +454,12 @@ public class GridManager : MonoBehaviour
             }
 
             Quaternion rot;
-            if (playerId == 1)
+            if (playerId != 1)
                 rot = Quaternion.Euler(0, 90, 0);
             else
                 rot = Quaternion.Euler(0, -90, 0);
+
+			ConsoleScript.Print("Grid", "rot: " + rot);
 
             SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification - 1], new Vector3(tileX, 0.75f, tileZ), rot));
         }

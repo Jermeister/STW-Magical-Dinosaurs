@@ -50,7 +50,7 @@ public class MultiplayerController : MonoBehaviour
 
 	public void CreateGame()
 	{
-		ConsoleScript.Print("Multiplayer", "Create game button was pressed.");
+		//ConsoleScript.Print("Multiplayer", "Create game button was pressed.");
 		if (server == null)
 		{
 			server = Instantiate(serverPrefab);
@@ -64,7 +64,7 @@ public class MultiplayerController : MonoBehaviour
 	}
 	public void JoinGame()
 	{
-		ConsoleScript.Print("Multiplayer", "Join game button was pressed.");
+		//ConsoleScript.Print("Multiplayer", "Join game button was pressed.");
 		if (client == null)
 		{
 			client = Instantiate(clientPrefab);
@@ -81,11 +81,13 @@ public class MultiplayerController : MonoBehaviour
 
 	public void DecryptMessage(string message)
 	{
+
 		string[] splitMsg = message.Split('|');
+		ConsoleScript.Print("ClientGotMsg", message);
 
 		for (int i = 0; i < splitMsg.Length; i++)
 		{
-			ConsoleScript.Print("Multiplayer", splitMsg[i]);
+			//ConsoleScript.Print("ClientSendMsg", splitMsg[i]);
 		}
 
 		switch (splitMsg[0])
@@ -99,12 +101,23 @@ public class MultiplayerController : MonoBehaviour
 			/// If End Turn is pressed, send message to server
 
 			case "O": // encrypted obstacles from server
-				ConsoleScript.Print("Multiplayer", "Our obstacles: " + splitMsg[1]);
+					  //ConsoleScript.Print("Multiplayer", "Our obstacles: " + splitMsg[1]);
+
 				if (!clientScr.isHost)
 					gridManagerScr.GirdManagerSetUp();
 
 				uiControllerScr.ToSetup();
 				gridManagerScr.DecodeObstaclesString(splitMsg[1]);
+
+				break;
+
+			case "BPR": // Both Players Ready, send server encoded dino
+				clientScr.GenerateEncodedDino();
+				break;
+
+			case "ED": // Encoded Dinos from the server (from other player), spawn them in
+				gridManagerScr.DecodeDinosString(splitMsg[1]);
+				/// TODO: Dino spawning done?? I stopped here.
 				break;
 
 			case "asd": break;

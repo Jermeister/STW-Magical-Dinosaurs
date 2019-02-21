@@ -10,6 +10,7 @@ public class Client : MonoBehaviour
 
 	public GameObject buildingControllerPrefab; // this is spawned when the client is connected to the server
 
+	private GridManager gridManagerScr;
 	private MultiplayerController multiplayerControllerScr;
 	private Server serverScr;
 	private UIController uiControllerScr;
@@ -35,6 +36,7 @@ public class Client : MonoBehaviour
 	{
 		DontDestroyOnLoad(gameObject);
 
+		gridManagerScr = GameObject.Find("Grid").GetComponent<GridManager>();
 		multiplayerControllerScr = GameObject.Find("MultiplayerController").GetComponent<MultiplayerController>();
 		uiControllerScr = GameObject.Find("MainCanvas").GetComponent<UIController>();
 
@@ -86,7 +88,7 @@ public class Client : MonoBehaviour
 			case NetworkEventType.DataEvent:
 
 				string msg = Encoding.Unicode.GetString(recBuffer, 0, dataSize);
-				ConsoleScript.Print("ClientGotMsg", msg);
+				//ConsoleScript.Print("ClientGotMsg", msg);
 
 				multiplayerControllerScr.DecryptMessage(msg);
 
@@ -103,6 +105,7 @@ public class Client : MonoBehaviour
 
 	public void ClientButtonPress()
 	{
+		// Test button, delete later
 		Send("SBP", reliableChannel);
 	}
 	public void SetupButtonPress()
@@ -115,10 +118,20 @@ public class Client : MonoBehaviour
 		Send(msg, reliableChannel);
 	}
 
+	public void GenerateEncodedDino()
+	{
+		// Get client's encoded dinos
+		string dinoEncodedString = gridManagerScr.BuildDinosString();
+		ConsoleScript.Print("Client", "dinoEncodedString: " + dinoEncodedString);
+
+		string msg = "SED|" + dinoEncodedString;
+		Send(msg, reliableChannel);
+
+	}
+
 	public void Send(string msg, int channelId)
 	{
 		ConsoleScript.Print("ClientSendMsg", msg);
-
 		// check this, if I am sending to the same computer
 		if (isHost)
 		{
