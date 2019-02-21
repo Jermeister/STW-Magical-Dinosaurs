@@ -21672,8 +21672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f01154943e391840b2b58ac06cb05f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAmount_Dino: 01000000020000000200000002000000050000000500000005000000
-  haveFree_Dino: 01000000000000000100000001000000000000000000000000000000
+  maxAmount_Dino: 01000000640000006400000064000000640000006400000064000000
+  haveFree_Dino: 01000000000000000000000000000000000000000000000000000000
   dinoButtons:
   - {fileID: 1841214194}
   - {fileID: 358559592}
@@ -21685,6 +21685,7 @@ MonoBehaviour:
   dinosAre: 00000000000000000000000000000000000000000000000000000000
   money: 1000
   moneyText: {fileID: 1919011483}
+  startGameButton: {fileID: 1602170289}
   manaLeft: 0
   maxMana: 15
   minMana: -163
@@ -27995,7 +27996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1602170290
 RectTransform:
   m_ObjectHideFlags: 0

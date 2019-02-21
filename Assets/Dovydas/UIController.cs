@@ -31,6 +31,7 @@ public class UIController : MonoBehaviour
     public int money;
     public Text moneyText;
 
+    public GameObject startGameButton;
 
     #region Variables
     public int manaLeft, maxMana, minMana, manaSavingMax, manaPerTurn, startingMana;
@@ -129,6 +130,16 @@ public class UIController : MonoBehaviour
             infoAndActionsZone.SetActive(false);
 
         ManaCostBarUpdate();
+    }
+
+    public void EnableStartButton()
+    {
+        startGameButton.SetActive(true);
+    }
+
+    public void DisableStartButton()
+    {
+        startGameButton.SetActive(false);
     }
 
     public void Bought(int id)
@@ -342,7 +353,7 @@ public class UIController : MonoBehaviour
         needActionAndInfoZone = true;
         dinoButtons[0].Select();
         GameObject.FindObjectOfType<GridManager>().inSetup = true;
-
+        gm.canBuild = true;
     }
 
     public void ToWaitingForPlayer()

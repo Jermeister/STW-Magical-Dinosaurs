@@ -52,9 +52,9 @@ public class GridManager : MonoBehaviour
 	// Start is called before the first frame update
 	public void GirdManagerSetUp()
     {
-		#region Instantiating objects
-		// Instantiating objects
-		Tiles = new GameObject[gridSize,gridSize];
+        #region Instantiating objects
+        // Instantiating objects
+        Tiles = new GameObject[gridSize,gridSize];
 		tileScripts = new TileScript[gridSize, gridSize];
         TileTypeMap = new int[gridSize,gridSize];
 		TilePlayerMap = new int[gridSize, gridSize];
@@ -277,9 +277,13 @@ public class GridManager : MonoBehaviour
 		else
 			rot = Quaternion.Euler(0, -90, 0);
 
-        if (inTiles && TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId && uiController.dinosAre[monsterId - 1] < uiController.maxAmount_Dino[monsterId - 1] && uiController.dinoButtons[monsterId - 1].cost <= uiController.money)
+        if (canBuild && inTiles && TileTypeMap[xCount, zCount] == 0 && TilePlayerMap[xCount, zCount] == playerId && uiController.dinosAre[monsterId - 1] < uiController.maxAmount_Dino[monsterId - 1] && uiController.dinoButtons[monsterId - 1].cost <= uiController.money)
 		{
 			SpawnedObjects.Add(Instantiate(dinosaurPrefabs[monsterId - 1], new Vector3(xCount, 0.75f, zCount), rot));
+            if(monsterId == 1)
+            {
+                uiController.EnableStartButton();
+            }
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileX = xCount;
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileZ = zCount;
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().id = monsterId;
@@ -333,13 +337,11 @@ public class GridManager : MonoBehaviour
 		}
 
         string result = "";
-        Debug.Log("SpawnedObstacles" + " " + toBeSpawned.Count);
         for (int i = 0; i < toBeSpawned.Count; i++)
         {
             result += toBeSpawned[i].tileX + "*" + toBeSpawned[i].tileZ + "*" + toBeSpawned[i].id + "!";
 
         }
-        Debug.Log("result OBSTACLES" + " " + result);
         return result;
     }
 	
@@ -355,7 +357,6 @@ public class GridManager : MonoBehaviour
                 temp += text[index];
                 index++;
             }
-            Debug.Log("x: " + temp);
             for (int a = 0; a < temp.Length; a++)
             {
                 tileX += (int)temp[a] - 48;
@@ -368,7 +369,6 @@ public class GridManager : MonoBehaviour
                 temp += text[index];
                 index++;
             }
-            Debug.Log("y: " + temp);
             for (int a = 0; a < temp.Length; a++)
             {
                 tileZ += (int)temp[a] - 48;
@@ -381,7 +381,6 @@ public class GridManager : MonoBehaviour
                 temp += text[index];
                 index++;
             }
-            Debug.Log("id: " + temp);
             i = index;
             for (int a = 0; a < temp.Length; a++)
             {
@@ -402,13 +401,11 @@ public class GridManager : MonoBehaviour
     public string BuildDinosString()
     {
         string result = "";
-        Debug.Log("SpawnedObjects" + " " + SpawnedObjects.Count);
         for (int i = 0; i < SpawnedObjects.Count; i++)
         {
             result += SpawnedObjects[i].GetComponent<Dinosaur>().tileX + "*" + SpawnedObjects[i].GetComponent<Dinosaur>().tileZ + "*" + SpawnedObjects[i].GetComponent<Dinosaur>().id + "!";
             
         }
-        Debug.Log("result" + " " + result);
         return result;
     }
 
@@ -424,7 +421,6 @@ public class GridManager : MonoBehaviour
                 temp += text[index];
                 index++;
             }
-            Debug.Log("x: " + temp);
             for (int a = 0; a < temp.Length; a++)
             {
                 tileX += (int)temp[a] - 48;
@@ -437,7 +433,6 @@ public class GridManager : MonoBehaviour
                 temp += text[index];
                 index++;
             }
-            Debug.Log("y: " + temp);
             for (int a = 0; a < temp.Length; a++)
             {
                 tileZ += (int)temp[a] - 48;
@@ -450,7 +445,6 @@ public class GridManager : MonoBehaviour
                 temp += text[index];
                 index++;
             }
-            Debug.Log("id: " + temp);
             i = index;
             for (int a = 0; a < temp.Length; a++)
             {
@@ -463,7 +457,6 @@ public class GridManager : MonoBehaviour
             else
                 rot = Quaternion.Euler(0, -90, 0);
 
-			ConsoleScript.Print("Grid", "rot: " + rot);
 
             SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification - 1], new Vector3(tileX, 0.75f, tileZ), rot));
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = (playerId == 1 ? 2 : 1); 
@@ -529,7 +522,11 @@ public class GridManager : MonoBehaviour
 			{
 				if ((int)SpawnedObjects[i].transform.position.x == xCount && (int)SpawnedObjects[i].transform.position.z == zCount)
 				{
-					Destroy(SpawnedObjects[i]);
+                    if (SpawnedObjects[i].GetComponent<Dinosaur>().id == 0 || SpawnedObjects[i].GetComponent<Dinosaur>().id == 1)
+                    {
+                        uiController.DisableStartButton();
+                    }
+                    Destroy(SpawnedObjects[i]);
                     uiController.dinosAre[SpawnedObjects[i].GetComponent<Dinosaur>().id - 1]--;
                     uiController.Sold(SpawnedObjects[i].GetComponent<Dinosaur>().id - 1);
                     SpawnedObjects.RemoveAt(i);
