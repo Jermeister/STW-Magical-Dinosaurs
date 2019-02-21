@@ -101,7 +101,6 @@ public class MultiplayerController : MonoBehaviour
 			/// If End Turn is pressed, send message to server
 
 			case "O": // encrypted obstacles from server
-					  //ConsoleScript.Print("Multiplayer", "Our obstacles: " + splitMsg[1]);
 
 				if (!clientScr.isHost)
 					gridManagerScr.GirdManagerSetUp();
@@ -112,6 +111,7 @@ public class MultiplayerController : MonoBehaviour
 				break;
 
 			case "BPR": // Both Players Ready, send server encoded dino
+				uiControllerScr.BothPlayersAreReadyScreen();
 				clientScr.GenerateEncodedDino();
 				break;
 
