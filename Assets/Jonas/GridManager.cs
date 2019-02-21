@@ -102,6 +102,7 @@ public class GridManager : MonoBehaviour
 		if (inSetup)
 			SpawnRandomObstaclesOnGrid();
 	}
+    string t = "45|645|7!";
 
     // Update is called once per frame
     void Update()
@@ -124,7 +125,22 @@ public class GridManager : MonoBehaviour
 
            //ShowPossibleMoves(posses);
         }
-		UpdatePressObject();
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+
+            t = BuildDinosString();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+
+            DecodeDinosString(t);
+        }
+
+
+
+
+        UpdatePressObject();
 		UpdateObjectSpawn();
 		UpdateSelectionSquare();
     }
@@ -237,6 +253,75 @@ public class GridManager : MonoBehaviour
 
         TilePlayerMap[targetPos.x, targetPos.y] = TilePlayerMap[originPos.x, originPos.y];
         TilePlayerMap[originPos.x, originPos.y] = 0;
+        
+    }
+
+    public string BuildDinosString()
+    {
+        string result = "";
+        Debug.Log("SpawnedObjects" + " " + SpawnedObjects.Count);
+        for (int i = 0; i < SpawnedObjects.Count; i++)
+        {
+            result += SpawnedObjects[i].GetComponent<Dinosaur>().tileX + "*" + SpawnedObjects[i].GetComponent<Dinosaur>().tileZ + "*" + SpawnedObjects[i].GetComponent<Dinosaur>().id + "!";
+            
+        }
+        Debug.Log("result" + " " + result);
+        return result;
+    }
+
+    public void DecodeDinosString(string text)
+    {
+        for (int i = 0; i < text.Length; i++)
+        {
+            int tileX = 0, tileZ = 0, identification = 0;
+            int index = i;
+            string temp = "";
+            while (text[index] != '*')
+            {
+                temp += text[index];
+                index++;
+            }
+            Debug.Log("x: " + temp);
+            for (int a = 0; a < temp.Length; a++)
+            {
+                tileX += (int)temp[a] - 48;
+            }
+            temp = "";
+            index++;
+
+            while (text[index] != '*')
+            {
+                temp += text[index];
+                index++;
+            }
+            Debug.Log("y: " + temp);
+            for (int a = 0; a < temp.Length; a++)
+            {
+                tileZ += (int)temp[a] - 48;
+            }
+            temp = "";
+            index++;
+
+            while (text[index] != '!')
+            {
+                temp += text[index];
+                index++;
+            }
+            Debug.Log("id: " + temp);
+            i = index;
+            for (int a = 0; a < temp.Length; a++)
+            {
+                identification += (int)temp[a] - 48;
+            }
+
+            Quaternion rot;
+            if (playerId == 1)
+                rot = Quaternion.Euler(0, 90, 0);
+            else
+                rot = Quaternion.Euler(0, -90, 0);
+
+            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification - 1], new Vector3(tileX, 0.75f, tileZ), rot));
+        }
     }
 
     void ClickOnPossibleAction(Vector3 clickPoint)
