@@ -176,8 +176,11 @@ public class GridManager : MonoBehaviour
         }
         for (int i = 0; i < positions.Length; i++)
         {
-            canMoveObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
-            nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+            if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9 && TileTypeMap[positions[i].x + origin.x, positions[i].y + origin.y] == 0) {
+               // if(positions[i].x == 1 && positions[i].y == 1 && TileTypeMap[positions[i].x + origin.x, positions[i].y + origin.y] == 0))
+                canMoveObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+                nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+            }
         }
     }
 
@@ -193,8 +196,11 @@ public class GridManager : MonoBehaviour
         }
         for (int i = 0; i < positions.Length; i++)
         {
-            canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
-            nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+            if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9)
+            {
+                canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+                nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+            }
         }
     }
 
