@@ -7,6 +7,7 @@ public class Dinosaur : MonoBehaviour
     public int id;
     public int tileX, tileZ;
     public string[] infoText;
+    [Space]
 
     public int health;
     public GameObject[] hearts;
@@ -19,6 +20,10 @@ public class Dinosaur : MonoBehaviour
     public AudioClip Attack;
     public AudioClip Death;
 
+    [Space]
+    public ParticleSystem BloodParticles;
+
+    [Space]
     public pos[] whereCanMove;
 
     void Start()
@@ -56,6 +61,12 @@ public class Dinosaur : MonoBehaviour
     {
         health -= hp;
         UpdateHealth();
+        SpawnBloodParticles();
+    }
+
+    public virtual void SpawnBloodParticles()
+    {
+        BloodParticles.Play();
     }
 
 }
