@@ -152,7 +152,7 @@ public class Server : MonoBehaviour
 	}
 	void ServerDinoMove(int connId, string encodedText)
 	{
-		string msg = "DM" + encodedText;
+		string msg = "DM|" + encodedText;
 		Send(msg, reliableChannel, OtherConnectionId(connId));
 	}
 

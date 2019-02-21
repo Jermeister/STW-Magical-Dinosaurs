@@ -127,7 +127,7 @@ public class MultiplayerController : MonoBehaviour
 	void ReceivedMsgYourTurn()
 	{
 		uiControllerScr.endTurnUI.SetActive(true);
-		currentTurnPlayerId = clientScr.GetThisClientId();
+		currentTurnPlayerId = GetThisClientId();
 	}
 	void ReceivedMsgDinoMove(string encodedText)
 	{
@@ -157,8 +157,17 @@ public class MultiplayerController : MonoBehaviour
 
 	public bool IsMyTurn()
 	{
-		return currentTurnPlayerId == clientScr.GetThisClientId();
+		return currentTurnPlayerId == GetThisClientId();
 	}
+	public int GetThisClientId()
+	{
+		return (clientScr.isHost == true ? 1 : 2);
+	}
+	public int GetOtherClientId()
+	{
+		return (clientScr.isHost == true ? 2 : 1);
+	}
+
 
 	private void OnApplicationQuit()
 	{

@@ -96,7 +96,7 @@ public class Client : MonoBehaviour
 	public void SetupButtonPress()
 	{
 		// PR = player ready
-		int playerId = GetThisClientId();
+		int playerId = multiplayerControllerScr.GetThisClientId();
 		string msg = "SPR|" + playerId;
 
 		Send(msg, reliableChannel);
@@ -104,7 +104,7 @@ public class Client : MonoBehaviour
 	public void EndTurnButtonPress()
 	{
 		uiControllerScr.endTurnUI.SetActive(false);
-		multiplayerControllerScr.currentTurnPlayerId = GetOtherClientId();
+		multiplayerControllerScr.currentTurnPlayerId = multiplayerControllerScr.GetOtherClientId();
 		string msg = "SET";
 		Send(msg, reliableChannel);
 	}
@@ -129,14 +129,6 @@ public class Client : MonoBehaviour
 
 	}
 
-	public int GetThisClientId()
-	{
-		return (isHost == true ? 1 : 2);
-	}
-	public int GetOtherClientId()
-	{
-		return (isHost == true ? 2 : 1);
-	}
 
 	public void Send(string msg, int channelId)
 	{
