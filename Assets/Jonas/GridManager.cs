@@ -392,6 +392,7 @@ public class GridManager : MonoBehaviour
                 rot = Quaternion.Euler(0, -90, 0);
 
             SpawnedObstacles.Add(Instantiate(obstaclePrefabs[identification], new Vector3(tileX, 0.75f, tileZ), rot));
+            TileTypeMap[tileX, tileZ] = 11;
         }
     }
 
@@ -462,7 +463,9 @@ public class GridManager : MonoBehaviour
 			ConsoleScript.Print("Grid", "rot: " + rot);
 
             SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification - 1], new Vector3(tileX, 0.75f, tileZ), rot));
-            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = playerId;
+            SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = 1;
+            TileTypeMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().id;
+            TilePlayerMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID;
         }
     }
 
