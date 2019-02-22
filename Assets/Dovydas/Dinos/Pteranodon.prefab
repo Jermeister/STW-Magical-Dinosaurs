@@ -1454,10 +1454,10 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Terry passive
-  - Terry attack
-  - Terry special
-  - Terry move
+  - 'Passive:'
+  - 'Attack:'
+  - 'Special: '
+  - 'Move:'
   health: 3
   hearts:
   - {fileID: 5481601536218747653}
@@ -1474,6 +1474,7 @@ MonoBehaviour:
   Roar: {fileID: 8300000, guid: 13e68f30198ccdc458c10406abae6c3c, type: 3}
   Attack: {fileID: 8300000, guid: fb2435448965bc647b6b04d5c1d98ad5, type: 3}
   Death: {fileID: 8300000, guid: ff4e6d6fbe173de428bf1de461ea5015, type: 3}
+  BloodParticles: {fileID: 0}
   whereCanMove:
   - x: 1
     y: 0
