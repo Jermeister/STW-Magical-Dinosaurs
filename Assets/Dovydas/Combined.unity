@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 1.77
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -12648,7 +12648,7 @@ MonoBehaviour:
   playerId: 1
   gridSize: 10
   tile: {fileID: 4393210185738121625, guid: 5c930195606d398429e49a3e483fde2f, type: 3}
-  ySpawnValue: 0.62
+  ySpawnValue: 0.61
   selectionItem: {fileID: 4880717786843454047, guid: f0773e0fe7df9a84ebac789a3898421d,
     type: 3}
   standItem: {fileID: 4880717786843454047, guid: fa36dffe8b09a994a82b4c8fb9b5aeb0,
@@ -12674,7 +12674,7 @@ MonoBehaviour:
   inGame: 0
   inSetup: 1
   maxObstaclesCount: 10
-  obstaclesSpawnY: 0.55
+  obstaclesSpawnY: 0.6
   inTiles: 0
   obstacleId: 10
   monsterId: 1

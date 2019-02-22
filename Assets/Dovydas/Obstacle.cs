@@ -21,7 +21,7 @@ public class Obstacle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+		this.transform.position = new Vector3(transform.position.x, 0.60f, transform.position.z);   
     }
 
     // Update is called once per frame
