@@ -19,6 +19,8 @@ public class Dinosaur : MonoBehaviour
     public int MoveCost;
     public int SpecialCost;
 
+    public int damage;
+
     [Header("Sounds")]
     public AudioClip Move;
     public AudioClip Roar;

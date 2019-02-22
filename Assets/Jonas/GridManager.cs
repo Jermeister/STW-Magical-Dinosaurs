@@ -185,27 +185,27 @@ public class GridManager : MonoBehaviour
 
                     (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
                     (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-                    (1 + origin.x <= 9 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == 3 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
                     (-1 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0)||
 
                     (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
                     (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
-                    (2 + origin.x <= 9 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
+                    (2 + origin.x <= 9 && positions[i].x == 3 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
                     (-2 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
 
                     (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
                     (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-                    (1 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
                     (-1 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
 
                     (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
                     (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
-                    (2 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
+                    (2 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
                     (-2 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
 
                     (3 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 3 + origin.y] != 0) ||
                     (-3 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -3 + origin.y] != 0) ||
-                    (3 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[3 + origin.x, 0 + origin.y] != 0) ||
+                    (3 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[3 + origin.x, 0 + origin.y] != 0) ||
                     (-3 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-3 + origin.x, 0 + origin.y] != 0))
                 {
 
@@ -245,34 +245,34 @@ public class GridManager : MonoBehaviour
 
                     (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
                     (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-                    (1 + origin.x <= 9 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == 3 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
                     (-1 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
 
                     (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
                     (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
-                    (2 + origin.x <= 9 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
+                    (2 + origin.x <= 9 && positions[i].x == 3 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
                     (-2 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
 
                     (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
                     (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-                    (1 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
                     (-1 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
 
                     (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
                     (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
-                    (2 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
+                    (2 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
                     (-2 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
 
                     (3 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 3 + origin.y] != 0) ||
                     (-3 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -3 + origin.y] != 0) ||
-                    (3 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[3 + origin.x, 0 + origin.y] != 0) ||
+                    (3 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[3 + origin.x, 0 + origin.y] != 0) ||
                     (-3 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-3 + origin.x, 0 + origin.y] != 0))
                 {
 
                 }
                 else
                 {
-                    canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+                    canMoveObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
                     nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
                 }
             }
@@ -366,6 +366,26 @@ public class GridManager : MonoBehaviour
         LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Move, transform.position);
 
     }
+
+    public void MultiplayerDinoAttack(int tileX, int tileZ, pos targetPos, int damage)
+    {
+        int index = 0;
+
+        for (int i = 0; i < SpawnedObjects.Count; i++)
+        {
+            if (SpawnedObjects[i].GetComponent<Dinosaur>().tileX == tileX && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == tileZ)
+            {
+                index = i;
+            }
+        }
+        SpawnedObjects[index].GetComponent<Dinosaur>().LoseHealth(damage);
+
+
+
+        LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Attack, transform.position);
+
+    }
+
 
 
     public string BuildObstaclesString()
@@ -555,13 +575,20 @@ public class GridManager : MonoBehaviour
 				if (SpawnedObjects[a].GetComponent<Dinosaur>() == selectedDino && TilePlayerMap[currentPosX, currentPosY] == mc.GetThisClientId())
                 {
                     HidePossibleActions();
-                    
-					
-					mc.DinoMove(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
 
-					MultiplayerDinoMove(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount));
 
-					break;
+                    if (uiController.actionID == 3)
+                    {
+                        mc.DinoMove(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
+                        MultiplayerDinoMove(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount));
+                    }
+                    else if (uiController.actionID == 1)
+                    {
+                        mc.DinoAttack(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
+                        MultiplayerDinoAttack(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount), SpawnedObjects[a].GetComponent<Dinosaur>().damage);
+                    }
+
+                    break;
                 }
             }
             TileTypeMap[xCount, zCount] = monsterId;
@@ -680,7 +707,7 @@ public class GridManager : MonoBehaviour
 
 		if ((inGame || inSetup) && finalPosition.x < 0 || finalPosition.x > gridSize-1 || finalPosition.z < 0 || finalPosition.z > gridSize-1)
 		{
-            HidePossibleActions();
+            //HidePossibleActions();
             uiController.unitIsSelected = false;
             HidePossibleActions();
             Destroy(selectionInstance);
@@ -692,7 +719,7 @@ public class GridManager : MonoBehaviour
 
         if (inSetup && (TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId))
 		{
-            HidePossibleActions();
+            //HidePossibleActions();
             uiController.unitIsSelected = false;
             HidePossibleActions();
             Destroy(selectionInstance);
@@ -704,14 +731,14 @@ public class GridManager : MonoBehaviour
 		if (!selectionInstance)
 		{
             uiController.unitIsSelected = true;
-            HidePossibleActions();
+            //HidePossibleActions();
             selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
             return;
 		}
 
 		if (selectionInstance)
         {
-            HidePossibleActions();
+            //HidePossibleActions();
             selectionInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
         }
 
