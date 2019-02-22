@@ -25,7 +25,6 @@ public class Client : MonoBehaviour
 
 	public int localConnectionId;
 
-
 	public bool isHost;
 	public bool isConnectionSuccessful;
 	private bool isStarted;
@@ -114,6 +113,14 @@ public class Client : MonoBehaviour
 	public void DinoMove(string encodedText)
 	{
 		Send("SDM|" + encodedText, reliableChannel);
+	}
+	public void DinoAttack(string encodedText)
+	{
+		Send("SDA|" + encodedText, reliableChannel);
+	}
+	public void DinoSpecial(string encodedText)
+	{
+		Send("SDS|" + encodedText, reliableChannel);
 	}
 
 	#endregion

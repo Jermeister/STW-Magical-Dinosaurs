@@ -104,6 +104,15 @@ public class MultiplayerController : MonoBehaviour
 				ReceivedMsgDinoMove(splitMsg[1]);
 				break;
 
+			case "DA": // Dino Attack, sync up dino attack
+				ReceivedMsgDinoAttack(splitMsg[1]);
+				break;
+
+			case "DS": // Dino Special, sync up dino special
+				ReceivedMsgDinoSpecial(splitMsg[1]);
+				break;
+
+
 			case "asd": break;
 			default: ConsoleScript.Print("Multiplayer", "Unknown message: " + splitMsg[0]); break;
 
@@ -133,11 +142,28 @@ public class MultiplayerController : MonoBehaviour
 	{
 		gridManagerScr.DecodeMovementCommand(encodedText);
 	}
+	void ReceivedMsgDinoAttack(string encodedText)
+	{
+		//gridManagerScr.DecodeAttackCommand(encodedText);
+	}
+	void ReceivedMsgDinoSpecial(string encodedText)
+	{
+		//gridManagerScr.DecodeSpecialCommand(encodedText);
+	}
 
 	public void DinoMove(string encodedText)
 	{
 		clientScr.DinoMove(encodedText);
 	}
+	public void DinoAttack(string encodedText)
+	{
+		clientScr.DinoAttack(encodedText);
+	}
+	public void DinoSpecial(string encodedText)
+	{
+		clientScr.DinoSpecial(encodedText);
+	}
+
 	public void SetupButtonPressed()
 	{
 		clientScr.SetupButtonPress();

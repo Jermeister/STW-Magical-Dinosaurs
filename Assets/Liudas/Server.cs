@@ -131,6 +131,14 @@ public class Server : MonoBehaviour
 				ServerDinoMove(id, splitData[1]);
 				break;
 
+			case "SDA": // server Dino Attack, other player attacked, sync it up
+				ServerDinoAttack(id, splitData[1]);
+				break;
+
+			case "SDS": // server Dino Special, other player used special, sync it up
+				ServerDinoSpecial(id, splitData[1]);
+				break;
+
 			case "asd": break;
 
 			default: ConsoleScript.Print("Server", "Unknown message: " + splitData[0]); break;
@@ -150,9 +158,20 @@ public class Server : MonoBehaviour
 		currentTurnPlayerId = currentTurnPlayerId == 1 ? 2 : 1;
 		Send("YT", reliableChannel, currentTurnPlayerId);
 	}
+
 	void ServerDinoMove(int connId, string encodedText)
 	{
 		string msg = "DM|" + encodedText;
+		Send(msg, reliableChannel, OtherConnectionId(connId));
+	}
+	void ServerDinoAttack(int connId, string encodedText)
+	{
+		string msg = "DA|" + encodedText;
+		Send(msg, reliableChannel, OtherConnectionId(connId));
+	}
+	void ServerDinoSpecial(int connId, string encodedText)
+	{
+		string msg = "DS|" + encodedText;
 		Send(msg, reliableChannel, OtherConnectionId(connId));
 	}
 
