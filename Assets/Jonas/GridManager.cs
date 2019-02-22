@@ -231,10 +231,50 @@ public class GridManager : MonoBehaviour
         }
         for (int i = 0; i < positions.Length; i++)
         {
-            if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9)
+            if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9 && TileTypeMap[positions[i].x + origin.x, positions[i].y + origin.y] == 0)
             {
-                canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
-                nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+                if ((1 + origin.x <= 9 && 1 + origin.y <= 9 && positions[i].x == 1 && positions[i].y == 1 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && 1 + origin.y <= 9 && positions[i].x == -1 && positions[i].y == 1 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && -1 + origin.y >= 0 && positions[i].x == 1 && positions[i].y == -1 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && -1 + origin.y >= 0 && positions[i].x == -1 && positions[i].y == -1 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+
+                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 2 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -2 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == 2 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && positions[i].x == -2 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
+
+                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
+
+                    (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
+                    (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
+                    (2 + origin.x <= 9 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
+                    (-2 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
+
+                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
+
+                    (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
+                    (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
+                    (2 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
+                    (-2 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
+
+                    (3 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 3 + origin.y] != 0) ||
+                    (-3 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -3 + origin.y] != 0) ||
+                    (3 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[3 + origin.x, 0 + origin.y] != 0) ||
+                    (-3 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-3 + origin.x, 0 + origin.y] != 0))
+                {
+
+                }
+                else
+                {
+                    canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+                    nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+                }
             }
         }
     }
@@ -321,6 +361,8 @@ public class GridManager : MonoBehaviour
 
         TilePlayerMap[targetPos.x, targetPos.y] = TilePlayerMap[tileX, tileZ];
         TilePlayerMap[tileX, tileZ] = 0;
+
+        LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Move, transform.position);
 
     }
 
@@ -471,7 +513,7 @@ public class GridManager : MonoBehaviour
                 rot = Quaternion.Euler(0, -90, 0);
 
 
-            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification - 1], new Vector3(tileX, 0.75f, tileZ), rot));
+            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification], new Vector3(tileX, 0.75f, tileZ), rot));
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = (playerId == 1 ? 2 : 1);
 			SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileX = tileX;
 			SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileZ = tileZ;
@@ -538,7 +580,8 @@ public class GridManager : MonoBehaviour
 		int xCount = Mathf.RoundToInt(finalPosition.x);
 		int zCount = Mathf.RoundToInt(finalPosition.z);
 
-		if (inSetup && TileTypeMap[xCount, zCount] > 0 && TileTypeMap[xCount, zCount] < 10)
+     
+        if (inSetup && TileTypeMap[xCount, zCount] > 0 && TileTypeMap[xCount, zCount] < 10)
 		{
 			for(int i = 0;i<SpawnedObjects.Count;i++)
 			{
@@ -562,7 +605,8 @@ public class GridManager : MonoBehaviour
 		{
 			if (!standInstance)
 			{
-				standInstance = Instantiate(standItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
+           
+                standInstance = Instantiate(standItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
                 monsterId = TileTypeMap[xCount, zCount];
                 for (int i = 0; i < SpawnedObjects.Count; i++)
                 {
@@ -578,7 +622,9 @@ public class GridManager : MonoBehaviour
 
             if (standInstance)
             {
+                HidePossibleActions();
                 standInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
+                monsterId = TileTypeMap[xCount, zCount];
                 for (int i = 0; i < SpawnedObjects.Count; i++)
                 {
                     if (SpawnedObjects[i].GetComponent<Dinosaur>() != null && SpawnedObjects[i].GetComponent<Dinosaur>().tileX == xCount && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == zCount)
@@ -588,16 +634,22 @@ public class GridManager : MonoBehaviour
 
                     }
                 }
-                monsterId = TileTypeMap[xCount, zCount];
+                uiController.unitIsSelected = true;
             }
-		}
+        }
         
 		else
 		{
 
 			Destroy(standInstance);
 		}
-	}
+
+        if (TileTypeMap[xCount, zCount] == 0)
+        {
+            //HidePossibleActions();
+            uiController.unitIsSelected = false;
+        }
+    }
 	/// <summary>
 	/// Spawning selection item so that player sees where he can spawn a dinosaur
 	/// </summary>
@@ -607,6 +659,8 @@ public class GridManager : MonoBehaviour
 		var finalPosition = GetNearestPointOnGrid(mousePoint);
 		int xCount = Mathf.RoundToInt(finalPosition.x);
 		int zCount = Mathf.RoundToInt(finalPosition.z);
+
+       
 
 		// Checking if we are holding mouse on the same tile, so selection does not despawn and we don't have to spawn it again
 		if (selectionInstance && (int)selectionInstance.transform.position.x == xCount && (int)selectionInstance.transform.position.z == zCount)

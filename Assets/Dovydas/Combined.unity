@@ -12496,6 +12496,7 @@ MonoBehaviour:
   selectedDino: {fileID: 0}
   canBuild: 0
   uiController: {fileID: 0}
+  mc: {fileID: 0}
   canAttackObjects:
   - column:
     - {fileID: 5778699131768346936}
@@ -17954,6 +17955,7 @@ MonoBehaviour:
   selectedDino: {fileID: 0}
   canBuild: 0
   uiController: {fileID: 0}
+  mc: {fileID: 0}
   canAttackObjects: []
   canMoveObjects: []
   nowTargetable: []
@@ -21759,6 +21761,7 @@ MonoBehaviour:
   isWaitingInGameUI: {fileID: 1853250724}
   endTurnUI: {fileID: 1358891763}
   buildingMenuUI: {fileID: 1711222404}
+  mc: {fileID: 0}
 --- !u!114 &1197572233
 MonoBehaviour:
   m_ObjectHideFlags: 0
