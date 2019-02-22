@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33297255223209020}
   - component: {fileID: 23342607843203778}
   - component: {fileID: 64999545041225502}
+  - component: {fileID: 5223373622614517224}
   m_Layer: 0
   m_Name: palm-angle 1
   m_TagString: Untagged
@@ -93,3 +94,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: bb436e77ad3a04cfb90d935421a832c6, type: 3}
+--- !u!114 &5223373622614517224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104298590177788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0d2d465c0a62b459448eddb7582861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileX: 0
+  tileZ: 0
+  id: 6

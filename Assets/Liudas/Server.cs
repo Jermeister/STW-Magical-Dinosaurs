@@ -8,6 +8,7 @@ public class Server : MonoBehaviour
 {
 #pragma warning disable CS0618 // Type or member is obsolete
 
+	private GridManager gridManagerScr;
 	private MultiplayerController multiplayerControllerScr;
 	private Client clientScr;
 	private UIController uiControllerScr;
@@ -23,16 +24,22 @@ public class Server : MonoBehaviour
 
 	byte error;
 
+
+	public int currentTurnPlayerId = 1;
+
+	public int playersSetupReady = 0;
+
 	private void Start()
 	{
 		DontDestroyOnLoad(gameObject);
+		gridManagerScr = GameObject.Find("Grid").GetComponent<GridManager>();
 
 		StartServer();
 	}
 	private void Update()
 	{
 		UpdateMessagePump();
-		
+
 	}
 
 	private void UpdateMessagePump()
@@ -48,7 +55,7 @@ public class Server : MonoBehaviour
 		int dataSize;
 
 		NetworkEventType type = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, BYTE_SIZE, out dataSize, out error);
-		switch(type)
+		switch (type)
 		{
 			case NetworkEventType.DataEvent:
 
@@ -61,14 +68,30 @@ public class Server : MonoBehaviour
 
 			case NetworkEventType.ConnectEvent:
 
-				if (connectionId == 2) uiControllerScr.ToSetup();
-
 				ConsoleScript.Print("Server", "Client " + connectionId + " has connected.");
 				//Send("NC", )
-				Send("asd", reliableChannel, 0);
-				Send("asd", reliableChannel, 1);
-				Send("asd", reliableChannel, 2);
-				//Send("asd", reliableChannel, 3);
+				//if (connectionId == 1)
+				{
+					SendAll("asd", reliableChannel);
+				}
+				//Send("asd", reliableChannel, 0);
+				//Send("asd", reliableChannel, 1);
+				//Send("asd", reliableChannel, 2);
+
+				if (connectionId == 2)
+				{
+					gridManagerScr.GirdManagerSetUp();
+					string generatedString = gridManagerScr.BuildObstaclesString();
+
+					SendAll("O|" + generatedString, reliableChannel);
+
+					// Call our own client uiControllerScr.ToSetup
+					uiControllerScr.ToSetup();
+				}
+
+
+
+
 				break;
 			case NetworkEventType.DisconnectEvent:
 				ConsoleScript.Print("Server", "Client " + connectionId + " has disconnected.");
@@ -82,18 +105,31 @@ public class Server : MonoBehaviour
 
 		switch (splitData[0])
 		{
-			// Client just connected to the network
-			case "BP":
-				ButtonPress(id);
-				//ConsoleScript.Print("Server", "connection Id from got message: " + id);
+
+			case "SPR": // server player ready (in setup)
+				playersSetupReady++;
+				ConsoleScript.Print("Server", "playersSetupReady: " + playersSetupReady);
+
+				if (playersSetupReady >= 2)
+				{
+					ConsoleScript.Print("Server", "Both players have done their setup");
+
+					string msg2 = "BPR";
+					SendAll(msg2, reliableChannel);
+				}
 				break;
 
-			/// TODO: receive SetupButtonPressed message
-			/// Check if both players are ready
-			/// If they are, send message that they are ready
+			case "SED": // server Encoded Dinos message from client
+				Send("ED|" + splitData[1], reliableChannel, OtherConnectionId(id));
+				break;
 
-			/// Player 1 (host) ended his turn
-			/// Inform Player 2 that host ended his turn 
+			case "SET": // server Ended Turn (player ended turn, give other player the rights to do things)
+				ServerEndedTurn(id);
+				break;
+
+			case "SDM": // server Dino Move, other player moved dino, sync it up
+				ServerDinoMove(id, splitData[1]);
+				break;
 
 			case "asd": break;
 
@@ -105,8 +141,19 @@ public class Server : MonoBehaviour
 	{
 		ConsoleScript.Print("Server", connId + " client press the button.");
 		ConsoleScript.Print("Server", "sending message to client: " + OtherConnectionId(connId));
-		Send("OBP", reliableChannel, OtherConnectionId(connId));
-		//SendAll("OBP", reliableChannel);
+		Send("BP", reliableChannel, OtherConnectionId(connId));
+		//SendAll("BP", reliableChannel);
+	}
+
+	void ServerEndedTurn(int connId)
+	{
+		currentTurnPlayerId = currentTurnPlayerId == 1 ? 2 : 1;
+		Send("YT", reliableChannel, currentTurnPlayerId);
+	}
+	void ServerDinoMove(int connId, string encodedText)
+	{
+		string msg = "DM|" + encodedText;
+		Send(msg, reliableChannel, OtherConnectionId(connId));
 	}
 
 	private int OtherConnectionId(int connId)
@@ -117,24 +164,30 @@ public class Server : MonoBehaviour
 	private void Send(string message, int channelId, int cnnId)
 	{
 		// Send a message for one client
+		ConsoleScript.Print("ServerSendMsg", message);
 
 		// check this, if I am sending to the same computer
 		if (cnnId == 1)
 		{
 			//ConsoleScript.Print("Server", "Sending to Client via script");
 			multiplayerControllerScr.DecryptMessage(message);
-		} else
+		}
+		else
 		{
 			//ConsoleScript.Print("Server", "Sending to Client via networking");
 			byte[] msg = Encoding.Unicode.GetBytes(message);
 			NetworkTransport.Send(hostId, cnnId, channelId, msg, message.Length * sizeof(char), out error);
 		}
+
+
 	}
 	private void SendAll(string message, int channelId)
 	{
-		//Send(message, channelId, 0);
-		Send(message, channelId, 1);
+		//ConsoleScript.Print("ServerSendMsg", message);
+
 		Send(message, channelId, 2);
+		Send(message, channelId, 1);
+		
 	}
 
 	public void StartServer()
@@ -168,5 +221,5 @@ public class Server : MonoBehaviour
 
 
 
-	#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // Type or member is obsolete
 }

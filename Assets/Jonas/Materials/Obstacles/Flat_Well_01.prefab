@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8852072880553791815}
   - component: {fileID: 7669739575250157409}
   - component: {fileID: 5432540870280920609}
+  - component: {fileID: 2817610058596570564}
   m_Layer: 0
   m_Name: Flat_Well_01
   m_TagString: Untagged
@@ -77,3 +78,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &2817610058596570564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8087676018172407625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0d2d465c0a62b459448eddb7582861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileX: 0
+  tileZ: 0
+  id: 4

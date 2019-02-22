@@ -10,6 +10,7 @@ public class Client : MonoBehaviour
 
 	public GameObject buildingControllerPrefab; // this is spawned when the client is connected to the server
 
+	private GridManager gridManagerScr;
 	private MultiplayerController multiplayerControllerScr;
 	private Server serverScr;
 	private UIController uiControllerScr;
@@ -35,6 +36,7 @@ public class Client : MonoBehaviour
 	{
 		DontDestroyOnLoad(gameObject);
 
+		gridManagerScr = GameObject.Find("Grid").GetComponent<GridManager>();
 		multiplayerControllerScr = GameObject.Find("MultiplayerController").GetComponent<MultiplayerController>();
 		uiControllerScr = GameObject.Find("MainCanvas").GetComponent<UIController>();
 
@@ -55,10 +57,6 @@ public class Client : MonoBehaviour
 	private void Update()
 	{
 		UpdateMessagePump();
-
-		if (Input.GetMouseButtonDown(1))
-			Send("BP", reliableChannel);
-
 	}
 
 	private void UpdateMessagePump()
@@ -79,17 +77,12 @@ public class Client : MonoBehaviour
 		switch (type)
 		{
 			case NetworkEventType.ConnectEvent:
-				print("Host Id: " + hostId);
 				ConsoleScript.Print("Client", "I am connected.");
 				break;
 
 			case NetworkEventType.DataEvent:
-
 				string msg = Encoding.Unicode.GetString(recBuffer, 0, dataSize);
-				ConsoleScript.Print("ClientGotMsg", msg);
-
 				multiplayerControllerScr.DecryptMessage(msg);
-
 				break;
 
 
@@ -100,16 +93,46 @@ public class Client : MonoBehaviour
 
 	}
 
-
-	public void ClientButtonPress()
+	public void SetupButtonPress()
 	{
-		Send("BP", reliableChannel);
+		// PR = player ready
+		int playerId = multiplayerControllerScr.GetThisClientId();
+		string msg = "SPR|" + playerId;
+
+		Send(msg, reliableChannel);
 	}
+	public void EndTurnButtonPress()
+	{
+		uiControllerScr.endTurnUI.SetActive(false);
+		multiplayerControllerScr.currentTurnPlayerId = multiplayerControllerScr.GetOtherClientId();
+		string msg = "SET";
+		Send(msg, reliableChannel);
+	}
+
+	#region DinoActions
+
+	public void DinoMove(string encodedText)
+	{
+		Send("SDM|" + encodedText, reliableChannel);
+	}
+
+	#endregion
+
+	public void GenerateEncodedDino()
+	{
+		// Get client's encoded dinos
+		string dinoEncodedString = gridManagerScr.BuildDinosString();
+		ConsoleScript.Print("Client", "dinoEncodedString: " + dinoEncodedString);
+
+		string msg = "SED|" + dinoEncodedString;
+		Send(msg, reliableChannel);
+
+	}
+
 
 	public void Send(string msg, int channelId)
 	{
 		ConsoleScript.Print("ClientSendMsg", msg);
-
 		// check this, if I am sending to the same computer
 		if (isHost)
 		{
@@ -147,8 +170,8 @@ public class Client : MonoBehaviour
 
 		ConsoleScript.Print("Client", "connected to " + IP + " server");
 
-		if (!isHost)
-			uiControllerScr.ToSetup();
+		//if (!isHost)
+		//	uiControllerScr.ToSetup();
 
 		isConnectionSuccessful = true;
 		isStarted = true;
@@ -160,8 +183,6 @@ public class Client : MonoBehaviour
 
 		multiplayerControllerScr.ResetEverything();
 	}
-
-
 
 
 #pragma warning restore CS0618 // Type or member is obsolete
