@@ -31,6 +31,8 @@ public class UIController : MonoBehaviour
     public int money;
     public Text moneyText;
 
+    public GameObject startGameButton;
+
     #region Variables
     public int manaLeft, maxMana, minMana, manaSavingMax, manaPerTurn, startingMana;
 
@@ -88,7 +90,8 @@ public class UIController : MonoBehaviour
 
 	void Start()
 	{
-		gm = FindObjectOfType<GridManager>();
+        mc = FindObjectOfType<MultiplayerController>();
+        gm = FindObjectOfType<GridManager>();
 		fm = FindObjectOfType<FreeMovement>();
 	}
 
@@ -119,7 +122,7 @@ public class UIController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            unitIsSelected = true;
+            unitIsSelected = false;
         }
 
         if (needActionAndInfoZone && unitIsSelected)
@@ -128,6 +131,16 @@ public class UIController : MonoBehaviour
             infoAndActionsZone.SetActive(false);
 
         ManaCostBarUpdate();
+    }
+
+    public void EnableStartButton()
+    {
+        startGameButton.SetActive(true);
+    }
+
+    public void DisableStartButton()
+    {
+        startGameButton.SetActive(false);
     }
 
     public void Bought(int id)
@@ -139,10 +152,11 @@ public class UIController : MonoBehaviour
     {
         money += dinoButtons[id].cost;
     }
-
+    public MultiplayerController mc;
     public void Clicked_Activate(int id)
     {
-        Debug.Log("Selected action: " + id);
+        if (!mc.IsMyTurn())
+            return;
 
         gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
     }
@@ -187,11 +201,12 @@ public class UIController : MonoBehaviour
     
     public void Clicked_NextTurn()
     {
+		/*
         if (myTurn)
         {
             NextTurn();
-        }
-
+        }*/
+		multiplayerControllerScr.EndTurnButtonPress();
     }
 
     public void StartTurn()
@@ -307,11 +322,8 @@ public class UIController : MonoBehaviour
         needActionAndInfoZone = false;
 		//InitializeGame();
 		buildingMenuUI.SetActive(false);
-
-		/// TODO: (done?) disable SetupButton, enable text ui
 		isWaitingSetupUI.SetActive(true);
-
-		/// TODO: (done?) this client is ready, send to server
+        gm.canBuild = false;
 		multiplayerControllerScr.SetupButtonPressed();
 	}
 
@@ -342,7 +354,7 @@ public class UIController : MonoBehaviour
         needActionAndInfoZone = true;
         dinoButtons[0].Select();
         GameObject.FindObjectOfType<GridManager>().inSetup = true;
-
+        gm.canBuild = true;
     }
 
     public void ToWaitingForPlayer()

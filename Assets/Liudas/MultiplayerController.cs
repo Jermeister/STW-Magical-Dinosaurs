@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MultiplayerController : MonoBehaviour
 {
+	public int currentTurnPlayerId = 1;
 	public string ipAdrress;
 
 	public GameObject clientPrefab;
@@ -40,12 +41,6 @@ public class MultiplayerController : MonoBehaviour
 		server = null;
 
 		clientScr = null;
-	}
-
-	public void ButtonPressed()
-	{
-		if (clientScr != null)
-			clientScr.ClientButtonPress();
 	}
 
 	public void CreateGame()
@@ -85,55 +80,72 @@ public class MultiplayerController : MonoBehaviour
 		string[] splitMsg = message.Split('|');
 		ConsoleScript.Print("ClientGotMsg", message);
 
-		for (int i = 0; i < splitMsg.Length; i++)
-		{
-			//ConsoleScript.Print("ClientSendMsg", splitMsg[i]);
-		}
-
 		switch (splitMsg[0])
 		{
-			// Client just connected to the network
-			case "BP": OtherButtonPress(); break;
-
-			/// TODO: receive message from server that both players pressed SetupButtonPressed
-			/// switch scenes, make player 1 (host) start
-			/// On player 1 (host) screen, "End Turn" button is present
-			/// If End Turn is pressed, send message to server
+			#region ReceivedMessages
 
 			case "O": // encrypted obstacles from server
-
-				if (!clientScr.isHost)
-					gridManagerScr.GirdManagerSetUp();
-
-				uiControllerScr.ToSetup();
-				gridManagerScr.DecodeObstaclesString(splitMsg[1]);
-
+				ReceivedMsgDecodeObstacles(splitMsg[1]);
 				break;
 
 			case "BPR": // Both Players Ready, send server encoded dino
-				uiControllerScr.BothPlayersAreReadyScreen();
-				clientScr.GenerateEncodedDino();
+				ReceivedMsgBothPlayersReady();
 				break;
 
 			case "ED": // Encoded Dinos from the server (from other player), spawn them in
 				gridManagerScr.DecodeDinosString(splitMsg[1]);
-				/// TODO: Dino spawning done?? I stopped here.
+				break;
+
+			case "YT": // Your Turn, server told you that now it is your turn to do things in game
+				ReceivedMsgYourTurn();
+				break;
+
+			case "DM": // Dino Move, sync up dino movement
+				ReceivedMsgDinoMove(splitMsg[1]);
 				break;
 
 			case "asd": break;
-
 			default: ConsoleScript.Print("Multiplayer", "Unknown message: " + splitMsg[0]); break;
+
+			#endregion
 		}
 	}
 
-	private void OtherButtonPress()
+	void ReceivedMsgDecodeObstacles(string encodedObstacleMessage)
 	{
-		ConsoleScript.Print("Client", "Other client pressed the button!");
+		if (!clientScr.isHost)
+			gridManagerScr.GirdManagerSetUp();
+
+		uiControllerScr.ToSetup();
+		gridManagerScr.DecodeObstaclesString(encodedObstacleMessage);
+	}
+	void ReceivedMsgBothPlayersReady()
+	{
+		uiControllerScr.BothPlayersAreReadyScreen();
+		clientScr.GenerateEncodedDino();
+	}
+	void ReceivedMsgYourTurn()
+	{
+		uiControllerScr.endTurnUI.SetActive(true);
+		currentTurnPlayerId = GetThisClientId();
+	}
+	void ReceivedMsgDinoMove(string encodedText)
+	{
+		gridManagerScr.DecodeMovementCommand(encodedText);
 	}
 
+	public void DinoMove(string encodedText)
+	{
+		clientScr.DinoMove(encodedText);
+	}
 	public void SetupButtonPressed()
 	{
 		clientScr.SetupButtonPress();
+	}
+
+	public void EndTurnButtonPress()
+	{
+		clientScr.EndTurnButtonPress();
 	}
 
 	public void DisableCreateJoinMenus()
@@ -142,6 +154,20 @@ public class MultiplayerController : MonoBehaviour
 	public void EnableCreateJoinMenus()
 	{
 	}
+
+	public bool IsMyTurn()
+	{
+		return currentTurnPlayerId == GetThisClientId();
+	}
+	public int GetThisClientId()
+	{
+		return (clientScr.isHost == true ? 1 : 2);
+	}
+	public int GetOtherClientId()
+	{
+		return (clientScr.isHost == true ? 2 : 1);
+	}
+
 
 	private void OnApplicationQuit()
 	{

@@ -1955,7 +1955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9448,7 +9448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12494,6 +12494,7 @@ MonoBehaviour:
   monsterId: 1
   selectedIndex: 0
   selectedDino: {fileID: 0}
+  canBuild: 0
   uiController: {fileID: 0}
   canAttackObjects:
   - column:
@@ -12852,6 +12853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b73fff2904cda8742b441d553960d74a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentTurnPlayerId: 1
   ipAdrress: 
   clientPrefab: {fileID: 1213658092118305072, guid: 1d3a332e0b2e92b458f214638ad9e483,
     type: 3}
@@ -17063,7 +17065,6 @@ GameObject:
   - component: {fileID: 955352973}
   - component: {fileID: 955352972}
   - component: {fileID: 955352971}
-  - component: {fileID: 955352970}
   m_Layer: 5
   m_Name: Attack_Background_InfoText
   m_TagString: Untagged
@@ -17071,30 +17072,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!132 &955352970
-GUIText:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955352969}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Text: 
-  m_Anchor: 0
-  m_Alignment: 0
-  m_PixelOffset: {x: 0, y: 0}
-  m_LineSpacing: 1
-  m_TabSize: 4
-  m_Font: {fileID: 12800000, guid: 621b060a3eed87049a67fa4897eabc26, type: 3}
-  m_Material: {fileID: 0}
-  m_FontSize: 0
-  m_FontStyle: 0
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_PixelCorrect: 1
-  m_RichText: 1
 --- !u!114 &955352971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17975,6 +17952,7 @@ MonoBehaviour:
   monsterId: 1
   selectedIndex: 0
   selectedDino: {fileID: 0}
+  canBuild: 0
   uiController: {fileID: 0}
   canAttackObjects: []
   canMoveObjects: []
@@ -21670,8 +21648,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f01154943e391840b2b58ac06cb05f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAmount_Dino: 01000000020000000200000002000000050000000500000005000000
-  haveFree_Dino: 01000000000000000100000001000000000000000000000000000000
+  maxAmount_Dino: 01000000640000006400000064000000640000006400000064000000
+  haveFree_Dino: 01000000000000000000000000000000000000000000000000000000
   dinoButtons:
   - {fileID: 1841214194}
   - {fileID: 358559592}
@@ -21683,6 +21661,7 @@ MonoBehaviour:
   dinosAre: 00000000000000000000000000000000000000000000000000000000
   money: 1000
   moneyText: {fileID: 1919011483}
+  startGameButton: {fileID: 1602170289}
   manaLeft: 0
   maxMana: 15
   minMana: -163
@@ -26469,7 +26448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -26928,7 +26907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1505105398
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27993,7 +27972,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1602170290
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29369,7 +29348,6 @@ GameObject:
   - component: {fileID: 1705202592}
   - component: {fileID: 1705202591}
   - component: {fileID: 1705202589}
-  - component: {fileID: 1705202590}
   m_Layer: 5
   m_Name: Attack_InfoText
   m_TagString: Untagged
@@ -29391,7 +29369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -29415,30 +29393,6 @@ MonoBehaviour:
     hgpdahih gpsadg ihpsadf ghps hagship hpia ghp ihsgip hpisf hgipsh i ghp gspih
     sgiphpishigphapi ghpish dipghpids hgpias gihpidsghpih sighoip dshgip hapsgi hpids
     hpih asdghpisd hgpisdhg iphsapi ghpia hgpidh apih
---- !u!132 &1705202590
-GUIText:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1705202588}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Text: 
-  m_Anchor: 0
-  m_Alignment: 0
-  m_PixelOffset: {x: 0, y: 0}
-  m_LineSpacing: 1
-  m_TabSize: 4
-  m_Font: {fileID: 12800000, guid: 621b060a3eed87049a67fa4897eabc26, type: 3}
-  m_Material: {fileID: 0}
-  m_FontSize: 0
-  m_FontStyle: 0
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_PixelCorrect: 1
-  m_RichText: 1
 --- !u!222 &1705202591
 CanvasRenderer:
   m_ObjectHideFlags: 0

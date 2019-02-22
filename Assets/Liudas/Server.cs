@@ -83,8 +83,6 @@ public class Server : MonoBehaviour
 					gridManagerScr.GirdManagerSetUp();
 					string generatedString = gridManagerScr.BuildObstaclesString();
 
-					/// TODO: generate encrypted obstacles string
-					/// TODO: send encrypted obstacles string to both of the clients
 					SendAll("O|" + generatedString, reliableChannel);
 
 					// Call our own client uiControllerScr.ToSetup
@@ -104,7 +102,6 @@ public class Server : MonoBehaviour
 	public void DecryptMessage(int id, string msg)
 	{
 		string[] splitData = msg.Split('|');
-		//ConsoleScript.Print("ServerGotMsg", msg);
 
 		switch (splitData[0])
 		{
@@ -116,30 +113,22 @@ public class Server : MonoBehaviour
 				if (playersSetupReady >= 2)
 				{
 					ConsoleScript.Print("Server", "Both players have done their setup");
-					/// TODO: reveal opponent dinos on the tile map
 
 					string msg2 = "BPR";
 					SendAll(msg2, reliableChannel);
 				}
-
 				break;
 
 			case "SED": // server Encoded Dinos message from client
 				Send("ED|" + splitData[1], reliableChannel, OtherConnectionId(id));
 				break;
 
-			/// TODO: receive SetupButtonPressed message
-			/// Check if both players are ready
-			/// If they are, send message that they are ready
+			case "SET": // server Ended Turn (player ended turn, give other player the rights to do things)
+				ServerEndedTurn(id);
+				break;
 
-			/// Player 1 (host) ended his turn
-			/// Inform Player 2 that host ended his turn 
-
-
-
-			// Client just connected to the network
-			case "SBP": // server Button Press, test, delete later
-				ButtonPress(id);
+			case "SDM": // server Dino Move, other player moved dino, sync it up
+				ServerDinoMove(id, splitData[1]);
 				break;
 
 			case "asd": break;
@@ -154,6 +143,17 @@ public class Server : MonoBehaviour
 		ConsoleScript.Print("Server", "sending message to client: " + OtherConnectionId(connId));
 		Send("BP", reliableChannel, OtherConnectionId(connId));
 		//SendAll("BP", reliableChannel);
+	}
+
+	void ServerEndedTurn(int connId)
+	{
+		currentTurnPlayerId = currentTurnPlayerId == 1 ? 2 : 1;
+		Send("YT", reliableChannel, currentTurnPlayerId);
+	}
+	void ServerDinoMove(int connId, string encodedText)
+	{
+		string msg = "DM|" + encodedText;
+		Send(msg, reliableChannel, OtherConnectionId(connId));
 	}
 
 	private int OtherConnectionId(int connId)

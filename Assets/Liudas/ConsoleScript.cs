@@ -26,7 +26,7 @@ public static class ConsoleScript
 			return;
 		}
 
-		if (linesOfText.Count > 50)
+		if (linesOfText.Count > 40)
 			linesOfText.RemoveAt(0);
 
 		string msg = "[" + connectionType + "] " + text;
