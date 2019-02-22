@@ -231,50 +231,12 @@ public class GridManager : MonoBehaviour
         }
         for (int i = 0; i < positions.Length; i++)
         {
-            if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9 && TileTypeMap[positions[i].x + origin.x, positions[i].y + origin.y] == 0)
+            if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9)
             {
-                if ((1 + origin.x <= 9 && 1 + origin.y <= 9 && positions[i].x == 1 && positions[i].y == 1 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
-                    (-1 + origin.x >= 0 && 1 + origin.y <= 9 && positions[i].x == -1 && positions[i].y == 1 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
-                    (1 + origin.x <= 9 && -1 + origin.y >= 0 && positions[i].x == 1 && positions[i].y == -1 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-                    (-1 + origin.x >= 0 && -1 + origin.y >= 0 && positions[i].x == -1 && positions[i].y == -1 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-
-                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 2 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
-                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -2 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-                    (1 + origin.x <= 9 && positions[i].x == 2 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
-                    (-1 + origin.x >= 0 && positions[i].x == -2 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
-
-                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
-                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-                    (1 + origin.x <= 9 && positions[i].x == 3 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
-                    (-1 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
-
-                    (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
-                    (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
-                    (2 + origin.x <= 9 && positions[i].x == 3 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
-                    (-2 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
-
-                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
-                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
-                    (1 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
-                    (-1 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
-
-                    (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
-                    (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
-                    (2 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
-                    (-2 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
-
-                    (3 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 3 + origin.y] != 0) ||
-                    (-3 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -3 + origin.y] != 0) ||
-                    (3 + origin.x <= 9 && positions[i].x == 4 && positions[i].y == 0 && TileTypeMap[3 + origin.x, 0 + origin.y] != 0) ||
-                    (-3 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-3 + origin.x, 0 + origin.y] != 0))
-                {
-
-                }
-                else
-                {
-                    canMoveObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+                
+                    canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
                     nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
-                }
+               
             }
         }
     }
@@ -369,8 +331,10 @@ public class GridManager : MonoBehaviour
 
     public void MultiplayerDinoAttack(int tileX, int tileZ, pos targetPos, int damage)
     {
+        
+        
         int index = 0;
-
+        ConsoleScript.Print("TEST", "d");
         for (int i = 0; i < SpawnedObjects.Count; i++)
         {
             if (SpawnedObjects[i].GetComponent<Dinosaur>().tileX == tileX && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == tileZ)
@@ -378,12 +342,13 @@ public class GridManager : MonoBehaviour
                 index = i;
             }
         }
+        ConsoleScript.Print("TEST", tileX + " " + tileZ);
         SpawnedObjects[index].GetComponent<Dinosaur>().LoseHealth(damage);
 
 
 
         LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Attack, transform.position);
-
+        
     }
 
 
@@ -574,16 +539,18 @@ public class GridManager : MonoBehaviour
 				int currentPosY = SpawnedObjects[a].GetComponent<Dinosaur>().tileZ;
 				if (SpawnedObjects[a].GetComponent<Dinosaur>() == selectedDino && TilePlayerMap[currentPosX, currentPosY] == mc.GetThisClientId())
                 {
-                    HidePossibleActions();
+                    //dePossibleActions();
 
-
+                    ConsoleScript.Print("TEST", "ga");
                     if (uiController.actionID == 3)
                     {
+                        ConsoleScript.Print("TEST", "aaa");
                         mc.DinoMove(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
                         MultiplayerDinoMove(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount));
                     }
                     else if (uiController.actionID == 1)
                     {
+                        ConsoleScript.Print("TEST", "bbc");
                         mc.DinoAttack(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
                         MultiplayerDinoAttack(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount), SpawnedObjects[a].GetComponent<Dinosaur>().damage);
                     }
@@ -591,7 +558,7 @@ public class GridManager : MonoBehaviour
                     break;
                 }
             }
-            TileTypeMap[xCount, zCount] = monsterId;
+            //TileTypeMap[xCount, zCount] = monsterId;
             TilePlayerMap[xCount, zCount] = playerId;
         }
     }

@@ -1743,6 +1743,7 @@ MonoBehaviour:
   AttackCost: 0
   MoveCost: 0
   SpecialCost: 0
+  damage: 1
   Move: {fileID: 8300000, guid: e8fc31069972a634b940e9b619b49bf7, type: 3}
   Roar: {fileID: 8300000, guid: 54f41500de865474bb2cfbc717658d8c, type: 3}
   Attack: {fileID: 8300000, guid: 0c0543ef6ca7e2540abbc2669163860e, type: 3}
