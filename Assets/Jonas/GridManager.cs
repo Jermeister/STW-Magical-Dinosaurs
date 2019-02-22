@@ -362,7 +362,7 @@ public class GridManager : MonoBehaviour
 			return;
 		}
 
-		ConsoleScript.Print("TEST", "INDEX: " + index);
+		ConsoleScript.Print("TEST", "INDEX: " + damage);
         SpawnedObjects[index].GetComponent<Dinosaur>().LoseHealth(damage);
 
         LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Attack, transform.position);
@@ -670,7 +670,7 @@ public class GridManager : MonoBehaviour
     {
         var num = TileTypeMap[xCount, zCount] - 1;
         var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
-        uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);
+        uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost);
     }
 
 	/// <summary>

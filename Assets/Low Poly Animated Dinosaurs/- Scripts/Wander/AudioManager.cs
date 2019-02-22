@@ -21,6 +21,9 @@ namespace LowPolyAnimalPack
 
         private List<AudioSource> pool = new List<AudioSource>();
 
+        [SerializeField]
+        private AudioClip MenuTheme;
+
         private void Awake()
         {
             if (instance != null)
@@ -41,6 +44,36 @@ namespace LowPolyAnimalPack
                 audioSource.gameObject.SetActive(false);
                 pool.Add(audioSource);
             }
+            PlaySound(MenuTheme, transform.position);
+
+        }
+
+        public static void PlaySound(AudioClip clip)
+        {
+            for (int i = 0; i < instance.pool.Count; i++)
+            {
+                if (!instance.pool[i].gameObject.activeInHierarchy)
+                {
+                    instance.pool[i].clip = clip;
+                    instance.pool[i].transform.position = Vector3.zero;
+                    instance.pool[i].gameObject.SetActive(true);
+                    instance.pool[i].Play();
+                    instance.StartCoroutine(instance.ReturnToPool(instance.pool[i].gameObject, clip.length));
+                    return;
+                }
+            }
+
+            GameObject soundObject = new GameObject();
+            soundObject.transform.SetParent(instance.transform);
+            soundObject.name = "Game Theme";
+            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 1f;
+            audioSource.minDistance = instance.soundDistance;
+            instance.pool.Add(audioSource);
+            audioSource.clip = clip;
+            soundObject.transform.position = Vector3.zero;
+            audioSource.Play();
+            audioSource.loop = true;
         }
 
         public static void PlaySound(AudioClip clip, Vector3 pos)
@@ -97,6 +130,11 @@ namespace LowPolyAnimalPack
         {
             yield return new WaitForSeconds(delay);
             obj.SetActive(false);
+        }
+
+        public static void MuteMenuMusic()
+        {
+            instance.pool[0].mute = true;
         }
     }
 

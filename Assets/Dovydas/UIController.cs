@@ -40,6 +40,8 @@ public class UIController : MonoBehaviour
 
     public GameObject startGameButton;
 
+    public AudioClip GameTheme;
+
     #region Variables
     public int manaLeft, maxMana, minMana, manaSavingMax, manaPerTurn, startingMana;
 
@@ -264,11 +266,10 @@ public class UIController : MonoBehaviour
             manaBar.gameObject.SetActive(false);
     }
 
-    public void UpdateUIManaCost(int mana, int attack, int special)
+    public void UpdateUIManaCost(int mana, int attack)
     {
         MoveCost.text = mana.ToString();
         AttackCost.text = attack.ToString();
-        SpecialCost.text = special.ToString();
     }
 
 
@@ -276,18 +277,20 @@ public class UIController : MonoBehaviour
     public void Clicked_Info(int id)
     {
         var dino = gm.dinosaurPrefabs[gm.monsterId - 1].GetComponent<Dinosaur>();
-        infoText_Text[id].text = dino.infoText[id];
+        var textField = infoBackground[id].GetComponentInChildren<Text>();
         infoBackground[id].SetActive(true);
         if (infoBackground[id].name == "Attack_Background_InfoText")
         {
             infoBackground[id].GetComponentsInChildren<Image>()[1].sprite = dino.AttackPattern;
+            textField.text = dino.infoText[1];
         }
         else if (infoBackground[id].name == "Move_Background_InfoText")
         {
             infoBackground[id].GetComponentsInChildren<Image>()[1].sprite = dino.MovePattern;
+            textField.text = dino.infoText[2];
         }
-        //else if (infoBackground[id].name == "Special_Background_InfoText")
-        //infoBackground[id].GetComponentsInChildren<Image>()[1].sprite = dino.MovePattern;
+        else if (infoBackground[id].name == "Passive_Background_InfoText")
+            textField.text = dino.infoText[0];
     }
 
     public void Clicked_ExitInfo(int id)
@@ -350,6 +353,8 @@ public class UIController : MonoBehaviour
         isWaitingSetupUI.SetActive(true);
         gm.canBuild = false;
         multiplayerControllerScr.SetupButtonPressed();
+        LowPolyAnimalPack.AudioManager.PlaySound(GameTheme);
+        LowPolyAnimalPack.AudioManager.MuteMenuMusic();
     }
 
     public void BothPlayersAreReadyScreen()

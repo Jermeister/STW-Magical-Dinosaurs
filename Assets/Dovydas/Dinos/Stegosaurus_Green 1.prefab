@@ -1047,10 +1047,9 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Reese passive
-  - Reese attack
-  - Reese special
-  - Reese move
+  - Every 3rd attack deals bonus damage.
+  - Makes a ranged attack, attacking its enemy from a far.
+  - Moves once.
   health: 6
   hearts:
   - {fileID: 4178664539335562383}
@@ -1063,10 +1062,10 @@ MonoBehaviour:
   halfHeart_p2: {fileID: 21300000, guid: 22bbc5dd84ca1ff44b8b1efa6daaa6d8, type: 3}
   fullHeart_p2: {fileID: 21300000, guid: 4979ccd8823b9e04299c8363aab83ab9, type: 3}
   playerID: 0
-  AttackCost: 2
+  AttackCost: 4
   MoveCost: 1
   SpecialCost: 5
-  damage: 1
+  damage: 4
   MovePattern: {fileID: 21300000, guid: 2ef8a5d2eb2be9e4d893e11d8c95d8d8, type: 3}
   AttackPattern: {fileID: 21300000, guid: 15001a69585051d4c89f998d17108812, type: 3}
   Move: {fileID: 8300000, guid: a0e3a824a55363f47b2e3b5074a0d54d, type: 3}

@@ -1704,7 +1704,7 @@ Transform:
   - {fileID: 1919868883}
   - {fileID: 1673731272}
   - {fileID: 746465279}
-  - {fileID: 710693293549471297}
+  - {fileID: 2972830918081225583}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -360, z: 0}
@@ -1724,10 +1724,9 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - 'Passive: can step on a Raptop and smash him.'
-  - 'Attack: lashes his head into the enemy and deals damage.'
-  - 'Special: Spits a rock towards the enemy. Rock hits an enemy and stays near him.'
-  - 
+  - Can step on a Raptop and smash him
+  - Lashes his head into the enemy and deals damage.
+  - Moves once
   health: 7
   hearts:
   - {fileID: 8457826013436904896}
@@ -1743,7 +1742,7 @@ MonoBehaviour:
   AttackCost: 0
   MoveCost: 0
   SpecialCost: 0
-  damage: 1
+  damage: 3
   MovePattern: {fileID: 21300000, guid: 80d3571860eff5344a9dd6d9667635b0, type: 3}
   AttackPattern: {fileID: 21300000, guid: b555a586dda795b4d96d51f52e750537, type: 3}
   Move: {fileID: 8300000, guid: e8fc31069972a634b940e9b619b49bf7, type: 3}
@@ -2716,7 +2715,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d11f7c20e594a734b9cd3085f2599aa4, type: 3}
---- !u!4 &710693293549471297 stripped
+--- !u!4 &2972830918081225583 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2350173328867811670, guid: d11f7c20e594a734b9cd3085f2599aa4,
     type: 3}

@@ -700,10 +700,9 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Spike passive
-  - Spike attack
-  - Spike special
-  - Spike move
+  - Attacks diagonally
+  - Bites its enemy diagonally, dealing damage.
+  - Moves once
   health: 6
   hearts:
   - {fileID: 237688113599282848}

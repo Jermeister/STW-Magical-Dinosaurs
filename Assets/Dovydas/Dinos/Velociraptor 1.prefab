@@ -1809,10 +1809,9 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Raptor passive
-  - Raptor attack
-  - Raptor special
-  - Raptor move
+  - Very cheap to build.
+  - Strikes the enemy with its claw, dealing damage
+  - Moves once.
   health: 7
   hearts:
   - {fileID: 7510271455591905313}
