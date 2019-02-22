@@ -21836,6 +21836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f01154943e391840b2b58ac06cb05f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionID: 0
   maxAmount_Dino: 01000000640000006400000064000000640000006400000064000000
   haveFree_Dino: 01000000000000000000000000000000000000000000000000000000
   dinoButtons:
@@ -33268,6 +33269,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615382631043464694, guid: 2d177b875f941ff4694d6a3a275211c0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d177b875f941ff4694d6a3a275211c0, type: 3}
