@@ -21,6 +21,10 @@ public class Dinosaur : MonoBehaviour
 
     public int damage;
 
+    [Header("Move/Attack pattern images")]
+    public Sprite MovePattern;
+    public Sprite AttackPattern;
+
     [Header("Sounds")]
     public AudioClip Move;
     public AudioClip Roar;

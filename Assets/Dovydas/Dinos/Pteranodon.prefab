@@ -1474,10 +1474,13 @@ MonoBehaviour:
   MoveCost: 1
   SpecialCost: 8
   damage: 1
+  MovePattern: {fileID: 21300000, guid: 5e8eebe30d47d334fb03a419e6b3f807, type: 3}
+  AttackPattern: {fileID: 21300000, guid: 09d2a185cd3a12440a105ea622a23349, type: 3}
   Move: {fileID: 8300000, guid: 6a981db7dc6d2114cbd898f282ebce13, type: 3}
   Roar: {fileID: 8300000, guid: 13e68f30198ccdc458c10406abae6c3c, type: 3}
   Attack: {fileID: 8300000, guid: fb2435448965bc647b6b04d5c1d98ad5, type: 3}
   Death: {fileID: 8300000, guid: ff4e6d6fbe173de428bf1de461ea5015, type: 3}
+  dinoMoveSpeed: 5
   BloodParticles: {fileID: 1364278989638880305, guid: d11f7c20e594a734b9cd3085f2599aa4,
     type: 3}
   whereCanMove:
