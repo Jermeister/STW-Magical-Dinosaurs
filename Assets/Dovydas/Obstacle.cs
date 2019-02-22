@@ -21,7 +21,9 @@ public class Obstacle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		this.transform.position = new Vector3(transform.position.x, 0.60f, transform.position.z);   
+		this.transform.position = new Vector3(transform.position.x, 0.60f, transform.position.z);
+        int i = Random.Range(0, 360);
+        this.transform.eulerAngles = new Vector3(0, i, 0);
     }
 
     // Update is called once per frame
