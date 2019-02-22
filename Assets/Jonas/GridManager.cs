@@ -618,6 +618,7 @@ public class GridManager : MonoBehaviour
                     }
                 }
                 uiController.unitIsSelected = true;
+                UpdateUIManaCost(xCount, zCount);
                 return;
 			}
 
@@ -636,6 +637,8 @@ public class GridManager : MonoBehaviour
                     }
                 }
                 uiController.unitIsSelected = true;
+                UpdateUIManaCost(xCount, zCount);
+
             }
         }
         
@@ -645,12 +648,20 @@ public class GridManager : MonoBehaviour
 			Destroy(standInstance);
 		}
 
-        if (TileTypeMap[xCount, zCount] == 0)
+        if (TileTypeMap[xCount, zCount] == 0 || TileTypeMap[xCount, zCount] > 9)
         {
             //HidePossibleActions();
             uiController.unitIsSelected = false;
         }
     }
+
+    void UpdateUIManaCost(int xCount, int zCount)
+    {
+        var num = TileTypeMap[xCount, zCount] - 1;
+        var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
+        uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);
+    }
+
 	/// <summary>
 	/// Spawning selection item so that player sees where he can spawn a dinosaur
 	/// </summary>
@@ -695,9 +706,6 @@ public class GridManager : MonoBehaviour
             uiController.unitIsSelected = true;
             HidePossibleActions();
             selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
-            var num = TileTypeMap[xCount, zCount] - 1;
-            var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
-            uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);
             return;
 		}
 
@@ -705,11 +713,6 @@ public class GridManager : MonoBehaviour
         {
             HidePossibleActions();
             selectionInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
-            
-            var num = TileTypeMap[xCount, zCount] - 1;
-            var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
-            uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);
-
         }
 
 
