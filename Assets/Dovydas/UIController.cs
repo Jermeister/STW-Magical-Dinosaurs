@@ -24,7 +24,6 @@ public class row
 
 public class UIController : MonoBehaviour
 {
-    public int actionID;
     public int[] maxAmount_Dino;
     public int[] haveFree_Dino;
     public DinoButton[] dinoButtons;
@@ -123,10 +122,6 @@ public class UIController : MonoBehaviour
                 dinoButtons[i].Hide_NoMoney();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Clicked_ToMainMenu();
-        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             unitIsSelected = false;
@@ -165,10 +160,8 @@ public class UIController : MonoBehaviour
         if (!mc.IsMyTurn())
             return;
 
-        actionID = id;
-
-        if (id == 3)gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
-        if(id == 1)gm.ShowPossibleAttacks(gm.selectedDino.whereCanAttack, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
+        if(id == 3)gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
+        if(id == 1)gm.ShowPossibleAttacks(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
 
     }
 
@@ -279,8 +272,19 @@ public class UIController : MonoBehaviour
     #region Main UI functionality
     public void Clicked_Info(int id)
     {
-        infoText_Text[id].text = gm.dinosaurPrefabs[gm.monsterId - 1].GetComponent<Dinosaur>().infoText[id];
+        var dino = gm.dinosaurPrefabs[gm.monsterId - 1].GetComponent<Dinosaur>();
+        infoText_Text[id].text = dino.infoText[id];
         infoBackground[id].SetActive(true);
+        if (infoBackground[id].name == "Attack_Background_InfoText")
+        {
+            infoBackground[id].GetComponentsInChildren<Image>()[1].sprite = dino.AttackPattern;
+        }
+        else if (infoBackground[id].name == "Move_Background_InfoText")
+        {
+            infoBackground[id].GetComponentsInChildren<Image>()[1].sprite = dino.MovePattern;
+        }
+        //else if (infoBackground[id].name == "Special_Background_InfoText")
+        //infoBackground[id].GetComponentsInChildren<Image>()[1].sprite = dino.MovePattern;
     }
 
     public void Clicked_ExitInfo(int id)

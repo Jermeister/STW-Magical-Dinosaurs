@@ -1704,7 +1704,7 @@ Transform:
   - {fileID: 1919868883}
   - {fileID: 1673731272}
   - {fileID: 746465279}
-  - {fileID: 2972830918081225583}
+  - {fileID: 710693293549471297}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -360, z: 0}
@@ -1744,10 +1744,13 @@ MonoBehaviour:
   MoveCost: 0
   SpecialCost: 0
   damage: 1
+  MovePattern: {fileID: 21300000, guid: 80d3571860eff5344a9dd6d9667635b0, type: 3}
+  AttackPattern: {fileID: 21300000, guid: b555a586dda795b4d96d51f52e750537, type: 3}
   Move: {fileID: 8300000, guid: e8fc31069972a634b940e9b619b49bf7, type: 3}
   Roar: {fileID: 8300000, guid: 54f41500de865474bb2cfbc717658d8c, type: 3}
   Attack: {fileID: 8300000, guid: 0c0543ef6ca7e2540abbc2669163860e, type: 3}
   Death: {fileID: 8300000, guid: d5f0177e8553f144b955f3fce1b274b1, type: 3}
+  dinoMoveSpeed: 5
   BloodParticles: {fileID: 1364278989638880305, guid: d11f7c20e594a734b9cd3085f2599aa4,
     type: 3}
   whereCanMove:
@@ -2713,7 +2716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d11f7c20e594a734b9cd3085f2599aa4, type: 3}
---- !u!4 &2972830918081225583 stripped
+--- !u!4 &710693293549471297 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2350173328867811670, guid: d11f7c20e594a734b9cd3085f2599aa4,
     type: 3}
