@@ -231,10 +231,50 @@ public class GridManager : MonoBehaviour
         }
         for (int i = 0; i < positions.Length; i++)
         {
-            if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9)
+            if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9 && TileTypeMap[positions[i].x + origin.x, positions[i].y + origin.y] == 0)
             {
-                canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
-                nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+                if ((1 + origin.x <= 9 && 1 + origin.y <= 9 && positions[i].x == 1 && positions[i].y == 1 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && 1 + origin.y <= 9 && positions[i].x == -1 && positions[i].y == 1 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && -1 + origin.y >= 0 && positions[i].x == 1 && positions[i].y == -1 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && -1 + origin.y >= 0 && positions[i].x == -1 && positions[i].y == -1 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+
+                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 2 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -2 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == 2 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && positions[i].x == -2 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
+
+                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
+
+                    (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 3 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
+                    (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -3 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
+                    (2 + origin.x <= 9 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
+                    (-2 + origin.x >= 0 && positions[i].x == -3 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
+
+                    (1 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 1 + origin.y] != 0) ||
+                    (-1 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -1 + origin.y] != 0) ||
+                    (1 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[1 + origin.x, 0 + origin.y] != 0) ||
+                    (-1 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-1 + origin.x, 0 + origin.y] != 0) ||
+
+                    (2 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 2 + origin.y] != 0) ||
+                    (-2 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -2 + origin.y] != 0) ||
+                    (2 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[2 + origin.x, 0 + origin.y] != 0) ||
+                    (-2 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-2 + origin.x, 0 + origin.y] != 0) ||
+
+                    (3 + origin.y <= 9 && positions[i].x == 0 && positions[i].y == 4 && TileTypeMap[0 + origin.x, 3 + origin.y] != 0) ||
+                    (-3 + origin.y >= 0 && positions[i].x == 0 && positions[i].y == -4 && TileTypeMap[0 + origin.x, -3 + origin.y] != 0) ||
+                    (3 + origin.x <= 9 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[3 + origin.x, 0 + origin.y] != 0) ||
+                    (-3 + origin.x >= 0 && positions[i].x == -4 && positions[i].y == 0 && TileTypeMap[-3 + origin.x, 0 + origin.y] != 0))
+                {
+
+                }
+                else
+                {
+                    canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+                    nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
+                }
             }
         }
     }
