@@ -513,11 +513,11 @@ public class GridManager : MonoBehaviour
                 rot = Quaternion.Euler(0, -90, 0);
 
 
-            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification], new Vector3(tileX, 0.75f, tileZ), rot));
+            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification - 1], new Vector3(tileX, 0.75f, tileZ), rot));
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = (playerId == 1 ? 2 : 1);
 			SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileX = tileX;
 			SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileZ = tileZ;
-			TileTypeMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().id;
+			TileTypeMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().id + 1;
             TilePlayerMap[tileX, tileZ] = SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID;
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().UpdateHealth();
         }
