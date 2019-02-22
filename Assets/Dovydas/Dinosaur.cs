@@ -107,8 +107,11 @@ public class Dinosaur : MonoBehaviour
 
     public void LoseHealth(int hp)
     {
+        ConsoleScript.Print("TEST", "nuime" + ", health: " + health + ", nuims: " + hp);
+
         health -= hp;
         UpdateHealth();
+        ConsoleScript.Print("TEST", "liko: " + health);
 
         // Set the correct color and play the particle
         var main = BloodParticles.main;
