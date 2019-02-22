@@ -131,7 +131,7 @@ public class GridManager : MonoBehaviour
 
            //ShowPossibleMoves(posses);
         }
-
+         
        
 
 
@@ -339,14 +339,14 @@ public class GridManager : MonoBehaviour
         ConsoleScript.Print("TEST", "d");
         for (int i = 0; i < SpawnedObjects.Count; i++)
         {
-            if (SpawnedObjects[i].GetComponent<Dinosaur>().tileX == tileX && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == tileZ)
+            if (SpawnedObjects[i].GetComponent<Dinosaur>().tileX == targetPos.x && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == targetPos.y)
             {
                 index = i;
+                break;
             }
         }
         ConsoleScript.Print("TEST", "INDEX: " + index);
         SpawnedObjects[index].GetComponent<Dinosaur>().LoseHealth(damage);
-
 
 
         LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Attack, transform.position);
@@ -679,7 +679,7 @@ public class GridManager : MonoBehaviour
 
 		if ((inGame || inSetup) && finalPosition.x < 0 || finalPosition.x > gridSize-1 || finalPosition.z < 0 || finalPosition.z > gridSize-1)
 		{
-            //HidePossibleActions();
+            HidePossibleActions();
             uiController.unitIsSelected = false;
             HidePossibleActions();
             Destroy(selectionInstance);
@@ -691,7 +691,7 @@ public class GridManager : MonoBehaviour
 
         if (inSetup && (TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId))
 		{
-            //HidePossibleActions();
+            HidePossibleActions();
             uiController.unitIsSelected = false;
             HidePossibleActions();
             Destroy(selectionInstance);
