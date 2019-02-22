@@ -288,7 +288,7 @@ public class GridManager : MonoBehaviour
 			TilePlayerMap[xCount, zCount] = playerId;
 		}
 	}
-
+    // comment for no reason
     public void DecodeMovementCommand(string text)
     {
 		string[] split = text.Split('*');
