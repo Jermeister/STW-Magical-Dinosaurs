@@ -1430,7 +1430,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511188935}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.993395, y: 0.5, z: -0.56608963}
+  m_LocalPosition: {x: 7.993395, y: 0.532, z: -0.56608963}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 247559128}
@@ -1454,10 +1454,10 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - 'Passive:'
-  - 'Attack:'
-  - 'Special: '
-  - 'Move:'
+  - Terry passive
+  - Terry attack
+  - Terry special
+  - Terry move
   health: 3
   hearts:
   - {fileID: 5481601536218747653}
@@ -1474,7 +1474,8 @@ MonoBehaviour:
   Roar: {fileID: 8300000, guid: 13e68f30198ccdc458c10406abae6c3c, type: 3}
   Attack: {fileID: 8300000, guid: fb2435448965bc647b6b04d5c1d98ad5, type: 3}
   Death: {fileID: 8300000, guid: ff4e6d6fbe173de428bf1de461ea5015, type: 3}
-  BloodParticles: {fileID: 0}
+  BloodParticles: {fileID: 1364278989638880305, guid: d11f7c20e594a734b9cd3085f2599aa4,
+    type: 3}
   whereCanMove:
   - x: 1
     y: 0
