@@ -1724,10 +1724,10 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Brontson passive
-  - Brontson attack
-  - Brontson special
-  - Brontson move
+  - 'Passive: can step on a Raptop and smash him.'
+  - 'Attack: lashes his head into the enemy and deals damage.'
+  - 'Special: Spits a rock towards the enemy. Rock hits an enemy and stays near him.'
+  - 
   health: 7
   hearts:
   - {fileID: 8457826013436904896}
