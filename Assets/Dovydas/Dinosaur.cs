@@ -61,12 +61,17 @@ public class Dinosaur : MonoBehaviour
     {
         health -= hp;
         UpdateHealth();
-        SpawnBloodParticles();
+
+        // Set the correct color and play the particle
+        var main = BloodParticles.main;
+        if (playerID == 1)
+            main.startColor = Color.blue;
+        else
+            main.startColor = Color.red;
+        BloodParticles.Play();
+        // and play a sound
+        LowPolyAnimalPack.AudioManager.PlaySound(Roar, transform.position);
     }
 
-    public virtual void SpawnBloodParticles()
-    {
-        BloodParticles.Play();
-    }
 
 }

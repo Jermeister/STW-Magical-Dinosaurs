@@ -1067,6 +1067,8 @@ MonoBehaviour:
   Roar: {fileID: 8300000, guid: 6942407c9b3181b43ae43cf92e899067, type: 3}
   Attack: {fileID: 8300000, guid: 276898aaf0d55fa4fa1863c9ff117aea, type: 3}
   Death: {fileID: 8300000, guid: 75d08381af7d12d499d4c58647de93dc, type: 3}
+  BloodParticles: {fileID: 1364278989638880305, guid: d11f7c20e594a734b9cd3085f2599aa4,
+    type: 3}
   whereCanMove:
   - x: 2
     y: 0
