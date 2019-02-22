@@ -695,9 +695,9 @@ public class GridManager : MonoBehaviour
             uiController.unitIsSelected = true;
             HidePossibleActions();
             selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
-           /* var num = TileTypeMap[xCount, zCount] - 1;
+            var num = TileTypeMap[xCount, zCount] - 1;
             var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
-            uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);*/
+            uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);
             return;
 		}
 
@@ -705,10 +705,10 @@ public class GridManager : MonoBehaviour
         {
             HidePossibleActions();
             selectionInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
-            /*
+            
             var num = TileTypeMap[xCount, zCount] - 1;
             var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
-            uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);*/
+            uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);
 
         }
 
