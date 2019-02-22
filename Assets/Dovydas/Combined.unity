@@ -21284,7 +21284,7 @@ MonoBehaviour:
   AttackCost: {fileID: 37343365}
   SpecialCost: {fileID: 0}
   startGameButton: {fileID: 1602170289}
-  GameTheme: {fileID: 0}
+  GameTheme: {fileID: 8300000, guid: c0aacf7cadf7d9d42bb810fbd6890fed, type: 3}
   manaLeft: 0
   maxMana: 15
   minMana: -163
