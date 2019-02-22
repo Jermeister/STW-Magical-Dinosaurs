@@ -46,7 +46,7 @@ public class GridManager : MonoBehaviour
 	private Transform parent;
 	private GameObject selectionInstance;
 	private GameObject standInstance;
-	private List<GameObject> SpawnedObjects;
+	public List<GameObject> SpawnedObjects;
 	private List<GameObject> SpawnedObstacles;
 
     public MultiplayerController mc;
@@ -315,7 +315,9 @@ public class GridManager : MonoBehaviour
                 index = i;
             }
         }
-        SpawnedObjects[index].transform.position = canMoveObjects[targetPos.x].column[targetPos.y].transform.position + new Vector3(0f, 0.17f, 0f);
+        Vector3 targetMoveLocation = canMoveObjects[targetPos.x].column[targetPos.y].transform.position + new Vector3(0f, 0.17f, 0f);
+        SpawnedObjects[index].GetComponent<Dinosaur>().SetTargetMovement(targetMoveLocation);
+
         SpawnedObjects[index].GetComponent<Dinosaur>().tileX = targetPos.x;
         SpawnedObjects[index].GetComponent<Dinosaur>().tileZ = targetPos.y;
 
@@ -342,7 +344,7 @@ public class GridManager : MonoBehaviour
                 index = i;
             }
         }
-        ConsoleScript.Print("TEST", tileX + " " + tileZ);
+        ConsoleScript.Print("TEST", "INDEX: " + index);
         SpawnedObjects[index].GetComponent<Dinosaur>().LoseHealth(damage);
 
 
@@ -530,27 +532,30 @@ public class GridManager : MonoBehaviour
                 inThose = true;
             }
         }
+        ConsoleScript.Print("TEST", "iki: 1");
 
         if (inTiles && inThose)
         {
+            ConsoleScript.Print("TEST", "iki: 2");
+
             for (int a = 0; a < SpawnedObjects.Count; a++)
             {
 				int currentPosX = SpawnedObjects[a].GetComponent<Dinosaur>().tileX;
 				int currentPosY = SpawnedObjects[a].GetComponent<Dinosaur>().tileZ;
 				if (SpawnedObjects[a].GetComponent<Dinosaur>() == selectedDino && TilePlayerMap[currentPosX, currentPosY] == mc.GetThisClientId())
                 {
-                    //dePossibleActions();
+                    HidePossibleActions();
+                    ConsoleScript.Print("TEST", "iki: 3");
 
-                    ConsoleScript.Print("TEST", "ga");
                     if (uiController.actionID == 3)
                     {
-                        ConsoleScript.Print("TEST", "aaa");
                         mc.DinoMove(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
                         MultiplayerDinoMove(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount));
                     }
                     else if (uiController.actionID == 1)
                     {
-                        ConsoleScript.Print("TEST", "bbc");
+                        ConsoleScript.Print("TEST", "iki: 4");
+
                         mc.DinoAttack(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
                         MultiplayerDinoAttack(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount), SpawnedObjects[a].GetComponent<Dinosaur>().damage);
                     }
@@ -598,7 +603,7 @@ public class GridManager : MonoBehaviour
 
 		if (inGame && TileTypeMap[xCount, zCount] > 0 && TileTypeMap[xCount, zCount] < 10)
 		{
-			if (!standInstance)
+			if (!standInstance && !uiController.unitIsSelected)
 			{
            
                 standInstance = Instantiate(standItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
@@ -616,9 +621,9 @@ public class GridManager : MonoBehaviour
                 return;
 			}
 
-            if (standInstance)
+            if (standInstance && !uiController.unitIsSelected)
             {
-                HidePossibleActions();
+                //HidePossibleActions();
                 standInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
                 monsterId = TileTypeMap[xCount, zCount];
                 for (int i = 0; i < SpawnedObjects.Count; i++)
