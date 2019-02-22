@@ -14,6 +14,11 @@ public class Dinosaur : MonoBehaviour
     public Sprite halfHeart, fullHeart, halfHeart_p2, fullHeart_p2;
     public int playerID;
 
+    [Header("Action Costs")]
+    public int AttackCost;
+    public int MoveCost;
+    public int SpecialCost;
+
     [Header("Sounds")]
     public AudioClip Move;
     public AudioClip Roar;

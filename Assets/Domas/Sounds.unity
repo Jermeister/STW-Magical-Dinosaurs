@@ -3119,7 +3119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &146147731
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3159,7 +3159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &146981221
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21548,7 +21548,9 @@ MonoBehaviour:
   monsterId: 1
   selectedIndex: 0
   selectedDino: {fileID: 0}
+  canBuild: 0
   uiController: {fileID: 0}
+  mc: {fileID: 0}
   canAttackObjects: []
   canMoveObjects: []
   nowTargetable: []
@@ -22606,6 +22608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b73fff2904cda8742b441d553960d74a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentTurnPlayerId: 1
   ipAdrress: 
   clientPrefab: {fileID: 1213658092118305072, guid: 1d3a332e0b2e92b458f214638ad9e483,
     type: 3}
@@ -30619,7 +30622,9 @@ MonoBehaviour:
   monsterId: 1
   selectedIndex: 0
   selectedDino: {fileID: 0}
+  canBuild: 0
   uiController: {fileID: 0}
+  mc: {fileID: 0}
   canAttackObjects:
   - column:
     - {fileID: 761048957}
@@ -33234,6 +33239,7 @@ MonoBehaviour:
   dinosAre: 00000000000000000000000000000000000000000000000000000000
   money: 1000
   moneyText: {fileID: 1637091578}
+  startGameButton: {fileID: 0}
   manaLeft: 0
   maxMana: 15
   minMana: 0
@@ -33331,6 +33337,7 @@ MonoBehaviour:
   isWaitingInGameUI: {fileID: 0}
   endTurnUI: {fileID: 0}
   buildingMenuUI: {fileID: 0}
+  mc: {fileID: 0}
 --- !u!114 &1856167193
 MonoBehaviour:
   m_ObjectHideFlags: 0
