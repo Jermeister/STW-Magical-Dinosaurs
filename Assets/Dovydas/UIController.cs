@@ -24,6 +24,7 @@ public class row
 
 public class UIController : MonoBehaviour
 {
+    public int actionID;
     public int[] maxAmount_Dino;
     public int[] haveFree_Dino;
     public DinoButton[] dinoButtons;
@@ -47,7 +48,7 @@ public class UIController : MonoBehaviour
 
     public float[] heights;
 
-    [Range(1,15)]
+    [Range(1, 15)]
     public int manaCost;
 
     public Text[] infoText_Text;
@@ -83,25 +84,25 @@ public class UIController : MonoBehaviour
 
     /// Liudo
     public MultiplayerController multiplayerControllerScr;
-	public GameObject isWaitingSetupUI;
-	public GameObject isWaitingInGameUI;
-	public GameObject endTurnUI;
-	public GameObject buildingMenuUI;
+    public GameObject isWaitingSetupUI;
+    public GameObject isWaitingInGameUI;
+    public GameObject endTurnUI;
+    public GameObject buildingMenuUI;
 
-	/// Jono
-	private GridManager gm;
-	private FreeMovement fm;
+    /// Jono
+    private GridManager gm;
+    private FreeMovement fm;
 
-	#endregion
+    #endregion
 
-	void Start()
-	{
+    void Start()
+    {
         mc = FindObjectOfType<MultiplayerController>();
         gm = FindObjectOfType<GridManager>();
-		fm = FindObjectOfType<FreeMovement>();
-	}
+        fm = FindObjectOfType<FreeMovement>();
+    }
 
-	void Update()
+    void Update()
     {
         moneyText.text = money.ToString();
         for (int i = 0; i < dinoButtons.Length; i++)
@@ -122,6 +123,10 @@ public class UIController : MonoBehaviour
                 dinoButtons[i].Hide_NoMoney();
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Clicked_ToMainMenu();
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             unitIsSelected = false;
@@ -160,8 +165,10 @@ public class UIController : MonoBehaviour
         if (!mc.IsMyTurn())
             return;
 
-        if(id == 3)gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
-        if(id == 1)gm.ShowPossibleAttacks(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
+        actionID = id;
+
+        if (id == 3) gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
+        if (id == 1) gm.ShowPossibleAttacks(gm.selectedDino.whereCanAttack, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
 
     }
 
@@ -169,7 +176,7 @@ public class UIController : MonoBehaviour
 
     public void Clicked_UnitSelected(int id)
     {
-        if(unitSelected >= 0 && unitSelected <= 6)
+        if (unitSelected >= 0 && unitSelected <= 6)
             dinoButtons[unitSelected].Deselect();
 
         unitIsSelected = true;
@@ -182,7 +189,7 @@ public class UIController : MonoBehaviour
 
     public void InitializeGame()
     {
-		// Set mana
+        // Set mana
         manaLeft = startingMana;
         for (int i = 0; i < maxMana; i++)
         {
@@ -192,25 +199,25 @@ public class UIController : MonoBehaviour
                 mana[i].sprite = mana_empty;
         }
 
-		// Enable "End Turn" button once
-		if (GameObject.Find("Client(Clone)").GetComponent<Client>().isHost)
-		{
-			endTurnUI.SetActive(true);
-		}
+        // Enable "End Turn" button once
+        if (GameObject.Find("Client(Clone)").GetComponent<Client>().isHost)
+        {
+            endTurnUI.SetActive(true);
+        }
 
         gm.StartGame();
         fm.inGame = true;
     }
 
-    
+
     public void Clicked_NextTurn()
     {
-		/*
+        /*
         if (myTurn)
         {
             NextTurn();
         }*/
-		multiplayerControllerScr.EndTurnButtonPress();
+        multiplayerControllerScr.EndTurnButtonPress();
     }
 
     public void StartTurn()
@@ -303,8 +310,8 @@ public class UIController : MonoBehaviour
         needActionAndInfoZone = false;
         Clicked_ToInGame();
 
-		multiplayerControllerScr.SplitScreen();
-	}
+        multiplayerControllerScr.SplitScreen();
+    }
 
     public void Clicked_ToJoinServer()
     {
@@ -339,32 +346,32 @@ public class UIController : MonoBehaviour
         screen_MainMenu.SetActive(false);
         screen_setup.SetActive(true);
         screen_inGame.SetActive(false);
-		//screen_inGame.SetActive(true);
-		screen_inWaitingForPlayer.SetActive(false);
+        //screen_inGame.SetActive(true);
+        screen_inWaitingForPlayer.SetActive(false);
         needActionAndInfoZone = false;
-		//InitializeGame();
-		buildingMenuUI.SetActive(false);
-		isWaitingSetupUI.SetActive(true);
+        //InitializeGame();
+        buildingMenuUI.SetActive(false);
+        isWaitingSetupUI.SetActive(true);
         gm.canBuild = false;
-		multiplayerControllerScr.SetupButtonPressed();
-	}
+        multiplayerControllerScr.SetupButtonPressed();
+    }
 
-	public void BothPlayersAreReadyScreen()
-	{
-		isWaitingSetupUI.SetActive(false);
+    public void BothPlayersAreReadyScreen()
+    {
+        isWaitingSetupUI.SetActive(false);
 
-		unitIsSelected = false;
-		screen_localMultiplayer.SetActive(false);
-		screen_JoinToServer.SetActive(false);
-		screen_MainMenu.SetActive(false);
-		screen_setup.SetActive(false);
-		screen_inGame.SetActive(true);
-		needActionAndInfoZone = true;
+        unitIsSelected = false;
+        screen_localMultiplayer.SetActive(false);
+        screen_JoinToServer.SetActive(false);
+        screen_MainMenu.SetActive(false);
+        screen_setup.SetActive(false);
+        screen_inGame.SetActive(true);
+        needActionAndInfoZone = true;
 
-		InitializeGame();
-	}
+        InitializeGame();
+    }
 
-	public void ToSetup()
+    public void ToSetup()
     {
         unitIsSelected = false;
         screen_localMultiplayer.SetActive(false);
@@ -394,7 +401,7 @@ public class UIController : MonoBehaviour
     public void Clicked_Setup_createdServer()
     {
 
-		multiplayerControllerScr.CreateGame();
+        multiplayerControllerScr.CreateGame();
         iptext.text = "set ip here";
 
         ToWaitingForPlayer();
@@ -404,11 +411,11 @@ public class UIController : MonoBehaviour
 
     public void Clicked_Setup_joinedServer()
     {
-		string ip = GameObject.Find("InJoinGame").transform.Find("IP_InputField").transform.Find("Text").GetComponent<Text>().text;
+        string ip = GameObject.Find("InJoinGame").transform.Find("IP_InputField").transform.Find("Text").GetComponent<Text>().text;
 
         multiplayerControllerScr.ipAdrress = ip;
 
-		multiplayerControllerScr.JoinGame();
+        multiplayerControllerScr.JoinGame();
         // ToSetup is called in Client script 
 
         //ToSetup();
@@ -418,10 +425,10 @@ public class UIController : MonoBehaviour
     public void Clicked_Setup_localMultiplayer()
     {
 
-		multiplayerControllerScr.SplitScreen();
+        multiplayerControllerScr.SplitScreen();
 
 
-		ToSetup();
+        ToSetup();
 
     }
     #endregion
