@@ -168,7 +168,7 @@ public class UIController : MonoBehaviour
         actionID = id;
 
         if (id == 3)gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
-        if(id == 1)gm.ShowPossibleAttacks(gm.selectedDino.whereCanAttack, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
+        if (id == 1)gm.ShowPossibleAttacks(gm.selectedDino.whereCanAttack, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
 
     }
 

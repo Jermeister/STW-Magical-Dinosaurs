@@ -107,7 +107,6 @@ public class GridManager : MonoBehaviour
         //if (inSetup)
         //SpawnRandomObstaclesOnGrid();
     }
-    string t = "45|645|7!";
 
     // Update is called once per frame
     void Update()
@@ -151,7 +150,7 @@ public class GridManager : MonoBehaviour
 	{
 		inGame = false;
 		inSetup = true;
-		SpawnRandomObstaclesOnGrid();
+		//SpawnRandomObstaclesOnGrid();
 	}
 
 	public void SpawnDinoButton(int id)
@@ -218,7 +217,6 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-
     public void ShowPossibleAttacks(pos[] positions, pos origin)
     {
         nowTargetable.Clear();
@@ -233,10 +231,8 @@ public class GridManager : MonoBehaviour
         {
             if (positions[i].x + origin.x >= 0 && positions[i].x + origin.x <= 9 && positions[i].y + origin.y >= 0 && positions[i].y + origin.y <= 9)
             {
-                
-                    canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
-                    nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
-               
+                canAttackObjects[positions[i].x + origin.x].column[positions[i].y + origin.y].SetActive(true);
+				nowTargetable.Add(new pos(positions[i].x + origin.x, positions[i].y + origin.y));
             }
         }
     }
@@ -298,7 +294,6 @@ public class GridManager : MonoBehaviour
 		pos tempPos = new pos(int.Parse(split[2]), int.Parse(split[3]));
 		MultiplayerDinoMove(int.Parse(split[0]), int.Parse(split[1]), tempPos);
     }
-
     public string BuildMovementCommand(int tileX, int tileZ, pos targetPos)
     { 
         return tileX + "*" + tileZ + "*" + targetPos.x + "*" + targetPos.y;
@@ -306,7 +301,7 @@ public class GridManager : MonoBehaviour
 
     public void MultiplayerDinoMove(int tileX, int tileZ, pos targetPos)
     {
-        int index = 0;
+        int index = -1;
 
         for (int i = 0; i < SpawnedObjects.Count; i++)
         {
@@ -315,6 +310,16 @@ public class GridManager : MonoBehaviour
                 index = i;
             }
         }
+
+		if (index == -1)
+		{
+			ConsoleScript.Print("DinoMoveTEst", "cannot move here.");
+			selectedDino = null;
+			RemoveSelectionInstance();
+			return;
+		}
+
+
         Vector3 targetMoveLocation = canMoveObjects[targetPos.x].column[targetPos.y].transform.position + new Vector3(0f, 0.17f, 0f);
         SpawnedObjects[index].GetComponent<Dinosaur>().SetTargetMovement(targetMoveLocation);
 
@@ -330,13 +335,11 @@ public class GridManager : MonoBehaviour
         LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Move, transform.position);
 
     }
-
     public void MultiplayerDinoAttack(int tileX, int tileZ, pos targetPos, int damage)
     {
         
         
-        int index = 0;
-        ConsoleScript.Print("TEST", "d");
+        int index = -1;
         for (int i = 0; i < SpawnedObjects.Count; i++)
         {
             if (SpawnedObjects[i].GetComponent<Dinosaur>().tileX == targetPos.x && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == targetPos.y)
@@ -345,15 +348,23 @@ public class GridManager : MonoBehaviour
                 break;
             }
         }
-        ConsoleScript.Print("TEST", "INDEX: " + index);
+
+		// Check if we found a hitable dino
+		if (index == -1)
+		{
+			ConsoleScript.Print("DinoMoveTEst", "cannot attack nothing, removing selectionInstance");
+			selectedDino = null;
+			RemoveSelectionInstance();
+			return;
+		}
+
+		ConsoleScript.Print("TEST", "INDEX: " + index);
         SpawnedObjects[index].GetComponent<Dinosaur>().LoseHealth(damage);
 
 
         LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Attack, transform.position);
         
     }
-
-
 
     public string BuildObstaclesString()
     {
@@ -387,7 +398,6 @@ public class GridManager : MonoBehaviour
         }
         return result;
     }
-	
     public void DecodeObstaclesString(string text)
     {
         for (int i = 0; i < text.Length; i++)
@@ -451,7 +461,6 @@ public class GridManager : MonoBehaviour
         }
         return result;
     }
-
     public void DecodeDinosString(string text)
     {
         for (int i = 0; i < text.Length; i++)
@@ -532,12 +541,9 @@ public class GridManager : MonoBehaviour
                 inThose = true;
             }
         }
-        ConsoleScript.Print("TEST", "iki: 1");
 
         if (inTiles && inThose)
         {
-            ConsoleScript.Print("TEST", "iki: 2");
-
             for (int a = 0; a < SpawnedObjects.Count; a++)
             {
 				int currentPosX = SpawnedObjects[a].GetComponent<Dinosaur>().tileX;
@@ -545,7 +551,6 @@ public class GridManager : MonoBehaviour
 				if (SpawnedObjects[a].GetComponent<Dinosaur>() == selectedDino && TilePlayerMap[currentPosX, currentPosY] == mc.GetThisClientId())
                 {
                     HidePossibleActions();
-                    ConsoleScript.Print("TEST", "iki: 3");
 
                     if (uiController.actionID == 3)
                     {
@@ -554,8 +559,6 @@ public class GridManager : MonoBehaviour
                     }
                     else if (uiController.actionID == 1)
                     {
-                        ConsoleScript.Print("TEST", "iki: 4");
-
                         mc.DinoAttack(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
                         MultiplayerDinoAttack(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount), SpawnedObjects[a].GetComponent<Dinosaur>().damage);
                     }
@@ -563,12 +566,9 @@ public class GridManager : MonoBehaviour
                     break;
                 }
             }
-            //TileTypeMap[xCount, zCount] = monsterId;
             TilePlayerMap[xCount, zCount] = playerId;
         }
     }
-
-    
 
 	/// <summary>
 	/// Deleting dinosaur from a grid
@@ -580,7 +580,6 @@ public class GridManager : MonoBehaviour
 		int xCount = Mathf.RoundToInt(finalPosition.x);
 		int zCount = Mathf.RoundToInt(finalPosition.z);
 
-     
         if (inSetup && TileTypeMap[xCount, zCount] > 0 && TileTypeMap[xCount, zCount] < 10)
 		{
 			for(int i = 0;i<SpawnedObjects.Count;i++)
@@ -671,39 +670,28 @@ public class GridManager : MonoBehaviour
 		int xCount = Mathf.RoundToInt(finalPosition.x);
 		int zCount = Mathf.RoundToInt(finalPosition.z);
 
-       
-
 		// Checking if we are holding mouse on the same tile, so selection does not despawn and we don't have to spawn it again
 		if (selectionInstance && (int)selectionInstance.transform.position.x == xCount && (int)selectionInstance.transform.position.z == zCount)
 			return;
 
 		if ((inGame || inSetup) && finalPosition.x < 0 || finalPosition.x > gridSize-1 || finalPosition.z < 0 || finalPosition.z > gridSize-1)
 		{
-            HidePossibleActions();
-            uiController.unitIsSelected = false;
-            HidePossibleActions();
-            Destroy(selectionInstance);
-			inTiles = false;
+			RemoveSelectionInstance();
 			return;
 		}
 
-
-
         if (inSetup && (TileTypeMap[xCount, zCount] != 0 || TilePlayerMap[xCount, zCount] != playerId))
 		{
-            HidePossibleActions();
-            uiController.unitIsSelected = false;
-            HidePossibleActions();
-            Destroy(selectionInstance);
-			inTiles = false;
+			RemoveSelectionInstance();
 			return;
 		}
 
 		inTiles = true;
 		if (!selectionInstance)
 		{
-            uiController.unitIsSelected = true;
-            //HidePossibleActions();
+			HidePossibleActions();
+			uiController.unitIsSelected = true;
+           
             selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
             return;
 		}
@@ -713,9 +701,16 @@ public class GridManager : MonoBehaviour
             //HidePossibleActions();
             selectionInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
         }
-
-
     }
+
+	void RemoveSelectionInstance()
+	{
+		HidePossibleActions();
+		uiController.unitIsSelected = false;
+		HidePossibleActions();
+		Destroy(selectionInstance);
+		inTiles = false;
+	}
 
 	Vector3 GetNearestPointOnGrid(Vector3 position)
 	{
@@ -782,7 +777,6 @@ public class GridManager : MonoBehaviour
         }
         
     }
-
 	void UpdateSelectionSquare()
 	{
         if (!EventSystem.current.IsPointerOverGameObject())
@@ -799,7 +793,6 @@ public class GridManager : MonoBehaviour
             }
         }
 	}
-
 	void UpdatePressObject()
 	{
 		if (Input.GetMouseButtonDown(0) && (inSetup || inGame))
@@ -821,12 +814,5 @@ public class GridManager : MonoBehaviour
 	/// TileType map'e, langelio ID su obsticles prasideda nuo 10. Dabar yra 9 obstacles, tai jų IDs bus 10-18
 	/// Jei spawninsi multiplayeryje, imk objektą iš listo pagal tiletype id atimti 10 (18-10 = 8) - spawninti 9 objektą iš listo
 	/// </summary>
-	void SpawnRandomObstaclesOnGrid()
-	{
-        //string t = BuildObstaclesString();
-        //DecodeObstaclesString(t);
-        
-		
-	}
 
 }

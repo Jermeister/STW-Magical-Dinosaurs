@@ -12682,6 +12682,7 @@ MonoBehaviour:
   selectedDino: {fileID: 0}
   canBuild: 0
   uiController: {fileID: 0}
+  SpawnedObjects: []
   mc: {fileID: 0}
   canAttackObjects:
   - column:
@@ -18141,6 +18142,7 @@ MonoBehaviour:
   selectedDino: {fileID: 0}
   canBuild: 0
   uiController: {fileID: 0}
+  SpawnedObjects: []
   mc: {fileID: 0}
   canAttackObjects: []
   canMoveObjects: []
