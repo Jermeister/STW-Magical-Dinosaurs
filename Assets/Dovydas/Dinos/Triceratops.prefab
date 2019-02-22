@@ -359,10 +359,9 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Lorenzo passive
-  - Lorenzo attack
-  - Lorenzo special
-  - Lorenzo move
+  - If it dies, the player loses the game.
+  - Rams any enemy around him, dealing damage.
+  - Moves once.
   health: 10
   hearts:
   - {fileID: 2438698462280015206}

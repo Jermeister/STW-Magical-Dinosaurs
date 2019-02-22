@@ -657,7 +657,7 @@ public class GridManager : MonoBehaviour
     {
         var num = TileTypeMap[xCount, zCount] - 1;
         var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
-        uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);
+        uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost);
     }
 
 	/// <summary>

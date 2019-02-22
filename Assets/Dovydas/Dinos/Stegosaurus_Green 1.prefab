@@ -1047,10 +1047,9 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Reese passive
-  - Reese attack
-  - Reese special
-  - Reese move
+  - Every 3rd attack deals bonus damage.
+  - Makes a ranged attack, attacking its enemy from a far.
+  - Moves once.
   health: 6
   hearts:
   - {fileID: 4178664539335562383}

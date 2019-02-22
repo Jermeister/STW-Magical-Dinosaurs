@@ -2011,10 +2011,9 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Theorode passive
-  - Theorode attack
-  - Theorode special
-  - Theorode move
+  - Killing a unit restores some of its health
+  - Bites any enemy around him for massive damage
+  - Moves once
   health: 9
   hearts:
   - {fileID: 7950307634354384963}

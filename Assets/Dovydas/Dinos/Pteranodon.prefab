@@ -1454,10 +1454,9 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   infoText:
-  - Terry passive
-  - Terry attack
-  - Terry special
-  - Terry move
+  - Can move and attack through obstacles.
+  - Flies from above and strikes the enemy with its beak.
+  - Moves once.
   health: 3
   hearts:
   - {fileID: 5481601536218747653}
