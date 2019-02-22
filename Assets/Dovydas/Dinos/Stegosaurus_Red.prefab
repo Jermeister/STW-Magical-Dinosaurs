@@ -716,6 +716,9 @@ MonoBehaviour:
   halfHeart_p2: {fileID: 21300000, guid: 22bbc5dd84ca1ff44b8b1efa6daaa6d8, type: 3}
   fullHeart_p2: {fileID: 21300000, guid: 4979ccd8823b9e04299c8363aab83ab9, type: 3}
   playerID: 0
+  AttackCost: 2
+  MoveCost: 1
+  SpecialCost: 5
   Move: {fileID: 8300000, guid: a0e3a824a55363f47b2e3b5074a0d54d, type: 3}
   Roar: {fileID: 8300000, guid: 6942407c9b3181b43ae43cf92e899067, type: 3}
   Attack: {fileID: 8300000, guid: 596cc049b064bae42a036bb7a43a1b03, type: 3}

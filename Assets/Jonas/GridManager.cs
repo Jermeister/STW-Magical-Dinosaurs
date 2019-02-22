@@ -322,6 +322,8 @@ public class GridManager : MonoBehaviour
         TilePlayerMap[targetPos.x, targetPos.y] = TilePlayerMap[tileX, tileZ];
         TilePlayerMap[tileX, tileZ] = 0;
 
+        LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Move, transform.position);
+
     }
 
 
@@ -471,7 +473,7 @@ public class GridManager : MonoBehaviour
                 rot = Quaternion.Euler(0, -90, 0);
 
 
-            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification - 1], new Vector3(tileX, 0.75f, tileZ), rot));
+            SpawnedObjects.Add(Instantiate(dinosaurPrefabs[identification], new Vector3(tileX, 0.75f, tileZ), rot));
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().playerID = (playerId == 1 ? 2 : 1);
 			SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileX = tileX;
 			SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().tileZ = tileZ;
@@ -538,7 +540,8 @@ public class GridManager : MonoBehaviour
 		int xCount = Mathf.RoundToInt(finalPosition.x);
 		int zCount = Mathf.RoundToInt(finalPosition.z);
 
-		if (inSetup && TileTypeMap[xCount, zCount] > 0 && TileTypeMap[xCount, zCount] < 10)
+     
+        if (inSetup && TileTypeMap[xCount, zCount] > 0 && TileTypeMap[xCount, zCount] < 10)
 		{
 			for(int i = 0;i<SpawnedObjects.Count;i++)
 			{
@@ -562,7 +565,8 @@ public class GridManager : MonoBehaviour
 		{
 			if (!standInstance)
 			{
-				standInstance = Instantiate(standItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
+           
+                standInstance = Instantiate(standItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
                 monsterId = TileTypeMap[xCount, zCount];
                 for (int i = 0; i < SpawnedObjects.Count; i++)
                 {
@@ -578,7 +582,9 @@ public class GridManager : MonoBehaviour
 
             if (standInstance)
             {
+                HidePossibleActions();
                 standInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
+                monsterId = TileTypeMap[xCount, zCount];
                 for (int i = 0; i < SpawnedObjects.Count; i++)
                 {
                     if (SpawnedObjects[i].GetComponent<Dinosaur>() != null && SpawnedObjects[i].GetComponent<Dinosaur>().tileX == xCount && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == zCount)
@@ -588,16 +594,22 @@ public class GridManager : MonoBehaviour
 
                     }
                 }
-                monsterId = TileTypeMap[xCount, zCount];
+                uiController.unitIsSelected = true;
             }
-		}
+        }
         
 		else
 		{
 
 			Destroy(standInstance);
 		}
-	}
+
+        if (TileTypeMap[xCount, zCount] == 0)
+        {
+            //HidePossibleActions();
+            uiController.unitIsSelected = false;
+        }
+    }
 	/// <summary>
 	/// Spawning selection item so that player sees where he can spawn a dinosaur
 	/// </summary>
@@ -607,6 +619,8 @@ public class GridManager : MonoBehaviour
 		var finalPosition = GetNearestPointOnGrid(mousePoint);
 		int xCount = Mathf.RoundToInt(finalPosition.x);
 		int zCount = Mathf.RoundToInt(finalPosition.z);
+
+       
 
 		// Checking if we are holding mouse on the same tile, so selection does not despawn and we don't have to spawn it again
 		if (selectionInstance && (int)selectionInstance.transform.position.x == xCount && (int)selectionInstance.transform.position.z == zCount)
