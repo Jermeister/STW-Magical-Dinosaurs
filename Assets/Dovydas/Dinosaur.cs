@@ -31,6 +31,9 @@ public class Dinosaur : MonoBehaviour
     [Space]
     public pos[] whereCanMove;
 
+    [Space]
+    public pos[] whereCanAttack;
+
     void Start()
     {
        // UpdateHealth();

@@ -1740,6 +1740,9 @@ MonoBehaviour:
   halfHeart_p2: {fileID: 21300000, guid: 22bbc5dd84ca1ff44b8b1efa6daaa6d8, type: 3}
   fullHeart_p2: {fileID: 21300000, guid: 4979ccd8823b9e04299c8363aab83ab9, type: 3}
   playerID: 0
+  AttackCost: 0
+  MoveCost: 0
+  SpecialCost: 0
   Move: {fileID: 8300000, guid: e8fc31069972a634b940e9b619b49bf7, type: 3}
   Roar: {fileID: 8300000, guid: 54f41500de865474bb2cfbc717658d8c, type: 3}
   Attack: {fileID: 8300000, guid: 0c0543ef6ca7e2540abbc2669163860e, type: 3}
@@ -1755,6 +1758,23 @@ MonoBehaviour:
     y: 0
   - x: 0
     y: -1
+  whereCanAttack:
+  - x: 1
+    y: 0
+  - x: 2
+    y: 0
+  - x: -1
+    y: 0
+  - x: -2
+    y: 0
+  - x: 0
+    y: 1
+  - x: 0
+    y: 2
+  - x: 0
+    y: -1
+  - x: 0
+    y: -2
 --- !u!1 &1847953567
 GameObject:
   m_ObjectHideFlags: 0
@@ -2630,6 +2650,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BloodParticles
       objectReference: {fileID: 0}
+    - target: {fileID: 1364278989638880305, guid: d11f7c20e594a734b9cd3085f2599aa4,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2350173328867811670, guid: d11f7c20e594a734b9cd3085f2599aa4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2683,11 +2708,6 @@ PrefabInstance:
     - target: {fileID: 2350173328867811670, guid: d11f7c20e594a734b9cd3085f2599aa4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1364278989638880305, guid: d11f7c20e594a734b9cd3085f2599aa4,
-        type: 3}
-      propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
