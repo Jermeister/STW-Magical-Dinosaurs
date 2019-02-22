@@ -470,25 +470,40 @@ public class GridManager : MonoBehaviour
 	/// </summary>
 	void SpawnRandomObstaclesOnGrid()
 	{
-		int count = Random.Range(2, maxObstaclesCount);
-		int value = (count / 2) * 2;
-		for (int i = 0;i<=value;i+=2)
+		if (playerId == 1)
 		{
-			int x = Random.Range(0, gridSize - 1);
-			int z = Random.Range(0, gridSize - 1);
-			int x2 = gridSize - 1 - x;
-			int z2 = gridSize - 1 - z;
-			if (TileTypeMap[x,z] == 0 && TileTypeMap[x2,z2] == 0)
+			int count = Random.Range(2, maxObstaclesCount);
+			int value = (count / 2) * 2;
+			for (int i = 0; i <= value; i += 2)
 			{
-				int rndObstacle = Random.Range(0, obstaclePrefabs.Count);
-				int rndRotation = Random.Range(0, 360);
-				int rndRotation2 = Random.Range(0, 360);
-				TileTypeMap[x, z] = obstacleId+rndObstacle;
-				TileTypeMap[x2, z2] = obstacleId+rndObstacle;
-				SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x, obstaclesSpawnY, z), Quaternion.Euler(new Vector3(0, rndRotation, 0))));
-				SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x2, obstaclesSpawnY, z2), Quaternion.Euler(new Vector3(0, rndRotation2, 0))));
+				int x = Random.Range(0, gridSize - 1);
+				int z = Random.Range(0, gridSize - 1);
+				int x2 = gridSize - 1 - x;
+				int z2 = gridSize - 1 - z;
+				if (TileTypeMap[x, z] == 0 && TileTypeMap[x2, z2] == 0)
+				{
+					int rndObstacle = Random.Range(0, obstaclePrefabs.Count);
+					int rndRotation = Random.Range(0, 360);
+					int rndRotation2 = Random.Range(0, 360);
+					TileTypeMap[x, z] = obstacleId + rndObstacle;
+					TileTypeMap[x2, z2] = obstacleId + rndObstacle;
+					SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x, obstaclesSpawnY, z), Quaternion.Euler(new Vector3(0, rndRotation, 0))));
+					SpawnedObstacles.Add(Instantiate(obstaclePrefabs[rndObstacle], new Vector3(x2, obstaclesSpawnY, z2), Quaternion.Euler(new Vector3(0, rndRotation2, 0))));
+				}
 			}
 		}
+	}
+
+	public string SpawnedObstaclesInformation()
+	{
+		string temp = "";
+
+		for(int i = 0;i<SpawnedObstacles.Count;i++)
+		{
+
+		}
+
+		return temp;
 	}
 
 }
