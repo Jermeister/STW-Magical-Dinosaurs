@@ -337,16 +337,20 @@ public class GridManager : MonoBehaviour
     }
     public void MultiplayerDinoAttack(int tileX, int tileZ, pos targetPos, int damage)
     {
-        
-        
         int index = -1;
         for (int i = 0; i < SpawnedObjects.Count; i++)
         {
-            if (SpawnedObjects[i].GetComponent<Dinosaur>().tileX == targetPos.x && SpawnedObjects[i].GetComponent<Dinosaur>().tileZ == targetPos.y)
-            {
-                index = i;
-                break;
-            }
+			Dinosaur currentDino = SpawnedObjects[i].GetComponent<Dinosaur>();
+
+			if (currentDino.playerID == mc.GetOtherClientId())
+			{
+				if (currentDino.tileX == targetPos.x && currentDino.tileZ == targetPos.y)
+				{
+					index = i;
+					break;
+				}
+			}
+
         }
 
 		// Check if we found a hitable dino
@@ -361,9 +365,7 @@ public class GridManager : MonoBehaviour
 		ConsoleScript.Print("TEST", "INDEX: " + index);
         SpawnedObjects[index].GetComponent<Dinosaur>().LoseHealth(damage);
 
-
         LowPolyAnimalPack.AudioManager.PlaySound(SpawnedObjects[index].GetComponent<Dinosaur>().Attack, transform.position);
-        
     }
 
     public string BuildObstaclesString()
@@ -372,7 +374,7 @@ public class GridManager : MonoBehaviour
 
         int count = Random.Range(2, maxObstaclesCount);
 		int value = (count / 2) * 2;
-		for (int i = 0;i<=value;i+=2)
+		for (int i = 0; i <= value; i += 2)
 		{
 			int x = Random.Range(0, gridSize - 1);
 			int z = Random.Range(0, gridSize - 1);
@@ -525,18 +527,20 @@ public class GridManager : MonoBehaviour
         var finalPosition = GetNearestPointOnGrid(clickPoint);
 
         int xCount = Mathf.RoundToInt(finalPosition.x);
-        int zCount = Mathf.RoundToInt(finalPosition.z);
+        int pressedTileZ = Mathf.RoundToInt(finalPosition.z);
 
         Quaternion rot;
         if (playerId == 1)
             rot = Quaternion.Euler(0, 90, 0);
         else
             rot = Quaternion.Euler(0, -90, 0);
+		
+		/// FIX THIS
 
         bool inThose = false;
         for (int i = 0; i < nowTargetable.Count; i++)
         {
-            if(nowTargetable[i].x == xCount && nowTargetable[i].y == zCount)
+            if(nowTargetable[i].x == xCount && nowTargetable[i].y == pressedTileZ)
             {
                 inThose = true;
             }
@@ -554,21 +558,30 @@ public class GridManager : MonoBehaviour
 
                     if (uiController.actionID == 3)
                     {
-                        mc.DinoMove(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
-                        MultiplayerDinoMove(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount));
+                        mc.DinoMove(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, pressedTileZ)));
+                        MultiplayerDinoMove(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, pressedTileZ));
                     }
                     else if (uiController.actionID == 1)
                     {
-                        mc.DinoAttack(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, zCount)));
-                        MultiplayerDinoAttack(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, zCount), SpawnedObjects[a].GetComponent<Dinosaur>().damage);
-                    }
+                        mc.DinoAttack(BuildMovementCommand(currentPosX, currentPosY, new pos(xCount, pressedTileZ)));
+                        MultiplayerDinoAttack(SpawnedObjects[a].GetComponent<Dinosaur>().tileX, SpawnedObjects[a].GetComponent<Dinosaur>().tileZ, new pos(xCount, pressedTileZ), SpawnedObjects[a].GetComponent<Dinosaur>().damage);
+                    } else
+					{
+						RemoveSelectionInstance();
+					}
 
                     break;
                 }
             }
-            TilePlayerMap[xCount, zCount] = playerId;
+            TilePlayerMap[xCount, pressedTileZ] = playerId;
         }
-    }
+
+		if (!inThose && !inTiles)
+		{
+			RemoveSelectionInstance();
+		}
+
+	}
 
 	/// <summary>
 	/// Deleting dinosaur from a grid
