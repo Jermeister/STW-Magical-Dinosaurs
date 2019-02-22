@@ -315,9 +315,7 @@ public class GridManager : MonoBehaviour
                 index = i;
             }
         }
-        Vector3 targetMoveLocation = canMoveObjects[targetPos.x].column[targetPos.y].transform.position + new Vector3(0f, 0.17f, 0f);
-        SpawnedObjects[index].GetComponent<Dinosaur>().SetTargetMovement(targetMoveLocation);
-
+        SpawnedObjects[index].transform.position = canMoveObjects[targetPos.x].column[targetPos.y].transform.position + new Vector3(0f, 0.17f, 0f);
         SpawnedObjects[index].GetComponent<Dinosaur>().tileX = targetPos.x;
         SpawnedObjects[index].GetComponent<Dinosaur>().tileZ = targetPos.y;
 

@@ -27,6 +27,13 @@ public class Dinosaur : MonoBehaviour
     public AudioClip Attack;
     public AudioClip Death;
 
+	// Lerping
+	bool isMoving;
+	Vector3 targetPos;
+	Quaternion targetRot;
+	float currentLerpTime = 0;
+	public float dinoMoveSpeed = 5f;
+
     [Space]
     public ParticleSystem BloodParticles;
 
@@ -43,10 +50,37 @@ public class Dinosaur : MonoBehaviour
 
     void Update()
     {
-        
+        if (isMoving)
+		{
+			if (Vector3.Distance(transform.position, targetPos) > 0.1f)
+			{
+				transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * dinoMoveSpeed);
+			} else
+			{
+				transform.position = targetPos;
+				isMoving = false;
+			}
+
+			if (currentLerpTime < 1)
+			{
+				currentLerpTime += Time.deltaTime * 2;
+				transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, currentLerpTime);
+			} else
+			{
+				transform.rotation = targetRot;
+			}
+		}
     }
 
-    public void UpdateHealth()
+	public void SetTargetMovement(Vector3 targetPosition)
+	{
+		isMoving = true;
+		targetPos = targetPosition;
+		targetRot = Quaternion.LookRotation(targetPos - transform.position, Vector3.up);
+		currentLerpTime = 0;
+	}
+
+	public void UpdateHealth()
     {
         for (int i = 0; i < 5; i++)
         {
