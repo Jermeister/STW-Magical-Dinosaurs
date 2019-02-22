@@ -158,7 +158,9 @@ public class UIController : MonoBehaviour
         if (!mc.IsMyTurn())
             return;
 
-        gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
+        if(id == 3)gm.ShowPossibleMoves(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
+        if(id == 1)gm.ShowPossibleAttacks(gm.selectedDino.whereCanMove, new pos(gm.selectedDino.tileX, gm.selectedDino.tileZ));
+
     }
 
 
