@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 
 
 public class GridManager : MonoBehaviour
@@ -323,6 +323,7 @@ public class GridManager : MonoBehaviour
             SpawnedObjects[SpawnedObjects.Count - 1].GetComponent<Dinosaur>().UpdateHealth();
             uiController.Bought(monsterId - 1);
             uiController.dinosAre[monsterId - 1]++;
+            HidePossibleActions();
 			Destroy(selectionInstance);
 			TileTypeMap[xCount, zCount] = monsterId;
 			TilePlayerMap[xCount, zCount] = playerId;
@@ -670,7 +671,8 @@ public class GridManager : MonoBehaviour
 		{
             HidePossibleActions();
             uiController.unitIsSelected = false;
-			Destroy(selectionInstance);
+            HidePossibleActions();
+            Destroy(selectionInstance);
 			inTiles = false;
 			return;
 		}
@@ -681,6 +683,7 @@ public class GridManager : MonoBehaviour
 		{
             HidePossibleActions();
             uiController.unitIsSelected = false;
+            HidePossibleActions();
             Destroy(selectionInstance);
 			inTiles = false;
 			return;
@@ -690,15 +693,27 @@ public class GridManager : MonoBehaviour
 		if (!selectionInstance)
 		{
             uiController.unitIsSelected = true;
+            HidePossibleActions();
             selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
-			return;
+           /* var num = TileTypeMap[xCount, zCount] - 1;
+            var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
+            uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);*/
+            return;
 		}
 
 		if (selectionInstance)
-			selectionInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
+        {
+            HidePossibleActions();
+            selectionInstance.transform.position = new Vector3(finalPosition.x, 0.60f, finalPosition.z);
+            /*
+            var num = TileTypeMap[xCount, zCount] - 1;
+            var values = dinosaurPrefabs[num].GetComponent<Dinosaur>();
+            uiController.UpdateUIManaCost(values.MoveCost, values.AttackCost, values.SpecialCost);*/
 
-		
-	}
+        }
+
+
+    }
 
 	Vector3 GetNearestPointOnGrid(Vector3 position)
 	{
@@ -739,23 +754,28 @@ public class GridManager : MonoBehaviour
 		{
 			RaycastHit hitInfo;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
 
-			if (Physics.Raycast(ray, out hitInfo))
-			{
-				PlaceObjectNear(hitInfo.point);
-                
-			}
+                if (Physics.Raycast(ray, out hitInfo))
+                {
+                    PlaceObjectNear(hitInfo.point);
+
+                }
+            }
 		}
 
         if (Input.GetMouseButtonDown(0) && inGame)
         {
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hitInfo))
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                ClickOnPossibleAction(hitInfo.point);
+                if (Physics.Raycast(ray, out hitInfo))
+                {
+                    ClickOnPossibleAction(hitInfo.point);
 
+                }
             }
         }
         
@@ -763,14 +783,17 @@ public class GridManager : MonoBehaviour
 
 	void UpdateSelectionSquare()
 	{
-        if (inGame || inSetup)
-        { 
-            RaycastHit hitInfo;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hitInfo))
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            if (inGame || inSetup)
             {
-                PlaceSelectionNear(hitInfo.point);
+                RaycastHit hitInfo;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out hitInfo))
+                {
+                    PlaceSelectionNear(hitInfo.point);
+                }
             }
         }
 	}
@@ -782,11 +805,13 @@ public class GridManager : MonoBehaviour
 			RaycastHit hitInfo;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-			if (Physics.Raycast(ray, out hitInfo))
-			{
-				HandlePressOnObjectNear(hitInfo.point);
-
-			}
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                if (Physics.Raycast(ray, out hitInfo))
+                {
+                    HandlePressOnObjectNear(hitInfo.point);
+                }
+            }
 		}
 	}
 
