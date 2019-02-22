@@ -691,7 +691,7 @@ public class GridManager : MonoBehaviour
 		{
             uiController.unitIsSelected = true;
             selectionInstance = Instantiate(selectionItem, new Vector3(finalPosition.x, 0.60f, finalPosition.z), Quaternion.identity);
-			return;
+            return;
 		}
 
 		if (selectionInstance)

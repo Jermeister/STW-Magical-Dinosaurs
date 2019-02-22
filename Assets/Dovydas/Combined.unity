@@ -21663,6 +21663,9 @@ MonoBehaviour:
   dinosAre: 00000000000000000000000000000000000000000000000000000000
   money: 1000
   moneyText: {fileID: 1919011483}
+  MoveCost: {fileID: 52391330}
+  AttackCost: {fileID: 37343365}
+  SpecialCost: {fileID: 1882708007}
   startGameButton: {fileID: 1602170289}
   manaLeft: 0
   maxMana: 15

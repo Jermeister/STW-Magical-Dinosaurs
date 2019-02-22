@@ -31,6 +31,12 @@ public class UIController : MonoBehaviour
     public int money;
     public Text moneyText;
 
+    [Header("Action Cost Texts")]
+    public Text MoveCost;
+    public Text AttackCost;
+    public Text SpecialCost;
+    [Space]
+
     public GameObject startGameButton;
 
     #region Variables
@@ -257,6 +263,13 @@ public class UIController : MonoBehaviour
         }
         else
             manaBar.gameObject.SetActive(false);
+    }
+
+    public void UpdateUIManaCost(int mana, int attack, int special)
+    {
+        MoveCost.text = mana.ToString();
+        AttackCost.text = attack.ToString();
+        SpecialCost.text = special.ToString();
     }
 
 
